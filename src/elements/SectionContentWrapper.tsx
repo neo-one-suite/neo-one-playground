@@ -1,0 +1,23 @@
+import { Flex, styled } from 'reakit';
+import { prop, switchProp } from 'styled-tools';
+
+export const SectionContentWrapper = styled(Flex)`
+  /* stylelint-disable-next-line */
+  background-color: ${switchProp('bg', {
+    dark: prop('theme.black'),
+    light: prop('theme.gray0'),
+    darkLight: prop('theme.gray2'),
+  })};
+  width: 100%;
+  justify-content: center;
+
+  & > div {
+    width: 100%;
+    padding: 48px 24px;
+    ${prop('theme.maxWidth')};
+
+    @media (max-width: 768px) {
+      padding: 16px 8px;
+    }
+  }
+`;
