@@ -9,7 +9,6 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        include: [__dirname + '/src', __dirname + '/one/generated'],
         use: {
           loader: 'awesome-typescript-loader',
           options: {
