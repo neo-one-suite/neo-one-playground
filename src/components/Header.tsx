@@ -1,6 +1,7 @@
 import React from 'react';
 import { MdOpenInNew } from 'react-icons/md';
-import { Flex, Heading, Link as LinkBase, styled, Toolbar } from 'reakit';
+import { NavLink as RouterLink } from 'react-router-dom';
+import { Flex, styled, Toolbar } from 'reakit';
 import { prop } from 'styled-tools';
 import { Link, Logo } from '../elements';
 import { ComponentProps } from '../types';
@@ -10,17 +11,17 @@ const Wrapper = styled(Flex)`
   justify-content: center;
   background-color: ${prop('theme.primary')};
   z-index: 9999;
-  padding: 12px 36px;
+  padding: 0 36px;
 
   @media (max-width: 768px) {
-    padding: 12px 8px;
+    padding: 0 8px;
   }
 `;
 
 const StyledToolbar = styled(Toolbar)`
   height: 100%;
   grid-gap: 8px;
-  padding: 0 24px;
+  padding: 0 16px;
   ${prop('theme.maxWidth')};
 
   ${/* sc-sel */ Toolbar.Focusable} {
@@ -28,36 +29,52 @@ const StyledToolbar = styled(Toolbar)`
   }
 
   @media (max-width: 768px) {
-    padding: 0;
+    padding: 0 8px;
   }
 `;
 
-const LogoLink = styled(LinkBase)`
+const LogoLink = styled(RouterLink)`
   display: block;
   width: 100px;
   margin-right: 36px;
+  margin-bottom: 8px;
+  margin-top: 8px;
 
   @media (max-width: 768px) {
     margin-right: 0;
   }
 `;
 
-const StyledHeading = styled(Heading)`
-  font-size: 2.125rem;
-  line-height: 1.20588em;
-  width: 272px;
+const NavigationLink = styled(RouterLink)`
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  height: 100%;
+  padding-top: 5px;
+  border-bottom: 5px solid transparent;
+  color: ${prop('theme.black')};
+  text-decoration: none;
+
+  &:hover {
+    border-color: ${prop('theme.accent')};
+    color: ${prop('theme.accent')};
+  }
+
+  &.active {
+    border-color: ${prop('theme.accent')};
+  }
 `;
 
 export const Header = (props: ComponentProps<typeof Wrapper>) => (
   <Wrapper {...props}>
     <StyledToolbar>
       <Toolbar.Content>
-        <Toolbar.Focusable as={LogoLink} href="https://neo-one.io" target="_blank">
+        <Toolbar.Focusable as={LogoLink} to="/">
           <Logo />
         </Toolbar.Focusable>
-      </Toolbar.Content>
-      <Toolbar.Content align="center">
-        <StyledHeading>ICO Playground</StyledHeading>
+        <Toolbar.Focusable as={NavigationLink} to="/ico">
+          ICO
+        </Toolbar.Focusable>
       </Toolbar.Content>
       <Toolbar.Content align="end">
         <Toolbar.Focusable as={Link} href="https://github.com/neo-one-suite/neo-one-ico" target="_blank">

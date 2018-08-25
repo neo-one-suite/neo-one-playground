@@ -1,8 +1,9 @@
 import { Flex, styled } from 'reakit';
+import { prop } from 'styled-tools';
 
 export const ContentWrapper = styled(Flex)`
   align-items: center;
-  max-width: 1200px;
+  ${prop('theme.maxWidth')};
   padding: 0 16px;
   width: 100%;
   height: 100%;

@@ -4,6 +4,7 @@ import {
   constant,
   Contract,
   createEventNotifier,
+  Deploy,
   Fixed,
   Hash256,
   Integer,
@@ -38,9 +39,9 @@ export class ICO implements SmartContract {
   private readonly balances = new MapStorage<Address, Fixed<8>>();
 
   public constructor(
-    public readonly owner: Address = Address.from('AXNajBTQLxWHwc9sKyXcc4UdbJvp3arYDG'),
-    public readonly startTimeSeconds: Integer = 1534108415,
-    public readonly icoDurationSeconds: Integer = 157700000,
+    public readonly owner: Address = Deploy.senderAddress,
+    public readonly startTimeSeconds: Integer = Blockchain.currentBlockTime + 60 * 60,
+    public readonly icoDurationSeconds: Integer = 86400,
   ) {
     if (!Address.verifySender(owner)) {
       throw new Error('Sender was not the owner.');

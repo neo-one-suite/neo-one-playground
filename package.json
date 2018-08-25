@@ -31,7 +31,8 @@
       ]
     },
     "ignore": [
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "one/contracts/**/*"
     ]
   },
   "scripts": {
@@ -51,7 +52,7 @@
     "lint:contracts": "yarn run lint-files 'contracts/**/*.ts'",
     "lint:source": "yarn run lint-files 'src/**/*.ts'",
     "lint": "yarn run lint:contracts && yarn run lint:source",
-    "start": "webpack-dev-server"
+    "start": "yarn run ts-node ./scripts/start.ts"
   },
   "husky": {
     "hooks": {
@@ -59,54 +60,63 @@
     }
   },
   "devDependencies": {
-    "@neo-one/cli": "1.0.0-alpha.114",
-    "@neo-one/server-plugin-project": "1.0.0-alpha.5",
-    "@neo-one/smart-contract-compiler": "1.0.0-alpha.47",
-    "@neo-one/smart-contract-test": "1.0.0-alpha.47",
-    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.4",
+    "@neo-one/cli": "1.0.0-alpha.119",
+    "@neo-one/smart-contract-compiler": "1.0.0-alpha.49",
+    "@neo-one/smart-contract-test": "1.0.0-alpha.50",
+    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.6",
     "@types/bignumber.js": "5.0.0",
     "@types/jest": "23.3.1",
     "@types/react": "16.4.11",
     "@types/react-dom": "16.0.7",
+    "@types/react-router": "4.0.30",
+    "@types/react-router-dom": "4.3.0",
+    "@types/webpack": "4.4.11",
     "awesome-typescript-loader": "5.2.0",
+    "connect-history-api-fallback": "1.5.0",
     "cross-env": "5.2.0",
     "css-loader": "1.0.0",
+    "file-loader": "2.0.0",
     "husky": "1.0.0-rc.13",
     "jest": "23.5.0",
     "jest-environment-node": "23.4.0",
+    "koa-connect": "2.0.1",
     "lint-staged": "7.2.2",
+    "mini-html-webpack-plugin": "0.2.3",
     "prettier": "1.14.2",
     "style-loader": "0.22.1",
     "stylelint-config-standard": "18.2.0",
     "stylelint-config-styled-components": "0.1.1",
     "stylelint-processor-styled-components": "1.3.2",
-    "svg-inline-loader": "0.8.0",
-    "svg-url-loader": "2.3.2",
     "ts-jest": "23.1.4",
     "ts-node": "7.0.1",
     "tslint": "5.11.0",
     "tslint-clean-code": "0.2.7",
     "tslint-config-prettier": "1.15.0",
     "tslint-consistent-codestyle": "1.13.3",
-    "tslint-immutable": "4.6.0",
-    "tslint-microsoft-contrib": "5.2.0",
+    "tslint-immutable": "4.7.0",
+    "tslint-microsoft-contrib": "5.2.1",
     "tslint-sonarts": "1.7.0",
     "typescript": "3.0.1",
     "typescript-styled-plugin": "0.10.0",
-    "webpack": "4.16.5",
+    "webpack": "4.17.1",
     "webpack-cli": "3.1.0",
-    "webpack-dev-server": "3.1.5"
+    "webpack-serve": "2.0.2"
   },
   "dependencies": {
-    "@neo-one/client": "1.0.0-alpha.90",
-    "@neo-one/react": "1.0.0-alpha.3",
-    "@neo-one/smart-contract": "1.0.0-alpha.23",
+    "@neo-one/client": "1.0.0-alpha.92",
+    "@neo-one/react": "1.0.0-alpha.6",
+    "@neo-one/smart-contract": "1.0.0-alpha.24",
     "@reactivex/ix-es2015-cjs": "2.3.5",
     "bignumber.js": "7.2.1",
+    "constate": "^0.8.0",
+    "date-fns": "2.0.0-alpha.16",
+    "lodash": "^4.17.10",
     "react": "16.4.2",
     "react-dom": "16.4.2",
     "react-icons": "3.0.5",
-    "reakit": "0.14.3",
+    "react-router": "4.3.1",
+    "react-router-dom": "4.3.1",
+    "reakit": "0.14.5",
     "rxjs": "6.2.2",
     "styled-tools": "1.3.1"
   }

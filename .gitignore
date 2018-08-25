@@ -10,6 +10,7 @@
 .rpt2_cache
 /reports
 .nyc_output
+.awcache
 
 # Logs
 logs

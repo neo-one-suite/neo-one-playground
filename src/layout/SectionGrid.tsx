@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Grid, Heading, styled } from 'reakit';
+import { Grid, styled } from 'reakit';
 import { prop, switchProp } from 'styled-tools';
-import { SectionContentWrapper } from '../elements';
+import { Headline, SectionContentWrapper, Subheading } from '../elements';
 import { ComponentProps } from '../types';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   readonly children: React.ReactNode;
 }
 
-const StyledHeading = styled(Heading)`
+const StyledHeading = styled(Headline)`
   ${prop('theme.fonts.axiformaMedium')};
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
@@ -18,16 +18,13 @@ const StyledHeading = styled(Heading)`
     light: prop('theme.primaryDark'),
     darkLight: prop('theme.primaryDark'),
   })};
-  font-size: 1.5rem;
-  line-height: 1.35416em;
   margin: 0;
 `;
 
-const StyledItem = styled(Grid.Item)`
-  ${prop('theme.fonts.axiformaRegular')};
+const GridItem = Grid.Item.as(Subheading).as('div');
+const StyledItem = styled(GridItem)`
   color: ${switchProp('bg', { dark: prop('theme.gray1'), light: prop('theme.black'), darkLight: prop('theme.black') })};
-  font-size: 1rem;
-  line-height: 1.5em;
+  margin: 0;
 `;
 
 export const SectionGrid = ({

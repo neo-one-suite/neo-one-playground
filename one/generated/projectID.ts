@@ -1,3 +1,7 @@
 // tslint:disable
 /* eslint-disable */
-export const projectID = '9408ca50-5922-45e0-b842-e5b98b4c26e8';
+/**
+ * @projectID 42ad9c06-43c8-4c93-a375-9c454a3d0380
+ */
+
+export const projectID = '42ad9c06-43c8-4c93-a375-9c454a3d0380';

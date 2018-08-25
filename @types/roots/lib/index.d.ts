@@ -13,3 +13,7 @@ declare module '*.woff2' {
 declare module '*.mp4' {
   export default '';
 }
+
+declare module '*.png' {
+  export default '';
+}

@@ -1,6 +1,6 @@
+import { ContainerProps } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
-import { ComponentProps } from '../types';
 
 const getScrollPosition = (element: typeof window) => ({
   y: element.scrollY,
@@ -23,10 +23,6 @@ const onUnmount = ({ state }: { readonly state: State }) => {
   window.removeEventListener('scroll', state.handler);
 };
 
-interface Props {
-  readonly children: (state: ReturnType<typeof getScrollPosition>) => React.ReactNode;
-}
-
-export const ScrollContainer = (props: Props & ComponentProps<Container>) => (
+export const ScrollContainer = (props: ContainerProps<State>) => (
   <Container {...props} initialState={initialState} onMount={onMount} onUnmount={onUnmount} />
 );

@@ -8,7 +8,7 @@ import { sourceMaps } from '../sourceMaps';
 const definition: SmartContractDefinition = {
   networks: {
     local: {
-      address: 'AdaXirBXtso9KKpidcWDKKcJhquFe6RwhY',
+      address: 'Abrakxk9L6BrztTHekaumHU1gabzRNYXUW',
     },
   },
   abi: icoABI,

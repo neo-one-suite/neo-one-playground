@@ -7,4 +7,4 @@ const StyledImage = styled(Image)`
   height: 56px;
 `;
 
-export const Logo = (props: ComponentProps<Image>) => <StyledImage src={logo} alt="NEO•ONE" {...props} />;
+export const Logo = (props: ComponentProps<typeof Image>) => <StyledImage src={logo} alt="NEO•ONE" {...props} />;

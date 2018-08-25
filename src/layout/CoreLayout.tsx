@@ -25,7 +25,7 @@ const Content = styled(Flex)`
   position: relative;
   flex-direction: column;
   align-items: center;
-  margin: 91.188px 0;
+  margin: 72px 0;
   width: 100%;
 `;
 

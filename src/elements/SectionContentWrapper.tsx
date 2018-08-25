@@ -13,7 +13,7 @@ export const SectionContentWrapper = styled(Flex)`
 
   & > div {
     width: 100%;
-    padding: 48px 24px;
+    padding: 48px 16px;
     ${prop('theme.maxWidth')};
 
     @media (max-width: 768px) {
