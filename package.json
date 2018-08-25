@@ -19,7 +19,7 @@
     "dapp"
   ],
   "engines": {
-    "node": ">=10.9.0"
+    "node": ">=8.9.0"
   },
   "lint-staged": {
     "linters": {
@@ -60,10 +60,10 @@
     }
   },
   "devDependencies": {
-    "@neo-one/cli": "1.0.0-alpha.119",
-    "@neo-one/smart-contract-compiler": "1.0.0-alpha.49",
-    "@neo-one/smart-contract-test": "1.0.0-alpha.50",
-    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.6",
+    "@neo-one/cli": "1.0.0-alpha.121",
+    "@neo-one/smart-contract-compiler": "1.0.0-alpha.51",
+    "@neo-one/smart-contract-test": "1.0.0-alpha.52",
+    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.8",
     "@types/bignumber.js": "5.0.0",
     "@types/jest": "23.3.1",
     "@types/react": "16.4.11",
@@ -103,8 +103,8 @@
     "webpack-serve": "2.0.2"
   },
   "dependencies": {
-    "@neo-one/client": "1.0.0-alpha.92",
-    "@neo-one/react": "1.0.0-alpha.6",
+    "@neo-one/client": "1.0.0-alpha.94",
+    "@neo-one/react": "1.0.0-alpha.8",
     "@neo-one/smart-contract": "1.0.0-alpha.24",
     "@reactivex/ix-es2015-cjs": "2.3.5",
     "bignumber.js": "7.2.1",
