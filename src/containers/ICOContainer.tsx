@@ -41,7 +41,7 @@ const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Ef
 
     const onComplete = (clear: boolean) => () => {
       if (clear) {
-        setState({ loading: false, text: '' });
+        setState({ loading: false, text: '', amount: undefined });
       } else {
         setState({ loading: false });
       }
