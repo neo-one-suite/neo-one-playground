@@ -77,7 +77,7 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
         </Toolbar.Focusable>
       </Toolbar.Content>
       <Toolbar.Content align="end">
-        <Toolbar.Focusable as={Link} href="https://github.com/neo-one-suite/neo-one-ico" target="_blank">
+        <Toolbar.Focusable as={Link} href="https://github.com/neo-one-suite/neo-one-playground" target="_blank">
           GitHub
           <MdOpenInNew />
         </Toolbar.Focusable>
