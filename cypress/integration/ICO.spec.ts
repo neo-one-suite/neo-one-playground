@@ -39,26 +39,29 @@ describe('ICO', () => {
 
     // Fast forward and contribute
     cy.get('[data-test=neo-one-block-time-button]').click();
-    cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]').then(($input) => {
-      const value = $input.val();
-      cy.task('addSeconds', { value, offset: 3600 }).then(
-        // tslint:disable-next-line no-any
-        ({ formatted, localeFormatted, localeFormattedPlusOne }: any) => {
-          cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
-            .clear()
-            .type(formatted as string);
-          cy.get('[data-test=neo-one-block-time-dialog-button]').click();
-          cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
-            const lastTimeValue = $value.text();
-            if (lastTimeValue === localeFormatted) {
-              expect(lastTimeValue).to.equal(localeFormatted);
-            } else {
-              expect(lastTimeValue).to.equal(localeFormattedPlusOne);
-            }
-          });
-        },
-      );
-    });
+    const fastForward = (offset: number) => {
+      cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]').then(($input) => {
+        const value = $input.val();
+        cy.task('addSeconds', { value, offset }).then(
+          // tslint:disable-next-line no-any
+          ({ formatted, localeFormatted, localeFormattedPlusOne }: any) => {
+            cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
+              .clear()
+              .type(formatted as string);
+            cy.get('[data-test=neo-one-block-time-dialog-button]').click();
+            cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
+              const lastTimeValue = $value.text();
+              if (lastTimeValue === localeFormatted) {
+                expect(lastTimeValue).to.equal(localeFormatted);
+              } else {
+                expect(lastTimeValue).to.equal(localeFormattedPlusOne);
+              }
+            });
+          },
+        );
+      });
+    };
+    fastForward(3600);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
     cy.get('[data-test=info-countdown-value]').should('have.text', '1 day');
     cy.get('[data-test=contribute-button]').click();
@@ -116,17 +119,7 @@ describe('ICO', () => {
 
     // Fast forward past end
     cy.get('[data-test=neo-one-block-time-button]').click();
-    cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]').then(($input) => {
-      const value = $input.val();
-      // tslint:disable-next-line no-any
-      cy.task('addSeconds', { value, offset: 24 * 60 * 60 }).then(({ result, formatted }: any) => {
-        cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
-          .clear()
-          .type(result as string);
-        cy.get('[data-test=neo-one-block-time-dialog-button]').click();
-        cy.get('[data-test=neo-one-block-time-last-time-value]').should('have.text', formatted);
-      });
-    });
+    fastForward(24 * 60 * 60);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
     cy.get('[data-test=info-countdown-value]').should('have.text', 'Ended');
     cy.get('[data-test=contribute-button]').click();
