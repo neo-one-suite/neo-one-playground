@@ -1,0 +1,97 @@
+aliases:
+  - &restore-yarn-cache-8
+    keys:
+      - v2-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      # Fallback in case checksum fails
+      - v2-yarn-8-{{ .Branch }}-
+
+  - &save-yarn-cache-8
+    paths:
+      - node_modules
+      - ~/.cache/yarn
+      - ~/.cache/Cypress
+    key: v2-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+  - &yarn
+    |
+      yarn install --non-interactive --cache-folder ~/.cache/yarn
+
+  - &lint
+    working_directory: ~/neo-one-playground
+    steps:
+      - checkout
+      - restore-cache: *restore-yarn-cache-8
+      - run: *yarn
+      - save-cache: *save-yarn-cache-8
+      - run:
+          name: Prettier
+          command: yarn nit
+          when: always
+      - run:
+          name: Typescript
+          command: yarn tsc
+          when: always
+      - run:
+          name: Lint
+          command: yarn lint
+          when: always
+
+  - &test8
+    working_directory: ~/neo-one-playground
+    steps:
+      - checkout
+      - restore-cache: *restore-yarn-cache-8
+      - run: *yarn
+      - save-cache: *save-yarn-cache-8
+      - run:
+          name: Test
+          command: yarn test --ci -w 1
+
+  - &cypress8
+    working_directory: ~/neo-one-playground
+    steps:
+      - checkout
+      - restore-cache: *restore-yarn-cache-8
+      - run: *yarn
+      - save-cache: *save-yarn-cache-8
+      - run:
+          name: Test
+          command: yarn test:cypress --coverage
+      - run:
+          name: Coverage Report
+          command: yarn nyc report --reporter=json
+          when: always
+      - run:
+          name: Upload Unit Test Coverage
+          command: yarn run codecov -f coverage/coverage-final.json -F cypress
+          when: always
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
+
+
+node8: &node8
+  docker:
+    - image: neotracker/neo-one-circleci-node:8.9.0-0
+
+version: 2
+jobs:
+  test8:
+    <<: *node8
+    <<: *test8
+  cypress8:
+    <<: *node8
+    <<: *cypress8
+
+  lint:
+    <<: *node8
+    <<: *lint
+
+workflows:
+  version: 2
+  test8:
+    jobs:
+      - lint
+      - test8
+      - cypress8

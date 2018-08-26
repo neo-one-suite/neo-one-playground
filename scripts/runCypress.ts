@@ -1,8 +1,8 @@
 // tslint:disable no-console
 import execa from 'execa';
 import isRunning from 'is-running';
-import yargs from 'yargs';
 import * as path from 'path';
+import yargs from 'yargs';
 
 yargs.describe('report', 'Write out test reports.').default('report', false);
 yargs.describe('coverage', 'Write coverage to .nyc_output.').default('coverage', false);
@@ -118,11 +118,7 @@ process.on('SIGTERM', () => {
 
 const neoOne = async (coverage: boolean): Promise<void> => {
   let command = ['neo-one', 'build', '--reset', '--no-progress'];
-  if (coverage) {
-    command = ['nyc', 'yarn'].concat(command);
-  } else {
-    command = ['yarn'].concat(command);
-  }
+  command = coverage ? ['nyc', 'yarn'].concat(command) : ['yarn'].concat(command);
 
   if (coverage) {
     const startServerCommand = ['nyc', 'yarn', 'neo-one', 'start', 'server', '--static-neo-one'];
@@ -152,13 +148,14 @@ const neoOne = async (coverage: boolean): Promise<void> => {
 
     let tries = 60;
     let ready = false;
+    // tslint:disable-next-line no-loop-statement
     while (!ready && !exited && tries >= 0) {
-      await new Promise((resolve) => setTimeout(() => resolve(), 1000));
+      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
       const { stdout: result } = await execa('yarn', ['neo-one', 'check', 'server', '--static-neo-one']);
       try {
         const lines = result.split('\n').filter((line) => line !== '');
         ready = JSON.parse(lines[lines.length - 1]);
-      } catch (error) {
+      } catch {
         // Ignore errors
       }
       tries -= 1;
