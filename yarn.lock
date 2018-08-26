@@ -747,9 +747,9 @@
     rxjs "^6.2.2"
     tslib "^1.9.3"
 
-"@neo-one/react@1.0.0-alpha.11":
-  version "1.0.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@neo-one/react/-/react-1.0.0-alpha.11.tgz#953825ac594cf1b145b7fbfd4df03fd3201861df"
+"@neo-one/react@1.0.0-alpha.12":
+  version "1.0.0-alpha.12"
+  resolved "https://registry.yarnpkg.com/@neo-one/react/-/react-1.0.0-alpha.12.tgz#aaf9ab41ac4a6d5b25e277c5b05682f65ac90ba2"
   dependencies:
     "@neo-one/client" "^1.0.0-alpha.97"
     "@neo-one/server-http-client" "^1.0.0-alpha.74"

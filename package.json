@@ -122,7 +122,7 @@
   },
   "dependencies": {
     "@neo-one/client": "1.0.0-alpha.97",
-    "@neo-one/react": "1.0.0-alpha.11",
+    "@neo-one/react": "1.0.0-alpha.12",
     "@neo-one/smart-contract": "1.0.0-alpha.24",
     "@reactivex/ix-es2015-cjs": "2.3.5",
     "bignumber.js": "7.2.1",
