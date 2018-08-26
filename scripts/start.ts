@@ -44,6 +44,12 @@ const createWebpackConfig = (): webpack.Configuration => ({
               <meta name="theme-color" content="#ffffff">
               <title>${title}</title>
               ${MiniHtmlWebpackPlugin.generateCSSReferences(css, publicPath)}
+              <style>
+              body {
+                margin: 0;
+                text-rendering: optimizeLegibility;
+              }
+              </style>
             </head>
             <body style="margin: 0px;">
               <div id="app"></div>
