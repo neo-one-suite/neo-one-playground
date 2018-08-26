@@ -31,33 +31,34 @@ const Wrapper = styled(Base)`
 `;
 
 export const Contribute = (props: ComponentProps<typeof Flex>) => (
-  <ICOContainer>
-    {({ text, amount, loading, onChangeAmount, send }) => (
-      <Wrapper>
-        <StyledFlex {...props}>
-          <StyledInput
-            value={text}
-            placeholder="Send NEO"
-            onChange={(event: React.SyntheticEvent<any>) => onChangeAmount(event.currentTarget.value)}
-          />
-          <WithContracts>
-            {({ ico }) => (
-              <FromStream props$={concat(of(new BigNumber(10)), defer(async () => ico.amountPerNEO()))}>
-                {(amountPerNEO) => (
+  <WithContracts>
+    {({ ico }) => (
+      <FromStream props$={concat(of(new BigNumber(0)), defer(async () => ico.amountPerNEO()))}>
+        {(amountPerNEO) => (
+          <ICOContainer>
+            {({ text, amount, loading, onChangeAmount, send }) => (
+              <Wrapper>
+                <StyledFlex {...props}>
+                  <StyledInput
+                    value={text}
+                    placeholder="Send NEO"
+                    onChange={(event: React.SyntheticEvent<any>) => onChangeAmount(event.currentTarget.value)}
+                  />
+
                   <StyledBody2>
                     = {amount === undefined ? '0' : `${amountPerNEO.times(amount).toFormat()}`} ONE
                   </StyledBody2>
-                )}
-              </FromStream>
+                </StyledFlex>
+                <Flex justifyContent="flex-end">
+                  <Button disabled={amount === undefined || loading} onClick={send}>
+                    Send
+                  </Button>
+                </Flex>
+              </Wrapper>
             )}
-          </WithContracts>
-        </StyledFlex>
-        <Flex justifyContent="flex-end">
-          <Button disabled={amount === undefined || loading} onClick={send}>
-            Send
-          </Button>
-        </Flex>
-      </Wrapper>
+          </ICOContainer>
+        )}
+      </FromStream>
     )}
-  </ICOContainer>
+  </WithContracts>
 );

@@ -33,7 +33,7 @@ export class ICO implements SmartContract {
   public readonly name = 'One';
   public readonly symbol = 'ONE';
   public readonly decimals = 8;
-  public readonly amountPerNEO = 10;
+  public readonly amountPerNEO = 100000;
   private mutableRemaining: Fixed<8> = 10_000_000_000_00000000;
   private mutableSupply: Fixed<8> = 0;
   private readonly balances = new MapStorage<Address, Fixed<8>>();

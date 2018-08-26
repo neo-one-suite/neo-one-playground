@@ -18,13 +18,21 @@ const StyledTime = styled('time')`
 `;
 
 interface TimeAgoProps {
-  readonly startTimeMS: number;
-  readonly durationMS: number;
-  readonly nowMS: number;
+  readonly startTimeMS?: number;
+  readonly durationMS?: number;
+  readonly nowMS?: number;
 }
 
 const TIMER = 100;
 function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JSX.Element {
+  if (startTimeMS === undefined || durationMS === undefined || nowMS === undefined) {
+    return (
+      <>
+        <Grid.Item>Countdown: </Grid.Item>
+        <Grid.Item />
+      </>
+    );
+  }
   const endTimeMS = startTimeMS + durationMS;
 
   return (
@@ -69,53 +77,55 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
     <WithContracts>
       {({ client, ico }) => (
         <FromStream
-          props$={combineLatest(
-            client.currentNetwork$.pipe(
-              distinctUntilChanged(),
-              switchMap(async (network) => {
-                const [startTimeSeconds, durationSeconds, amountPerNEO] = await Promise.all([
+          props$={concat(
+            of(undefined),
+            combineLatest(client.block$, client.currentAccount$, client.currentNetwork$).pipe(
+              switchMap(async ([{ block }, account, network]) => {
+                const [
+                  startTimeSeconds,
+                  durationSeconds,
+                  amountPerNEO,
+                  totalSupply,
+                  remaining,
+                  balance,
+                ] = await Promise.all([
                   ico.startTimeSeconds(),
                   ico.icoDurationSeconds(),
                   ico.amountPerNEO(),
-                ]);
-
-                return {
-                  startTimeMS: startTimeSeconds.toNumber() * 1000,
-                  durationMS: durationSeconds.toNumber() * 1000,
-                  amountPerNEO,
-                  address: ico.definition.networks[network].address,
-                };
-              }),
-            ),
-            combineLatest(client.block$, client.currentAccount$).pipe(
-              switchMap(async ([{ block }, account]) => {
-                const [totalSupply, remaining, balance] = await Promise.all([
                   ico.totalSupply(),
                   ico.remaining(),
                   account === undefined ? Promise.resolve(new BigNumber(0)) : ico.balanceOf(account.id.address),
                 ]);
 
                 return {
+                  startTimeMS: startTimeSeconds.toNumber() * 1000,
+                  durationMS: durationSeconds.toNumber() * 1000,
+                  amountPerNEO,
                   totalSupply,
                   remaining,
                   nowMS: block.time * 1000,
                   balance,
+                  address: ico.definition.networks[network].address,
                 };
               }),
             ),
           )}
         >
-          {([{ startTimeMS, durationMS, amountPerNEO, address }, { totalSupply, remaining, nowMS, balance }]) => (
+          {(value) => (
             <StyledGrid columns="160px 1fr" autoRows="auto" gap="0" {...props}>
-              <TimeAgo startTimeMS={startTimeMS} durationMS={durationMS} nowMS={nowMS} />
+              <TimeAgo
+                startTimeMS={value === undefined ? undefined : value.startTimeMS}
+                durationMS={value === undefined ? undefined : value.durationMS}
+                nowMS={value === undefined ? undefined : value.nowMS}
+              />
               <Grid.Item>NEO Contributed:</Grid.Item>
-              <Grid.Item>{totalSupply.div(amountPerNEO).toFormat()}</Grid.Item>
+              <Grid.Item>{value === undefined ? '' : value.totalSupply.div(value.amountPerNEO).toFormat()}</Grid.Item>
               <Grid.Item>Remaining:</Grid.Item>
-              <Grid.Item>{remaining.toFormat()}</Grid.Item>
+              <Grid.Item>{value === undefined ? '' : value.remaining.toFormat()}</Grid.Item>
               <Grid.Item>Your Balance:</Grid.Item>
-              <Grid.Item>{balance.toFormat()}</Grid.Item>
+              <Grid.Item>{value === undefined ? '' : value.balance.toFormat()}</Grid.Item>
               <Grid.Item>ONE Address:</Grid.Item>
-              <Grid.Item>{address}</Grid.Item>
+              <Grid.Item>{value === undefined ? '' : value.address}</Grid.Item>
             </StyledGrid>
           )}
         </FromStream>

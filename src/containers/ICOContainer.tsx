@@ -48,8 +48,6 @@ const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Ef
     };
 
     const onError = (error: Error) => {
-      // tslint:disable-next-line no-console
-      console.error(error);
       onComplete(false)();
     };
 
