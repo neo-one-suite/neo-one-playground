@@ -28,8 +28,8 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
   if (startTimeMS === undefined || durationMS === undefined || nowMS === undefined) {
     return (
       <>
-        <Grid.Item>Countdown: </Grid.Item>
-        <Grid.Item />
+        <Grid.Item data-test="info-countdown">Countdown:</Grid.Item>
+        <Grid.Item data-test="info-countdown-value" />
       </>
     );
   }
@@ -56,8 +56,12 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
     >
       {({ countdown, value }) => (
         <>
-          {countdown ? <Grid.Item>Countdown: </Grid.Item> : <Grid.Item>Time Left: </Grid.Item>}
-          <Grid.Item>
+          {countdown ? (
+            <Grid.Item data-test="info-countdown">Countdown:</Grid.Item>
+          ) : (
+            <Grid.Item data-test="info-countdown">Time Left:</Grid.Item>
+          )}
+          <Grid.Item data-test="info-countdown-value">
             {value === undefined ? (
               'Ended'
             ) : (
@@ -118,14 +122,20 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
                 durationMS={value === undefined ? undefined : value.durationMS}
                 nowMS={value === undefined ? undefined : value.nowMS}
               />
-              <Grid.Item>NEO Contributed:</Grid.Item>
-              <Grid.Item>{value === undefined ? '' : value.totalSupply.div(value.amountPerNEO).toFormat()}</Grid.Item>
-              <Grid.Item>Remaining:</Grid.Item>
-              <Grid.Item>{value === undefined ? '' : value.remaining.toFormat()}</Grid.Item>
-              <Grid.Item>Your Balance:</Grid.Item>
-              <Grid.Item>{value === undefined ? '' : value.balance.toFormat()}</Grid.Item>
-              <Grid.Item>ONE Address:</Grid.Item>
-              <Grid.Item>{value === undefined ? '' : value.address}</Grid.Item>
+              <Grid.Item data-test="info-neo-contributed">NEO Contributed:</Grid.Item>
+              <Grid.Item data-test="info-neo-contributed-value">
+                {value === undefined ? '' : value.totalSupply.div(value.amountPerNEO).toFormat()}
+              </Grid.Item>
+              <Grid.Item data-test="info-remaining">Remaining:</Grid.Item>
+              <Grid.Item data-test="info-remaining-value">
+                {value === undefined ? '' : value.remaining.toFormat()}
+              </Grid.Item>
+              <Grid.Item data-test="info-balance">Your Balance:</Grid.Item>
+              <Grid.Item data-test="info-balance-value">
+                {value === undefined ? '' : value.balance.toFormat()}
+              </Grid.Item>
+              <Grid.Item data-test="info-address">ONE Address:</Grid.Item>
+              <Grid.Item data-test="info-address-value">{value === undefined ? '' : value.address}</Grid.Item>
             </StyledGrid>
           )}
         </FromStream>

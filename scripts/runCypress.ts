@@ -2,28 +2,33 @@
 import execa from 'execa';
 import isRunning from 'is-running';
 import yargs from 'yargs';
+import * as path from 'path';
 
-yargs.describe('ci', 'Running as part of continuous integration.').default('ci', false);
+yargs.describe('report', 'Write out test reports.').default('report', false);
+yargs.describe('coverage', 'Write coverage to .nyc_output.').default('coverage', false);
+yargs.describe('neo-one-coverage', 'Write coverage to .nyc_output for neo-one.').default('neo-one-coverage', false);
 
-const runCypress = async ({ ci }: { readonly ci: boolean }) => {
+const runCypress = async ({ report, coverage }: { readonly report: boolean; readonly coverage: boolean }) => {
   // tslint:disable-next-line no-unused
   const { NODE_OPTIONS, TS_NODE_PROJECT, ...newEnv } = process.env;
-  const command = ci
-    ? [
-        'cypress',
-        'run',
-        '--reporter',
-        'mocha-multi-reporters',
-        '--reporter-options',
-        'configFile=mocha.json',
-        '--spec',
-        'cypress/integration/**/*',
-      ]
-    : ['cypress', 'run', '--spec', 'cypress/integration/**/*'];
+  let command = ['cypress', 'run', '--spec', 'cypress/integration/**/*'];
+  if (report) {
+    command = command.concat([
+      '--reporter',
+      'mocha-multi-reporters',
+      '--reporter-options',
+      `configFile=${path.resolve(__dirname, '..', 'mocha.json')}`,
+    ]);
+  }
+  if (coverage) {
+    command = command.concat(['--env', `coverageDir=${path.resolve(process.cwd(), '.nyc_output')}`]);
+  }
 
+  console.log(`$ yarn ${command.join(' ')}`);
   const proc = execa('yarn', command, {
     env: newEnv,
     extendEnv: false,
+    cwd: path.resolve(__dirname, '..'),
   });
 
   proc.stdout.pipe(process.stdout);
@@ -111,19 +116,90 @@ process.on('SIGTERM', () => {
   shutdown(0);
 });
 
-const neoOne = (command: ReadonlyArray<string>): execa.ExecaChildProcess => {
-  console.log(`$ neo-one ${command.join(' ')}`);
+const neoOne = async (coverage: boolean): Promise<void> => {
+  let command = ['neo-one', 'build', '--reset', '--no-progress'];
+  if (coverage) {
+    command = ['nyc', 'yarn'].concat(command);
+  } else {
+    command = ['yarn'].concat(command);
+  }
 
-  return execa('neo-one', command);
+  if (coverage) {
+    const startServerCommand = ['nyc', 'yarn', 'neo-one', 'start', 'server', '--static-neo-one'];
+    console.log(`$ ${startServerCommand.join(' ')}`);
+    const proc = execa(startServerCommand[0], startServerCommand.slice(1));
+    mutableCleanup.push(async () => {
+      await execa('yarn', ['neo-one', 'reset', '--static-neo-one']);
+    });
+
+    let stdout = '';
+    const stdoutListener = (res: string) => {
+      stdout += res;
+    };
+    proc.stdout.on('data', stdoutListener);
+
+    let stderr = '';
+    const stderrListener = (res: string) => {
+      stderr += res;
+    };
+    proc.stderr.on('data', stderrListener);
+
+    let exited = false;
+    const exitListener = () => {
+      exited = true;
+    };
+    proc.on('exit', exitListener);
+
+    let tries = 60;
+    let ready = false;
+    while (!ready && !exited && tries >= 0) {
+      await new Promise((resolve) => setTimeout(() => resolve(), 1000));
+      const { stdout: result } = await execa('yarn', ['neo-one', 'check', 'server', '--static-neo-one']);
+      try {
+        const lines = result.split('\n').filter((line) => line !== '');
+        ready = JSON.parse(lines[lines.length - 1]);
+      } catch (error) {
+        // Ignore errors
+      }
+      tries -= 1;
+    }
+
+    proc.stdout.removeListener('data', stdoutListener);
+    proc.stdout.removeListener('data', stderrListener);
+    proc.removeListener('exit', exitListener);
+
+    if (!ready) {
+      throw new Error(`Failed to start NEO-ONE server.\n\nSTDOUT:\n${stdout}\n\nSTDERR:\n${stderr}`);
+    }
+  }
+
+  console.log(`$ ${command.join(' ')}`);
+  await execa(command[0], command.slice(1), {
+    stdio: coverage ? 'ignore' : 'inherit',
+  });
 };
 
-const run = async ({ ci }: { readonly ci: boolean }) => {
-  await neoOne(['build', '--reset']);
-  const proc = execa('node', ['-r', 'ts-node/register/transpile-only', './scripts/start.ts', '--ci'], {
-    env: {
-      TS_NODE_PROJECT: 'tsconfig/tsconfig.es2017.cjs.json',
+const run = async ({
+  report,
+  coverage,
+  neoOneCoverage,
+}: {
+  readonly report: boolean;
+  readonly coverage: boolean;
+  readonly neoOneCoverage: boolean;
+}) => {
+  await neoOne(neoOneCoverage);
+  const proc = execa(
+    'node',
+    ['-r', 'ts-node/register/transpile-only', path.resolve(__dirname, 'start.ts'), '--ci'].concat(
+      coverage ? ['--coverage'] : [],
+    ),
+    {
+      env: {
+        TS_NODE_PROJECT: path.resolve(__dirname, '..', 'tsconfig/tsconfig.es2017.cjs.json'),
+      },
     },
-  });
+  );
   mutableCleanup.push(createKillProcess(proc));
 
   proc.stdout.pipe(process.stdout);
@@ -135,10 +211,10 @@ const run = async ({ ci }: { readonly ci: boolean }) => {
   proc.stdout.unpipe(process.stdout);
   proc.stderr.unpipe(process.stderr);
 
-  await runCypress({ ci });
+  await runCypress({ report, coverage });
 };
 
-run({ ci: yargs.argv.ci })
+run({ report: yargs.argv.report, coverage: yargs.argv.coverage, neoOneCoverage: yargs.argv['neo-one-coverage'] })
   .then(() => shutdown(0))
   .catch((error) => {
     console.error(error);

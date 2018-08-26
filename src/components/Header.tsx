@@ -69,15 +69,20 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
   <Wrapper {...props}>
     <StyledToolbar>
       <Toolbar.Content>
-        <Toolbar.Focusable as={LogoLink} to="/">
+        <Toolbar.Focusable data-test="header-logo" as={LogoLink} to="/">
           <Logo />
         </Toolbar.Focusable>
-        <Toolbar.Focusable as={NavigationLink} to="/ico">
+        <Toolbar.Focusable data-test="header-ico" as={NavigationLink} to="/ico">
           ICO
         </Toolbar.Focusable>
       </Toolbar.Content>
       <Toolbar.Content align="end">
-        <Toolbar.Focusable as={Link} href="https://github.com/neo-one-suite/neo-one-playground" target="_blank">
+        <Toolbar.Focusable
+          data-test="header-github"
+          as={Link}
+          href="https://github.com/neo-one-suite/neo-one-playground"
+          target="_blank"
+        >
           GitHub
           <MdOpenInNew />
         </Toolbar.Focusable>

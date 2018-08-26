@@ -1,5 +1,9 @@
-// eslint-disable-next-line
 const webpack = require('@cypress/webpack-preprocessor');
+const { addSeconds, format, parse } = require('date-fns');
+const v4 = require('uuid/v4');
+const fs = require('fs-extra');
+const istanbul = require('istanbul-lib-coverage');
+const path = require('path');
 
 module.exports = (on) => {
   const options = {
@@ -30,4 +34,21 @@ module.exports = (on) => {
     },
   };
   on('file:preprocessor', webpack(options));
+
+  on('task', {
+    addSeconds: ({ value, offset }) => {
+      const dateFormat = 'yyyy/MM/dd hh:mm:ss a';
+      const date = parse(value, dateFormat, new Date());
+      const dateOffset = addSeconds(date, offset);
+      const result = format(dateOffset, dateFormat);
+      return { result, formatted: dateOffset.toLocaleString() };
+    },
+
+    writeCoverage: ({ coverage, coverageDir }) => {
+      fs.ensureDirSync(coverageDir);
+      fs.writeFileSync(path.resolve(coverageDir, `${v4()}.json`), JSON.stringify(istanbul.createCoverageMap(coverage)));
+
+      return null;
+    },
+  });
 };

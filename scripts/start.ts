@@ -11,10 +11,11 @@ import serve from 'webpack-serve';
 import yargs from 'yargs';
 
 yargs.describe('ci', 'Running as part of continuous integration.').default('ci', false);
+yargs.describe('coverage', 'Instrument code for coverage.').default('coverage', false);
 
 const createWebpackConfig = (): webpack.Configuration => ({
   mode: 'development',
-  entry: path.resolve(__dirname, '..', 'src', 'entry.tsx'),
+  entry: ['core-js/modules/es7.symbol.async-iterator', path.resolve(__dirname, '..', 'src', 'entry.tsx')],
   resolve: {
     mainFields: ['browser', 'main'],
     aliasFields: ['browser'],
@@ -66,9 +67,13 @@ const createWebpackConfig = (): webpack.Configuration => ({
             useCache: true,
             useBabel: true,
             babelOptions: {
-              plugins: ['react-hot-loader/babel'],
+              plugins: yargs.argv.ci
+                ? yargs.argv.coverage
+                  ? ['babel-plugin-istanbul']
+                  : []
+                : ['react-hot-loader/babel'],
             },
-            configFileName: 'tsconfig/tsconfig.es2017.esm.json',
+            configFileName: path.resolve(__dirname, '..', 'tsconfig', 'tsconfig.es2017.esm.json'),
           },
         },
       },

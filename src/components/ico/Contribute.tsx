@@ -40,17 +40,17 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
               <Wrapper>
                 <StyledFlex {...props}>
                   <StyledInput
+                    data-test="contribute-input"
                     value={text}
                     placeholder="Send NEO"
                     onChange={(event: React.SyntheticEvent<any>) => onChangeAmount(event.currentTarget.value)}
                   />
-
-                  <StyledBody2>
+                  <StyledBody2 data-test="contibute-amount">
                     = {amount === undefined ? '0' : `${amountPerNEO.times(amount).toFormat()}`} ONE
                   </StyledBody2>
                 </StyledFlex>
                 <Flex justifyContent="flex-end">
-                  <Button disabled={amount === undefined || loading} onClick={send}>
+                  <Button data-test="contribute-button" disabled={amount === undefined || loading} onClick={send}>
                     Send
                   </Button>
                 </Flex>

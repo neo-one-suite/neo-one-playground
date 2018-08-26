@@ -18,7 +18,7 @@ export function Hero() {
   return (
     <StyledBackground>
       <ContentWrapper justifyContent="center">
-        <Header>The One ICO</Header>
+        <Header data-test="hero-text">The One ICO</Header>
       </ContentWrapper>
     </StyledBackground>
   );
