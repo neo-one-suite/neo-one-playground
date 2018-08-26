@@ -47,7 +47,7 @@ const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Ef
       }
     };
 
-    const onError = (error: Error) => {
+    const onError = () => {
       onComplete(false)();
     };
 

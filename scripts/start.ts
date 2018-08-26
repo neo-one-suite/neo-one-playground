@@ -8,6 +8,9 @@ import * as path from 'path';
 import webpack from 'webpack';
 // @ts-ignore
 import serve from 'webpack-serve';
+import yargs from 'yargs';
+
+yargs.describe('ci', 'Running as part of continuous integration.').default('ci', false);
 
 const createWebpackConfig = (): webpack.Configuration => ({
   mode: 'development',
@@ -61,6 +64,10 @@ const createWebpackConfig = (): webpack.Configuration => ({
             useTranspileModule: true,
             transpileOnly: true,
             useCache: true,
+            useBabel: true,
+            babelOptions: {
+              plugins: ['react-hot-loader/babel'],
+            },
             configFileName: 'tsconfig/tsconfig.es2017.esm.json',
           },
         },
@@ -109,7 +116,7 @@ const createServer = async (): Promise<{ readonly app: { readonly stop: (cb: () 
     {},
     {
       config: webpackConfig,
-      open: true,
+      open: !yargs.argv.ci,
       hotClient: true,
       // tslint:disable-next-line no-any
       add: (app: any) => {
@@ -117,6 +124,7 @@ const createServer = async (): Promise<{ readonly app: { readonly stop: (cb: () 
           convert(
             history({
               verbose: false,
+              htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
               index: '/index.html',
             }),
           ),

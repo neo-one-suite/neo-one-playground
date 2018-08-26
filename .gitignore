@@ -58,3 +58,7 @@ flow-coverage/
 
 # Template lock files
 /packages/*/template/yarn.lock
+
+cypress/screenshots
+cypress/videos
+reports

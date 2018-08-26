@@ -53,6 +53,7 @@
     ]
   },
   "exclude": [
+    "cypress",
     "one/contracts/*.ts"
   ]
 }
