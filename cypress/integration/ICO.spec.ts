@@ -39,7 +39,7 @@ describe('ICO', () => {
 
     // Fast forward and contribute
     cy.get('[data-test=neo-one-block-time-button]').click();
-    const fastForward = (offset: number) => {
+    const fastForward = (offset: number, exists = false) => {
       cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]').then(($input) => {
         const value = $input.val();
         cy.task('addSeconds', { value, offset }).then(
@@ -48,11 +48,22 @@ describe('ICO', () => {
             cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
               .clear()
               .type(formatted as string);
-            cy.get('[data-test=neo-one-block-time-dialog-button]').click();
-            cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
-              const lastTimeValue = new Date($value.text()).valueOf();
-              expect(lastTimeValue).to.be.gte(time);
-            });
+            if (exists) {
+              cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
+                cy.get('[data-test=neo-one-block-time-dialog-button]').click();
+                cy.get('[data-test=neo-one-block-time-last-time-value]').should('not.have.text', $value.text());
+                cy.get('[data-test=neo-one-block-time-last-time-value]').then(($currentValue) => {
+                  const lastTimeValue = new Date($currentValue.text()).valueOf();
+                  expect(lastTimeValue).to.be.gte(time);
+                });
+              });
+            } else {
+              cy.get('[data-test=neo-one-block-time-dialog-button]').click();
+              cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
+                const lastTimeValue = new Date($value.text()).valueOf();
+                expect(lastTimeValue).to.be.gte(time);
+              });
+            }
           },
         );
       });
@@ -115,7 +126,7 @@ describe('ICO', () => {
 
     // Fast forward past end
     cy.get('[data-test=neo-one-block-time-button]').click();
-    fastForward(24 * 60 * 60);
+    fastForward(24 * 60 * 60, true);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
     cy.get('[data-test=info-countdown-value]').should('have.text', 'Ended');
     cy.get('[data-test=contribute-button]').click();
