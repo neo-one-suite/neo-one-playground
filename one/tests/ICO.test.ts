@@ -8,7 +8,6 @@ describe('ICO', () => {
   test('mintTokens + transfer', async () => {
     await withContracts(async ({ client, developerClient, ico, masterAccountID, networkName }) => {
       await developerClient.fastForwardOffset(60 * 60);
-      await developerClient.runConsensusNow();
 
       const toWallet = await client.providers.memory.keystore.addAccount({
         network: networkName,
