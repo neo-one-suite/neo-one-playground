@@ -41,7 +41,7 @@
     "jest": "cross-env NODE_OPTIONS=\"--max-old-space-size=3072\" jest",
     "test": "yarn run jest",
     "test:cypress": "yarn run ts-node ./scripts/runCypress.ts",
-    "tsc": "tsc && tsc -p contracts",
+    "tsc": "tsc && tsc -p one/contracts",
     "ts-node": "cross-env NODE_OPTIONS=\"--max-old-space-size=3072\" TS_NODE_PROJECT=tsconfig/tsconfig.es2017.cjs.json node -r ts-node/register/transpile-only",
     "prettier": "prettier --config .prettierrc",
     "nit:contracts": "yarn run prettier --list-different \"one/contracts/**/*.{ts,tsx}\"",
