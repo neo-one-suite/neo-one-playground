@@ -2,20 +2,25 @@ import { createPrivateKey, Hash256 } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
 import { withContracts } from '../generated/test';
 
+jest.setTimeout(30000);
+
 describe('ICO', () => {
   test('mintTokens + transfer', async () => {
     await withContracts(async ({ client, developerClient, ico, masterAccountID, networkName }) => {
+      await developerClient.fastForwardOffset(60 * 60);
+      await developerClient.runConsensusNow();
+
       const toWallet = await client.providers.memory.keystore.addAccount({
         network: networkName,
         privateKey: createPrivateKey(),
       });
+
       const [
         name,
         symbol,
         decimals,
         amountPerNEO,
         owner,
-        startTimeSeconds,
         icoDurationSeconds,
         initialTotalSupply,
         initialRemaining,
@@ -26,7 +31,6 @@ describe('ICO', () => {
         ico.decimals(),
         ico.amountPerNEO(),
         ico.owner(),
-        ico.startTimeSeconds(),
         ico.icoDurationSeconds(),
         ico.totalSupply(),
         ico.remaining(),
@@ -35,10 +39,9 @@ describe('ICO', () => {
       expect(name).toEqual('One');
       expect(symbol).toEqual('ONE');
       expect(decimals.toString()).toEqual('8');
-      expect(amountPerNEO.toString()).toEqual('10');
+      expect(amountPerNEO.toString()).toEqual('100000');
       expect(owner).toEqual(masterAccountID.address);
-      expect(startTimeSeconds.toString()).toEqual('1534108415');
-      expect(icoDurationSeconds.toString()).toEqual('157700000');
+      expect(icoDurationSeconds.toString()).toEqual('86400');
       expect(initialTotalSupply.toString()).toEqual('0');
       expect(initialRemaining.toString()).toEqual(new BigNumber(10_000_000_000).toString());
       expect(initialBalance.toString()).toEqual('0');
@@ -52,8 +55,7 @@ describe('ICO', () => {
           },
         ],
       });
-
-      const [mintReceipt] = await Promise.all([mintResult.confirmed(), developerClient.runConsensusNow()]);
+      const mintReceipt = await mintResult.confirmed();
       if (mintReceipt.result.state === 'FAULT') {
         throw new Error(mintReceipt.result.message);
       }
@@ -68,7 +70,7 @@ describe('ICO', () => {
       }
       expect(event.parameters.from).toBeUndefined();
       expect(event.parameters.to).toEqual(masterAccountID.address);
-      expect(event.parameters.amount.toString()).toEqual('100');
+      expect(event.parameters.amount.toString()).toEqual('1000000');
 
       const [totalSupply, remaining, balance, toBalance] = await Promise.all([
         ico.totalSupply(),
@@ -76,13 +78,13 @@ describe('ICO', () => {
         ico.balanceOf(masterAccountID.address),
         ico.balanceOf(toWallet.account.id.address),
       ]);
-      expect(totalSupply.toString()).toEqual('100');
-      expect(remaining.toString()).toEqual(new BigNumber(9_999_999_900).toString());
-      expect(balance.toString()).toEqual('100');
+      expect(totalSupply.toString()).toEqual('1000000');
+      expect(remaining.toString()).toEqual(new BigNumber(9_999_000_000).toString());
+      expect(balance.toString()).toEqual('1000000');
       expect(toBalance.toString()).toEqual('0');
 
       const result = await ico.transfer(masterAccountID.address, toWallet.account.id.address, new BigNumber('25'));
-      const [receipt] = await Promise.all([result.confirmed({ timeoutMS: 2500 }), developerClient.runConsensusNow()]);
+      const receipt = await result.confirmed({ timeoutMS: 2500 });
       if (receipt.result.state === 'FAULT') {
         throw new Error(receipt.result.message);
       }
@@ -92,8 +94,8 @@ describe('ICO', () => {
         ico.balanceOf(masterAccountID.address),
         ico.balanceOf(toWallet.account.id.address),
       ]);
-      expect(totalSupplyAfter.toString()).toEqual('100');
-      expect(balanceAfter.toString()).toEqual('75');
+      expect(totalSupplyAfter.toString()).toEqual('1000000');
+      expect(balanceAfter.toString()).toEqual('999975');
       expect(toBalanceAfter.toString()).toEqual('25');
     });
   });
