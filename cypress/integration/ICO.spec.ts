@@ -44,18 +44,14 @@ describe('ICO', () => {
         const value = $input.val();
         cy.task('addSeconds', { value, offset }).then(
           // tslint:disable-next-line no-any
-          ({ formatted, localeFormatted, localeFormattedPlusOne }: any) => {
+          ({ formatted, time }: any) => {
             cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
               .clear()
               .type(formatted as string);
             cy.get('[data-test=neo-one-block-time-dialog-button]').click();
             cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
-              const lastTimeValue = $value.text();
-              if (lastTimeValue === localeFormatted) {
-                expect(lastTimeValue).to.equal(localeFormatted);
-              } else {
-                expect(lastTimeValue).to.equal(localeFormattedPlusOne);
-              }
+              const lastTimeValue = new Date($value.text()).valueOf();
+              expect(lastTimeValue).to.be.gte(time);
             });
           },
         );

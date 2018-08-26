@@ -43,8 +43,7 @@ module.exports = (on) => {
       const formatted = format(dateOffset, dateFormat);
       return {
         formatted,
-        localeFormatted: dateOffset.toLocaleString(),
-        localeFormattedPlusOne: addSeconds(dateOffset, 1).toLocaleString(),
+        time: dateOffset.valueOf(),
       };
     },
 
