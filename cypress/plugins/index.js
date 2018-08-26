@@ -40,8 +40,12 @@ module.exports = (on) => {
       const dateFormat = 'yyyy/MM/dd hh:mm:ss a';
       const date = parse(value, dateFormat, new Date());
       const dateOffset = addSeconds(date, offset);
-      const result = format(dateOffset, dateFormat);
-      return { result, formatted: dateOffset.toLocaleString() };
+      const formatted = format(dateOffset, dateFormat);
+      return {
+        formatted,
+        localeFormatted: dateOffset.toLocaleString(),
+        localeFormattedPlusOne: addSeconds(dateOffset, 1).toLocaleString(),
+      };
     },
 
     writeCoverage: ({ coverage, coverageDir }) => {
