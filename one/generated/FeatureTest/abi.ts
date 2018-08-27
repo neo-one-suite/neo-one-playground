@@ -1,4 +1,4 @@
-/* @hash 725cc84cbd58eb8139787d42c7a81e77 */
+/* @hash ac3883f30aa3c7999c0fa24e220f258e */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -20,7 +20,8 @@ export const featureTestABI: ABI = {
       name: 'stackTrace',
       parameters: [],
       returnType: {
-        type: 'Buffer',
+        optional: false,
+        type: 'Void',
       },
       verify: false,
     },
@@ -29,7 +30,8 @@ export const featureTestABI: ABI = {
       name: 'consoleLog',
       parameters: [],
       returnType: {
-        type: 'Buffer',
+        optional: false,
+        type: 'Void',
       },
       verify: false,
     },
@@ -38,7 +40,8 @@ export const featureTestABI: ABI = {
       name: 'typeError',
       parameters: [],
       returnType: {
-        type: 'Buffer',
+        optional: false,
+        type: 'Void',
       },
       verify: false,
     },

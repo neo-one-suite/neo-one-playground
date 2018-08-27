@@ -28,7 +28,6 @@ export class FeatureTest implements SmartContract {
     console.log(10);
     console.log([1, 2, 3, 4]);
     console.log(Buffer.from('10ab', 'hex'));
-    console.log(Address.from('AXNajBTQLxWHwc9sKyXcc4UdbJvp3arYDG'));
     console.log({
       evenNestedOnes: [
         {
@@ -49,7 +48,7 @@ export class FeatureTest implements SmartContract {
     console.log(
       `Here's an object that overrides toString: ${{
         toString() {
-          return 'Look at me!';
+          return "Look at me I'm an object!";
         },
       }}`,
     );

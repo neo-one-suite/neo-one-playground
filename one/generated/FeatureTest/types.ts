@@ -1,9 +1,8 @@
-/* @hash 40b9016004849cbe1309cf62f34c84e5 */
+/* @hash f0ebbd6322170c26c2fd53bb3b4dda49 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
-  BufferString,
   InvokeReceipt,
   InvokeTransactionOptions,
   ReadSmartContract,
@@ -16,7 +15,7 @@ export type FeatureTestEvent = never;
 export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadSmartContract> {
   readonly consoleLog: (
     options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<BufferString, FeatureTestEvent>>>;
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
   readonly deploy: (
     owner?: AddressString,
     options?: InvokeTransactionOptions,
@@ -24,10 +23,10 @@ export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadS
   readonly owner: () => Promise<AddressString>;
   readonly stackTrace: (
     options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<BufferString, FeatureTestEvent>>>;
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
   readonly typeError: (
     options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<BufferString, FeatureTestEvent>>>;
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
 }
 
 export interface FeatureTestReadSmartContract extends ReadSmartContract<FeatureTestEvent> {
