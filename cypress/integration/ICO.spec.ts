@@ -21,7 +21,7 @@ describe('ICO', () => {
       if (text === '1 hour') {
         expect(text).to.equal('1 hour');
       } else {
-        expect(text).to.equal('59 minutes');
+        expect(parseInt(text.slice(0, 2), 10)).to.be.gte(55);
       }
     });
     cy.get('[data-test=info-neo-contributed]').should('have.text', 'NEO Contributed:');
