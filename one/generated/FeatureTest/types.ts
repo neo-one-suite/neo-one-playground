@@ -11,7 +11,7 @@ import {
   TransactionResult,
 } from '@neo-one/client';
 
-export type FeatureTestEvent = {};
+export type FeatureTestEvent = never;
 
 export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadSmartContract> {
   readonly consoleLog: (
