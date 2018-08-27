@@ -20,6 +20,7 @@ export function Debugging() {
           {({ featureTest }) => (
             <Grid gap={16} gridAutoFlow="column" justifyItems="start" justifyContent="start">
               <Button
+                data-test="debugging-error-trace-button"
                 onClick={() => {
                   featureTest
                     .stackTrace()
@@ -32,6 +33,7 @@ export function Debugging() {
                 Error Trace
               </Button>
               <Button
+                data-test="debugging-console-log-button"
                 onClick={() => {
                   featureTest
                     .consoleLog()
@@ -44,6 +46,7 @@ export function Debugging() {
                 console.log
               </Button>
               <Button
+                data-test="debugging-type-error-button"
                 onClick={() => {
                   featureTest
                     .typeError()

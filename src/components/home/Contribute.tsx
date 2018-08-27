@@ -15,7 +15,7 @@ export function Contribute() {
         <div>
           We're always looking for more contributors. One great way to help is to expand the Playground with more
           features and more demo applications. Take a look at the open issues on{' '}
-          <StyledLink href="https://neo-one.io/docs/en/contributing.html" target="_blank">
+          <StyledLink href="https://github.com/neo-one-suite/neo-one-playground/issues" target="_blank">
             GitHub
           </StyledLink>{' '}
           for more ideas.
