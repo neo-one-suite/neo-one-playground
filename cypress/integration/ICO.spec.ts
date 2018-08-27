@@ -16,7 +16,14 @@ describe('ICO', () => {
     cy.get('[data-test=info-address-value]').should('have.text', ONE_ADDRESS);
     cy.get('[data-test=neo-one-reset-button]').click();
     cy.get('[data-test=info-countdown]').should('have.text', 'Countdown:');
-    cy.get('[data-test=info-countdown-value]').should('have.text', '1 hour');
+    cy.get('[data-test=info-countdown-value]').then(($element) => {
+      const text = $element.text();
+      if (text === '1 hour') {
+        expect(text).to.equal('1 hour');
+      } else {
+        expect(text).to.equal('59 minutes');
+      }
+    });
     cy.get('[data-test=info-neo-contributed]').should('have.text', 'NEO Contributed:');
     cy.get('[data-test=info-neo-contributed-value]').should('have.text', '0');
     cy.get('[data-test=info-remaining]').should('have.text', 'Remaining:');
@@ -70,7 +77,14 @@ describe('ICO', () => {
     };
     fastForward(3600);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
-    cy.get('[data-test=info-countdown-value]').should('have.text', '1 day');
+    cy.get('[data-test=info-countdown-value]').then(($element) => {
+      const text = $element.text();
+      if (text === '1 day') {
+        expect(text).to.equal('1 day');
+      } else {
+        expect(text).to.equal('24 hours');
+      }
+    });
     cy.get('[data-test=contribute-button]').click();
     cy.get('[data-test=neo-one-transaction-toast-title]').should('have.text', 'Transaction Confirmed');
     cy.get('[data-test=neo-one-transaction-toast-message]').should('have.text', 'View on NEO Tracker');
