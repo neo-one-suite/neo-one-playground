@@ -16,7 +16,7 @@ describe('ICO', () => {
     cy.get('[data-test=info-address-value]').should('have.text', ONE_ADDRESS);
     cy.get('[data-test=neo-one-reset-button]').click();
     cy.get('[data-test=neo-one-reset-button]').should('have.attr', 'disabled');
-    cy.get('[data-test=neo-one-reset-button]').should('not.have.attr', 'disabled');
+    cy.get('[data-test=neo-one-reset-button]', { timeout: 10000 }).should('not.have.attr', 'disabled');
     cy.get('[data-test=info-countdown]').should('have.text', 'Countdown:');
     cy.get('[data-test=info-countdown-value]').then(($element) => {
       const text = $element.text();
