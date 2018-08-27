@@ -21,7 +21,7 @@ export function Contribute() {
           for more ideas.
         </div>
         <div>
-          Want to contribute to NEO•ONE core? Head on over to the{' '}
+          Want to contribute to NEO•ONE? Head on over to the{' '}
           <StyledLink href="https://neo-one.io/docs/en/contributing.html" target="_blank">
             Contributing
           </StyledLink>{' '}
