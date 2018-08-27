@@ -15,6 +15,8 @@ describe('ICO', () => {
     cy.get('[data-test=info-address]').should('have.text', 'ONE Address:');
     cy.get('[data-test=info-address-value]').should('have.text', ONE_ADDRESS);
     cy.get('[data-test=neo-one-reset-button]').click();
+    cy.get('[data-test=neo-one-reset-button]').should('be.disabled');
+    cy.get('[data-test=neo-one-reset-button]').should('not.be.disabled');
     cy.get('[data-test=info-countdown]').should('have.text', 'Countdown:');
     cy.get('[data-test=info-countdown-value]').then(($element) => {
       const text = $element.text();
