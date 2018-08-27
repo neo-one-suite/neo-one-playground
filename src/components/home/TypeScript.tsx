@@ -7,8 +7,8 @@ export function TypeScript() {
     <AssetSectionGrid title="TypeScript" bg="darkLight" asset="video" reverse>
       <div>
         NEO•ONE's first class TypeScript integration means that smart contracts are strongly typed and will never leave
-        you guessing at what's supported. Client APIs for interacting with the smart contract are generated
-        automatically, including helper components for integrating with a React application.
+        you guessing at what's supported. Client APIs for interacting with smart contracts are generated automatically,
+        including helper components for integrating with a React application.
       </div>
       <div>
         <TryItOut /> Make a change to the argument or return types of a public method on one of the smart contracts,

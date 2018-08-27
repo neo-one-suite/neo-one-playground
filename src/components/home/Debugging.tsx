@@ -14,7 +14,7 @@ export function Debugging() {
           and in the browser. Run into an issue with the compiler? The error will show the exact line that caused it.
         </Subheading>
         <Subheading>
-          <TryItOut /> Open up your browser console and click the buttons below.
+          <TryItOut /> Open your browser console and press the buttons below.
         </Subheading>
         <WithContracts>
           {({ featureTest }) => (

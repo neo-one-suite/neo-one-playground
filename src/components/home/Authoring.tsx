@@ -15,7 +15,7 @@ export function Authoring() {
       </div>
       <Body1>
         Verify the TypeScript plugin is enabled to see compiler diagnostics. In VSCode, click the TypeScript version
-        number on the lower right hand side of the screen and set it to use the workspace version of TypeScript.
+        number on the lower right hand side of the screen and set it to the workspace version of TypeScript.
       </Body1>
     </AssetSectionGrid>
   );

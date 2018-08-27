@@ -51,7 +51,7 @@ export const Footer = (props: ComponentProps<typeof Wrapper>) => (
     <ContentWrapper column>
       <Icons as={List}>
         <li>
-          <Link href="https://github.com/neo-one-suite/neo-one-ico" target="_blank">
+          <Link href="https://github.com/neo-one-suite/neo-one-playground" target="_blank">
             <GoMarkGithub />
           </Link>
         </li>
