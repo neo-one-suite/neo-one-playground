@@ -6,7 +6,5 @@ export const Body2 = styled(Base)`
   font-size: 0.875rem;
   line-height: 1.71428em;
   text-align: left;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  margin-right: 0;
+  margin: 0;
 `;

@@ -7,6 +7,7 @@ export const SectionContentWrapper = styled(Flex)`
     dark: prop('theme.black'),
     light: prop('theme.gray0'),
     darkLight: prop('theme.gray2'),
+    gray5: prop('theme.gray5'),
   })};
   width: 100%;
   justify-content: center;

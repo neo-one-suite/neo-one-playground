@@ -5,7 +5,7 @@ import { Headline, SectionContentWrapper, Subheading } from '../elements';
 import { ComponentProps } from '../types';
 
 interface Props {
-  readonly bg: 'dark' | 'light' | 'darkLight';
+  readonly bg: 'dark' | 'light' | 'darkLight' | 'gray5';
   readonly title: string;
   readonly children: React.ReactNode;
 }
@@ -14,6 +14,7 @@ const StyledHeading = styled(Headline)`
   ${prop('theme.fonts.axiformaMedium')};
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
+    gray5: prop('theme.primary'),
     dark: prop('theme.primary'),
     light: prop('theme.primaryDark'),
     darkLight: prop('theme.primaryDark'),
@@ -23,7 +24,13 @@ const StyledHeading = styled(Headline)`
 
 const GridItem = Grid.Item.as(Subheading).as('div');
 const StyledItem = styled(GridItem)`
-  color: ${switchProp('bg', { dark: prop('theme.gray1'), light: prop('theme.black'), darkLight: prop('theme.black') })};
+  /* stylelint-disable-next-line */
+  color: ${switchProp('bg', {
+    gray5: prop('theme.gray1'),
+    dark: prop('theme.gray1'),
+    light: prop('theme.black'),
+    darkLight: prop('theme.black'),
+  })};
   margin: 0;
 `;
 
