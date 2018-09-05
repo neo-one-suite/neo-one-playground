@@ -9,8 +9,8 @@ import {
   Hash256,
   Integer,
   MapStorage,
-  SmartContract,
   receive,
+  SmartContract,
 } from '@neo-one/smart-contract';
 
 const notifyTransfer = createEventNotifier<Address | undefined, Address | undefined, Fixed<8>>(

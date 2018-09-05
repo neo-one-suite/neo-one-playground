@@ -1,4 +1,4 @@
-const ONE_ADDRESS = 'ASiVQMvpU2uara8o78KJKeH1A45p1wALMy';
+const ONE_ADDRESS = 'ASYC75k6YFw6PMrNauAjZupzRiQz41irwW';
 
 describe('ICO', () => {
   it('participation', () => {
@@ -40,10 +40,7 @@ describe('ICO', () => {
     cy.get('[data-test=contribute-input]').should('have.value', '10');
     cy.get('[data-test=contibute-amount]').should('have.text', '= 1,000,000 ONE');
     cy.get('[data-test=neo-one-error-toast-title]').should('have.text', 'Error. See console for more info.');
-    cy.get('[data-test=neo-one-error-toast-message]').should(
-      'have.text',
-      'Relay transaction failed: Verification did not succeed.:-110',
-    );
+    cy.get('[data-test=neo-one-error-toast-message]').should('have.text', 'Verification did not succeed.');
     cy.get('[data-test=neo-one-toast-close-button]').click();
 
     // Fast forward and contribute
@@ -147,10 +144,7 @@ describe('ICO', () => {
     cy.get('[data-test=info-countdown-value]').should('have.text', 'Ended');
     cy.get('[data-test=contribute-button]').click();
     cy.get('[data-test=neo-one-error-toast-title]').should('have.text', 'Error. See console for more info.');
-    cy.get('[data-test=neo-one-error-toast-message]').should(
-      'have.text',
-      'Relay transaction failed: Verification did not succeed.:-110',
-    );
+    cy.get('[data-test=neo-one-error-toast-message]').should('have.text', 'Verification did not succeed.');
     cy.get('[data-test=neo-one-toast-close-button]').click();
 
     // Close toolbar. We did it!

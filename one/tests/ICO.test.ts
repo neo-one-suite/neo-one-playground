@@ -46,9 +46,8 @@ describe('ICO', () => {
       expect(initialBalance.toString()).toEqual('0');
 
       const mintResult = await ico.mintTokens({
-        transfers: [
+        sendTo: [
           {
-            to: ico.definition.networks[networkName].address,
             amount: new BigNumber(10),
             asset: Hash256.NEO,
           },
