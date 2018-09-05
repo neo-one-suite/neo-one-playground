@@ -60,11 +60,9 @@ const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Ef
 
     ico
       .mintTokens({
-        transfers: [
+        sendTo: [
           {
-            to: ico.definition.networks[from.id.network].address,
             asset: Hash256.NEO,
-            // tslint:disable-next-line no-non-null-assertion
             amount,
           },
         ],

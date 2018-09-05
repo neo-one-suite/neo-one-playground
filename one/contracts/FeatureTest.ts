@@ -1,17 +1,17 @@
 // tslint:disable no-console no-null-keyword
 import { Address, Deploy, SmartContract } from '@neo-one/smart-contract';
 
-export class FeatureTest implements SmartContract {
+export class FeatureTest extends SmartContract {
   public readonly properties = {
     codeVersion: '1.0',
     author: 'dicarlo2',
     email: 'alex.dicarlo@neotracker.io',
     description: 'NEO•ONE Feature Test',
-    payable: true,
   };
 
   public constructor(public readonly owner: Address = Deploy.senderAddress) {
-    if (!Address.verifySender(owner)) {
+    super();
+    if (!Address.isCaller(owner)) {
       throw new Error('Sender was not the owner.');
     }
   }
@@ -28,6 +28,13 @@ export class FeatureTest implements SmartContract {
     console.log(10);
     console.log([1, 2, 3, 4]);
     console.log(Buffer.from('10ab', 'hex'));
+    console.log(
+      new Map()
+        .set('a', 1)
+        .set('b', 2)
+        .set('c', 3),
+    );
+    console.log(new Set([1, 1, 2, 3, 4]));
     console.log({
       evenNestedOnes: [
         {
@@ -71,7 +78,7 @@ export class FeatureTest implements SmartContract {
       function call() {
         const me = () => {
           function maybe() {
-            throw new Error('Nah');
+            throw new Error('Bar');
           }
 
           maybe();

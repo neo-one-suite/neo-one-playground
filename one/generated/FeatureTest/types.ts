@@ -1,12 +1,15 @@
-/* @hash f0ebbd6322170c26c2fd53bb3b4dda49 */
+/* @hash e752792ae81a99ebd2a2da1e91c332b8 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Hash256String,
+  InvocationTransaction,
   InvokeReceipt,
-  InvokeTransactionOptions,
+  InvokeSendTransactionOptions,
   ReadSmartContract,
   SmartContract,
+  TransactionOptions,
   TransactionResult,
 } from '@neo-one/client';
 
@@ -14,19 +17,23 @@ export type FeatureTestEvent = never;
 
 export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadSmartContract> {
   readonly consoleLog: (
-    options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
+    options?: TransactionOptions,
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>>;
   readonly deploy: (
     owner?: AddressString,
-    options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>>>;
+    options?: TransactionOptions,
+  ) => Promise<TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>, InvocationTransaction>>;
   readonly owner: () => Promise<AddressString>;
+  readonly refundAssets: (
+    transactionHash: Hash256String,
+    options?: InvokeSendTransactionOptions,
+  ) => Promise<TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>, InvocationTransaction>>;
   readonly stackTrace: (
-    options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
+    options?: TransactionOptions,
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>>;
   readonly typeError: (
-    options?: InvokeTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>>>;
+    options?: TransactionOptions,
+  ) => Promise<TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>>;
 }
 
 export interface FeatureTestReadSmartContract extends ReadSmartContract<FeatureTestEvent> {

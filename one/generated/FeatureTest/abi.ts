@@ -1,4 +1,4 @@
-/* @hash ac3883f30aa3c7999c0fa24e220f258e */
+/* @hash d1df3baa370819fd6f381be5c7b74f28 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -9,44 +9,62 @@ export const featureTestABI: ABI = {
     {
       constant: true,
       name: 'owner',
+      parameters: [],
       returnType: {
         optional: false,
         type: 'Address',
       },
-      verify: false,
     },
     {
+      claim: false,
       constant: false,
       name: 'stackTrace',
       parameters: [],
+      receive: false,
       returnType: {
         optional: false,
         type: 'Void',
       },
-      verify: false,
+      send: false,
     },
     {
+      claim: false,
       constant: false,
       name: 'consoleLog',
       parameters: [],
+      receive: false,
       returnType: {
         optional: false,
         type: 'Void',
       },
-      verify: false,
+      send: false,
     },
     {
+      claim: false,
       constant: false,
       name: 'typeError',
       parameters: [],
+      receive: false,
       returnType: {
         optional: false,
         type: 'Void',
       },
-      verify: false,
+      send: false,
     },
     {
-      constant: false,
+      name: 'refundAssets',
+      parameters: [
+        {
+          name: 'transactionHash',
+          type: 'Hash256',
+        },
+      ],
+      returnType: {
+        type: 'Boolean',
+      },
+      send: true,
+    },
+    {
       name: 'deploy',
       parameters: [
         {
@@ -61,7 +79,6 @@ export const featureTestABI: ABI = {
       returnType: {
         type: 'Boolean',
       },
-      verify: false,
     },
   ],
 };
