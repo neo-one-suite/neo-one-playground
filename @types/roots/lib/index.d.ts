@@ -2,6 +2,10 @@ declare module '*.svg' {
   export default '';
 }
 
+declare module '*.mp3' {
+  export default '';
+}
+
 declare module '*.woff' {
   export default '';
 }
