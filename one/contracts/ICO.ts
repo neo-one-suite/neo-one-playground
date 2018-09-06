@@ -47,7 +47,7 @@ export class ICO extends SmartContract {
   public readonly name = 'One';
   public readonly symbol = 'ONE';
   public readonly decimals = 8;
-  public readonly amountPerNEO = 100000;
+  public readonly amountPerNEO = 100_000;
   private readonly balances = MapStorage.for<Address, Fixed<8>>();
   private readonly approvedTransfers = MapStorage.for<[Address, Address], Fixed<8>>();
   private mutableRemaining: Fixed<8> = 10_000_000_000_00000000;
