@@ -63,10 +63,10 @@
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "2.0.1",
-    "@neo-one/cli": "1.0.0-alpha.128",
-    "@neo-one/smart-contract-compiler": "1.0.0-alpha.58",
-    "@neo-one/smart-contract-test": "1.0.0-alpha.59",
-    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.15",
+    "@neo-one/cli": "1.0.0-alpha.129",
+    "@neo-one/smart-contract-compiler": "1.0.0-alpha.59",
+    "@neo-one/smart-contract-test": "1.0.0-alpha.60",
+    "@neo-one/smart-contract-typescript-plugin": "1.0.0-alpha.16",
     "@types/jest": "23.3.1",
     "@types/react": "16.4.13",
     "@types/react-dom": "16.0.7",
@@ -122,9 +122,9 @@
     "yargs": "^12.0.1"
   },
   "dependencies": {
-    "@neo-one/client": "1.0.0-alpha.99",
-    "@neo-one/react": "1.0.0-alpha.15",
-    "@neo-one/smart-contract": "1.0.0-alpha.27",
+    "@neo-one/client": "1.0.0-alpha.100",
+    "@neo-one/react": "1.0.0-alpha.16",
+    "@neo-one/smart-contract": "1.0.0-alpha.28",
     "@reactivex/ix-es2015-cjs": "2.3.5",
     "bignumber.js": "7.2.1",
     "constate": "^0.8.0",
