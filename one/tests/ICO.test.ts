@@ -45,7 +45,7 @@ describe('ICO', () => {
       expect(initialRemaining.toString()).toEqual(new BigNumber(10_000_000_000).toString());
       expect(initialBalance.toString()).toEqual('0');
 
-      const mintResult = await ico.mintTokens({
+      const mintReceipt = await ico.mintTokens.confirmed({
         sendTo: [
           {
             amount: new BigNumber(10),
@@ -53,7 +53,6 @@ describe('ICO', () => {
           },
         ],
       });
-      const mintReceipt = await mintResult.confirmed();
       if (mintReceipt.result.state === 'FAULT') {
         throw new Error(mintReceipt.result.message);
       }
@@ -81,8 +80,11 @@ describe('ICO', () => {
       expect(balance.toString()).toEqual('1000000');
       expect(toBalance.toString()).toEqual('0');
 
-      const result = await ico.transfer(masterAccountID.address, toWallet.account.id.address, new BigNumber('25'));
-      const receipt = await result.confirmed({ timeoutMS: 2500 });
+      const receipt = await ico.transfer.confirmed(
+        masterAccountID.address,
+        toWallet.account.id.address,
+        new BigNumber('25'),
+      );
       if (receipt.result.state === 'FAULT') {
         throw new Error(receipt.result.message);
       }

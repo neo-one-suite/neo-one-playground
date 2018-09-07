@@ -1,9 +1,10 @@
-/* @hash 0c7329ca61ef9f37c113d098965ba27e */
+/* @hash b24109f792f68ce07991542742ff0452 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
   Event,
+  GetOptions,
   Hash256String,
   InvocationTransaction,
   InvokeReceipt,
@@ -40,59 +41,102 @@ export interface ICORevokeSendTransferEvent extends Event<'revokeSendTransfer', 
 
 export interface ICOSmartContract extends SmartContract<ICOReadSmartContract> {
   readonly amountPerNEO: () => Promise<BigNumber>;
-  readonly approveReceiveTransfer: (
-    from: AddressString,
-    amount: BigNumber,
-    asset: AddressString,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
-  readonly approveSendTransfer: (
-    from: AddressString,
-    to: AddressString,
-    amount: BigNumber,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly approveReceiveTransfer: {
+    (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      from: AddressString,
+      amount: BigNumber,
+      asset: AddressString,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
+  readonly approveSendTransfer: {
+    (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      from: AddressString,
+      to: AddressString,
+      amount: BigNumber,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
   readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
   readonly decimals: () => Promise<BigNumber>;
-  readonly deploy: (
-    owner?: AddressString,
-    startTimeSeconds?: BigNumber,
-    icoDurationSeconds?: BigNumber,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly deploy: {
+    (
+      owner?: AddressString,
+      startTimeSeconds?: BigNumber,
+      icoDurationSeconds?: BigNumber,
+      options?: TransactionOptions,
+    ): Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+    readonly confirmed: (
+      owner?: AddressString,
+      startTimeSeconds?: BigNumber,
+      icoDurationSeconds?: BigNumber,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly icoDurationSeconds: () => Promise<BigNumber>;
-  readonly mintTokens: (
-    options?: InvokeReceiveTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly mintTokens: {
+    (options?: InvokeReceiveTransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      options?: InvokeReceiveTransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly name: () => Promise<string>;
-  readonly onRevokeSendTransfer: (
-    from: AddressString,
-    amount: BigNumber,
-    asset: AddressString,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<undefined, ICOEvent>, InvocationTransaction>>;
+  readonly onRevokeSendTransfer: {
+    (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<undefined, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      from: AddressString,
+      amount: BigNumber,
+      asset: AddressString,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<undefined, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly owner: () => Promise<AddressString>;
-  readonly refundAssets: (
-    transactionHash: Hash256String,
-    options?: InvokeSendTransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly refundAssets: {
+    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      transactionHash: Hash256String,
+      options?: InvokeSendTransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly remaining: () => Promise<BigNumber>;
-  readonly revokeSendTransfer: (
-    from: AddressString,
-    to: AddressString,
-    amount: BigNumber,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly revokeSendTransfer: {
+    (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      from: AddressString,
+      to: AddressString,
+      amount: BigNumber,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
   readonly startTimeSeconds: () => Promise<BigNumber>;
   readonly symbol: () => Promise<string>;
   readonly totalSupply: () => Promise<BigNumber>;
-  readonly transfer: (
-    from: AddressString,
-    to: AddressString,
-    amount: BigNumber,
-    options?: TransactionOptions,
-  ) => Promise<TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>>;
+  readonly transfer: {
+    (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, ICOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: (
+      from: AddressString,
+      to: AddressString,
+      amount: BigNumber,
+      options?: TransactionOptions & GetOptions,
+    ) => Promise<InvokeReceipt<boolean, ICOEvent> & { readonly transaction: InvocationTransaction }>;
+  };
 }
 
 export interface ICOReadSmartContract extends ReadSmartContract<ICOEvent> {
