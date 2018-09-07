@@ -1,4 +1,4 @@
-const ONE_ADDRESS = 'ASYC75k6YFw6PMrNauAjZupzRiQz41irwW';
+const ONE_ADDRESS = 'AZZ6U62JTJU26HCjp3bACCZRs2PMT3mdLK';
 
 describe('ICO', () => {
   it('participation', () => {

@@ -418,21 +418,21 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@neo-one/boa/-/boa-0.0.2.tgz#a9dac47fd7f77b70bc7b96d968fc48b84cc56bd0"
 
-"@neo-one/cli@1.0.0-alpha.127":
-  version "1.0.0-alpha.127"
-  resolved "https://registry.yarnpkg.com/@neo-one/cli/-/cli-1.0.0-alpha.127.tgz#029abfcc06e55b887f18aa8ff1265c8fb8d0073f"
+"@neo-one/cli@1.0.0-alpha.128":
+  version "1.0.0-alpha.128"
+  resolved "https://registry.yarnpkg.com/@neo-one/cli/-/cli-1.0.0-alpha.128.tgz#03a3280f0c788d557e8234e3b303b904a43402a8"
   dependencies:
     "@grpc/surface" "^0.1.0"
     "@neo-one/monitor" "^1.0.0-alpha.59"
-    "@neo-one/server" "^1.0.0-alpha.125"
+    "@neo-one/server" "^1.0.0-alpha.126"
     "@neo-one/server-client" "^1.0.0-alpha.76"
     "@neo-one/server-plugin" "^1.0.0-alpha.73"
     "@neo-one/server-plugin-compiler" "^1.0.0-alpha.100"
     "@neo-one/server-plugin-neotracker" "^1.0.0-alpha.17"
     "@neo-one/server-plugin-network" "^1.0.0-alpha.119"
-    "@neo-one/server-plugin-project" "^1.0.0-alpha.18"
-    "@neo-one/server-plugin-simulation" "^1.0.0-alpha.125"
-    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.125"
+    "@neo-one/server-plugin-project" "^1.0.0-alpha.19"
+    "@neo-one/server-plugin-simulation" "^1.0.0-alpha.126"
+    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.126"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/cli-table2" "^0.2.1"
@@ -885,9 +885,9 @@
     tslib "^1.9.3"
     vorpal "^1.12.0"
 
-"@neo-one/server-plugin-project@^1.0.0-alpha.18":
-  version "1.0.0-alpha.18"
-  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-project/-/server-plugin-project-1.0.0-alpha.18.tgz#404fd9efcfbfaa527b5984591c06fc99f4dc1cbd"
+"@neo-one/server-plugin-project@^1.0.0-alpha.19":
+  version "1.0.0-alpha.19"
+  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-project/-/server-plugin-project-1.0.0-alpha.19.tgz#d6ad0d0332dcc2d15cb401a4514a03457f2135c5"
   dependencies:
     "@neo-one/client" "^1.0.0-alpha.99"
     "@neo-one/client-core" "^1.0.0-alpha.75"
@@ -895,8 +895,8 @@
     "@neo-one/server-plugin-neotracker" "^1.0.0-alpha.17"
     "@neo-one/server-plugin-network" "^1.0.0-alpha.119"
     "@neo-one/smart-contract-codegen" "^1.0.0-alpha.56"
-    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.57"
-    "@neo-one/smart-contract-test" "^1.0.0-alpha.58"
+    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.58"
+    "@neo-one/smart-contract-test" "^1.0.0-alpha.59"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/convict" "^4.2.0"
@@ -912,16 +912,16 @@
     typescript "^3.0.3"
     uuid "^3.3.2"
 
-"@neo-one/server-plugin-simulation@^1.0.0-alpha.125":
-  version "1.0.0-alpha.125"
-  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-simulation/-/server-plugin-simulation-1.0.0-alpha.125.tgz#366f224f0a9ef228f138b266e8344b96712c53a0"
+"@neo-one/server-plugin-simulation@^1.0.0-alpha.126":
+  version "1.0.0-alpha.126"
+  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-simulation/-/server-plugin-simulation-1.0.0-alpha.126.tgz#ecc6c0571eaeb225442200769d10488274faa51c"
   dependencies:
     "@neo-one/client" "^1.0.0-alpha.99"
     "@neo-one/client-core" "^1.0.0-alpha.75"
     "@neo-one/server-plugin" "^1.0.0-alpha.73"
     "@neo-one/server-plugin-compiler" "^1.0.0-alpha.100"
     "@neo-one/server-plugin-network" "^1.0.0-alpha.119"
-    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.125"
+    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.126"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/execa" "^0.9.0"
@@ -934,18 +934,18 @@
     rxjs "^6.3.2"
     tslib "^1.9.3"
 
-"@neo-one/server-plugin-wallet@^1.0.0-alpha.125":
-  version "1.0.0-alpha.125"
-  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-wallet/-/server-plugin-wallet-1.0.0-alpha.125.tgz#92a065849d1174c42f0971ede3f34a3b45d9f5ae"
+"@neo-one/server-plugin-wallet@^1.0.0-alpha.126":
+  version "1.0.0-alpha.126"
+  resolved "https://registry.yarnpkg.com/@neo-one/server-plugin-wallet/-/server-plugin-wallet-1.0.0-alpha.126.tgz#e66d91b9ffa36c4e6eaed89753dd9abd13449ea3"
   dependencies:
     "@neo-one/client" "^1.0.0-alpha.99"
     "@neo-one/client-core" "^1.0.0-alpha.75"
     "@neo-one/server-plugin" "^1.0.0-alpha.73"
     "@neo-one/server-plugin-compiler" "^1.0.0-alpha.100"
     "@neo-one/server-plugin-network" "^1.0.0-alpha.119"
-    "@neo-one/smart-contract" "^1.0.0-alpha.26"
-    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.57"
-    "@neo-one/smart-contract-lib" "^1.0.0-alpha.59"
+    "@neo-one/smart-contract" "^1.0.0-alpha.27"
+    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.58"
+    "@neo-one/smart-contract-lib" "^1.0.0-alpha.60"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/fs-extra" "^5.0.4"
@@ -989,9 +989,9 @@
     tslib "^1.9.3"
     vorpal "^1.12.0"
 
-"@neo-one/server@^1.0.0-alpha.125":
-  version "1.0.0-alpha.125"
-  resolved "https://registry.yarnpkg.com/@neo-one/server/-/server-1.0.0-alpha.125.tgz#b4b8042addc644eb5a3aa9b1e1cf18e150140379"
+"@neo-one/server@^1.0.0-alpha.126":
+  version "1.0.0-alpha.126"
+  resolved "https://registry.yarnpkg.com/@neo-one/server/-/server-1.0.0-alpha.126.tgz#cf65e22ed784385c2cd7e5a1a1eedc0f346e5cc6"
   dependencies:
     "@grpc/proto-loader" "^0.3.0"
     "@neo-one/http" "^1.0.0-alpha.95"
@@ -1001,8 +1001,8 @@
     "@neo-one/server-plugin" "^1.0.0-alpha.73"
     "@neo-one/server-plugin-compiler" "^1.0.0-alpha.100"
     "@neo-one/server-plugin-network" "^1.0.0-alpha.119"
-    "@neo-one/server-plugin-simulation" "^1.0.0-alpha.125"
-    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.125"
+    "@neo-one/server-plugin-simulation" "^1.0.0-alpha.126"
+    "@neo-one/server-plugin-wallet" "^1.0.0-alpha.126"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/fs-extra" "^5.0.4"
@@ -1043,14 +1043,14 @@
     safe-stable-stringify "^1.0.1"
     source-map "^0.7.3"
 
-"@neo-one/smart-contract-compiler@1.0.0-alpha.57", "@neo-one/smart-contract-compiler@^1.0.0-alpha.57":
-  version "1.0.0-alpha.57"
-  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-compiler/-/smart-contract-compiler-1.0.0-alpha.57.tgz#ee1732bea60f88e2a9ebfbab189f6c7da8560c7b"
+"@neo-one/smart-contract-compiler@1.0.0-alpha.58", "@neo-one/smart-contract-compiler@^1.0.0-alpha.58":
+  version "1.0.0-alpha.58"
+  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-compiler/-/smart-contract-compiler-1.0.0-alpha.58.tgz#a0a8233f2b653adaefd0edac5ff08df9ffa55804"
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@neo-one/client" "^1.0.0-alpha.99"
     "@neo-one/client-core" "^1.0.0-alpha.75"
-    "@neo-one/smart-contract" "^1.0.0-alpha.26"
+    "@neo-one/smart-contract" "^1.0.0-alpha.27"
     "@neo-one/ts-utils" "^1.0.0-alpha.46"
     "@neo-one/utils" "^1.0.0-alpha.64"
     "@types/babel__code-frame" "^7.0.0"
@@ -1067,22 +1067,22 @@
     toposort "^2.0.2"
     typescript "^3.0.3"
 
-"@neo-one/smart-contract-lib@^1.0.0-alpha.59":
-  version "1.0.0-alpha.59"
-  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-lib/-/smart-contract-lib-1.0.0-alpha.59.tgz#aba0d9490dd0c88cb9c44bbc900f36d773a750ce"
+"@neo-one/smart-contract-lib@^1.0.0-alpha.60":
+  version "1.0.0-alpha.60"
+  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-lib/-/smart-contract-lib-1.0.0-alpha.60.tgz#6f75c332f9d5f8d9fb32b29c6abcac5fe4669186"
   dependencies:
-    "@neo-one/smart-contract" "^1.0.0-alpha.26"
+    "@neo-one/smart-contract" "^1.0.0-alpha.27"
 
-"@neo-one/smart-contract-test@1.0.0-alpha.58", "@neo-one/smart-contract-test@^1.0.0-alpha.58":
-  version "1.0.0-alpha.58"
-  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-test/-/smart-contract-test-1.0.0-alpha.58.tgz#348be2f310b979ea3e88f2f903177a1ea9010264"
+"@neo-one/smart-contract-test@1.0.0-alpha.59", "@neo-one/smart-contract-test@^1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-test/-/smart-contract-test-1.0.0-alpha.59.tgz#291bb4c77be4959efce81b2fd5f4ac5dbf8da761"
   dependencies:
     "@neo-one/client" "^1.0.0-alpha.99"
     "@neo-one/client-core" "^1.0.0-alpha.75"
     "@neo-one/monitor" "^1.0.0-alpha.59"
     "@neo-one/node" "^1.0.0-alpha.114"
     "@neo-one/node-neo-settings" "^1.0.0-alpha.75"
-    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.57"
+    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.58"
     "@neo-one/types" "^1.0.0-alpha.43"
     "@types/lodash" "^4.14.116"
     change-case "^3.0.2"
@@ -1091,17 +1091,17 @@
     rxjs "^6.3.2"
     typescript "^3.0.3"
 
-"@neo-one/smart-contract-typescript-plugin@1.0.0-alpha.14":
-  version "1.0.0-alpha.14"
-  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-typescript-plugin/-/smart-contract-typescript-plugin-1.0.0-alpha.14.tgz#f854f065be8697e3748a959276c72462af298326"
+"@neo-one/smart-contract-typescript-plugin@1.0.0-alpha.15":
+  version "1.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-typescript-plugin/-/smart-contract-typescript-plugin-1.0.0-alpha.15.tgz#8c4f42e39867fd38efaa09dee26eb6e7109e56d1"
   dependencies:
-    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.57"
+    "@neo-one/smart-contract-compiler" "^1.0.0-alpha.58"
     "@neo-one/types" "^1.0.0-alpha.43"
     typescript "^3.0.3"
 
-"@neo-one/smart-contract@1.0.0-alpha.26", "@neo-one/smart-contract@^1.0.0-alpha.26":
-  version "1.0.0-alpha.26"
-  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract/-/smart-contract-1.0.0-alpha.26.tgz#c52c85dcfd3c926195e6d15c4d356fbc2447a3d9"
+"@neo-one/smart-contract@1.0.0-alpha.27", "@neo-one/smart-contract@^1.0.0-alpha.27":
+  version "1.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/@neo-one/smart-contract/-/smart-contract-1.0.0-alpha.27.tgz#2443b35095dc2b62000482afd2bf71fd0a539bd3"
 
 "@neo-one/ts-utils@^1.0.0-alpha.46":
   version "1.0.0-alpha.46"
@@ -2375,9 +2375,9 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
 
-awesome-typescript-loader@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-5.2.0.tgz#d7bccf4823c45096ec24da4c12a1507d276ba15a"
+awesome-typescript-loader@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/awesome-typescript-loader/-/awesome-typescript-loader-5.2.1.tgz#a41daf7847515f4925cdbaa3075d61f289e913fc"
   dependencies:
     chalk "^2.4.1"
     enhanced-resolve "^4.0.0"
@@ -9342,7 +9342,16 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@16.4.2, react-dom@^16.4.2:
+react-dom@16.5.0:
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.5.0.tgz#57704e5718669374b182a17ea79a6d24922cb27d"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    schedule "^0.3.0"
+
+react-dom@^16.4.2:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
   dependencies:
@@ -9498,7 +9507,16 @@ react-transition-group@^2.2.1, react-transition-group@^2.3.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@16.4.2, react@^16.4.2:
+react@16.5.0:
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.5.0.tgz#f2c1e754bf9751a549d9c6d9aca41905beb56575"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    schedule "^0.3.0"
+
+react@^16.4.2:
   version "16.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
@@ -10064,6 +10082,12 @@ sane@^2.0.0:
 sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
+
+schedule@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.3.0.tgz#1be2ab2fc2e768536269ce7326efb478d6c045e8"
+  dependencies:
+    object-assign "^4.1.1"
 
 schema-utils@^0.4.4, schema-utils@^0.4.5:
   version "0.4.7"
