@@ -1,4 +1,4 @@
-/* @hash 715698ec5f2b0397dd4cf9d4aefece56 */
+/* @hash 86d7a3445d94d6b449d4db391ce4dba7 */
 // tslint:disable
 /* eslint-disable */
 import { TestOptions, withContracts as withContractsBase, WithContractsOptions } from '@neo-one/smart-contract-test';
@@ -11,10 +11,11 @@ export const withContracts = async (
 ): Promise<void> =>
   withContractsBase<Contracts>(
     [
+      { name: 'One', filePath: path.resolve(__dirname, '../contracts/One.ts') },
       { name: 'FeatureTest', filePath: path.resolve(__dirname, '../contracts/FeatureTest.ts') },
       { name: 'GASVac', filePath: path.resolve(__dirname, '../contracts/GASVac.ts') },
-      { name: 'One', filePath: path.resolve(__dirname, '../contracts/One.ts') },
       { name: 'WrappedNEO', filePath: path.resolve(__dirname, '../contracts/WrappedNEO.ts') },
+      { name: 'Escrow', filePath: path.resolve(__dirname, '../contracts/Escrow.ts') },
     ],
     test,
     options,
