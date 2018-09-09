@@ -1,6 +1,6 @@
-const ONE_ADDRESS = 'AZZ6U62JTJU26HCjp3bACCZRs2PMT3mdLK';
+const ONE_ADDRESS = 'AaUzsqma2iQ3M1SCNwRFsj4dgRcUVzanSw';
 
-describe('ICO', () => {
+describe('One', () => {
   it('participation', () => {
     cy.visit('/ico');
 

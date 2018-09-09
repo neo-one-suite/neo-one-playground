@@ -6,6 +6,7 @@ import {
   createEventNotifier,
   Deploy,
   Fixed,
+  ForwardValue,
   Hash256,
   Integer,
   MapStorage,
@@ -33,11 +34,17 @@ const notifyRevokeSendTransfer = createEventNotifier<Address, Address, Fixed<8>>
 );
 
 interface TokenPayableContract {
-  readonly approveReceiveTransfer: (from: Address, amount: Fixed<0>, asset: Address) => boolean;
-  readonly onRevokeSendTransfer: (from: Address, amount: Fixed<0>, asset: Address) => void;
+  readonly approveReceiveTransfer: (
+    from: Address,
+    amount: Fixed<8>,
+    asset: Address,
+    // tslint:disable-next-line readonly-array
+    ...args: ForwardValue[]
+  ) => boolean;
+  readonly onRevokeSendTransfer: (from: Address, amount: Fixed<8>, asset: Address) => void;
 }
 
-export class ICO extends SmartContract {
+export class One extends SmartContract {
   public readonly properties = {
     codeVersion: '1.0',
     author: 'dicarlo2',
@@ -55,7 +62,7 @@ export class ICO extends SmartContract {
 
   public constructor(
     public readonly owner: Address = Deploy.senderAddress,
-    public readonly startTimeSeconds: Integer = Blockchain.currentBlockTime + 60 * 60,
+    public readonly icoStartTimeSeconds: Integer = Blockchain.currentBlockTime + 60 * 60,
     public readonly icoDurationSeconds: Integer = 86400,
   ) {
     super();
@@ -83,7 +90,8 @@ export class ICO extends SmartContract {
     return approved === undefined ? 0 : approved;
   }
 
-  public transfer(from: Address, to: Address, amount: Fixed<8>): boolean {
+  // tslint:disable-next-line readonly-array
+  public transfer(from: Address, to: Address, amount: Fixed<8>, ...approveArgs: ForwardValue[]): boolean {
     if (amount < 0) {
       throw new Error(`Amount must be greater than 0: ${amount}`);
     }
@@ -102,7 +110,7 @@ export class ICO extends SmartContract {
     const contract = Contract.for(to);
     if (contract !== undefined && !Address.isCaller(to)) {
       const smartContract = SmartContract.for<TokenPayableContract>(to);
-      if (!smartContract.approveReceiveTransfer(from, amount, this.address)) {
+      if (!smartContract.approveReceiveTransfer(from, amount, this.address, ...approveArgs)) {
         return false;
       }
     }
@@ -119,7 +127,7 @@ export class ICO extends SmartContract {
     return true;
   }
 
-  public approveSendTransfer(from: Address, to: Address, amount: Fixed<0>): boolean {
+  public approveSendTransfer(from: Address, to: Address, amount: Fixed<8>): boolean {
     if (amount < 0) {
       throw new Error(`Amount must be greater than 0: ${amount}`);
     }
@@ -215,10 +223,10 @@ export class ICO extends SmartContract {
   }
 
   private hasStarted(): boolean {
-    return Blockchain.currentBlockTime >= this.startTimeSeconds;
+    return Blockchain.currentBlockTime >= this.icoStartTimeSeconds;
   }
 
   private hasEnded(): boolean {
-    return Blockchain.currentBlockTime > this.startTimeSeconds + this.icoDurationSeconds;
+    return Blockchain.currentBlockTime > this.icoStartTimeSeconds + this.icoDurationSeconds;
   }
 }

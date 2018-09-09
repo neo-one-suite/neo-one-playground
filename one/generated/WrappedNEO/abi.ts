@@ -1,4 +1,4 @@
-/* @hash 4da13eb595f5a64aee202f5d20f4435f */
+/* @hash f68ec5c706b3643b63225890da94d979 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -9,11 +9,13 @@ export const wrappedNeoABI: ABI = {
       name: 'transfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: true,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: true,
           type: 'Address',
@@ -30,11 +32,13 @@ export const wrappedNeoABI: ABI = {
       name: 'approveSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -51,11 +55,13 @@ export const wrappedNeoABI: ABI = {
       name: 'revokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -75,6 +81,7 @@ export const wrappedNeoABI: ABI = {
       name: 'name',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'String',
       },
@@ -84,6 +91,7 @@ export const wrappedNeoABI: ABI = {
       name: 'symbol',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'String',
       },
@@ -114,6 +122,7 @@ export const wrappedNeoABI: ABI = {
       name: 'balanceOf',
       parameters: [
         {
+          forwardedValue: false,
           name: 'address',
           optional: false,
           type: 'Address',
@@ -133,11 +142,13 @@ export const wrappedNeoABI: ABI = {
       name: 'approvedTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -157,11 +168,13 @@ export const wrappedNeoABI: ABI = {
       name: 'transfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -175,6 +188,7 @@ export const wrappedNeoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -186,11 +200,13 @@ export const wrappedNeoABI: ABI = {
       name: 'approveSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -204,6 +220,7 @@ export const wrappedNeoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -215,6 +232,7 @@ export const wrappedNeoABI: ABI = {
       name: 'approveReceiveTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
@@ -226,6 +244,7 @@ export const wrappedNeoABI: ABI = {
           type: 'Integer',
         },
         {
+          forwardedValue: false,
           name: 'asset',
           optional: false,
           type: 'Address',
@@ -233,6 +252,7 @@ export const wrappedNeoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -244,11 +264,13 @@ export const wrappedNeoABI: ABI = {
       name: 'revokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -262,6 +284,7 @@ export const wrappedNeoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -273,6 +296,7 @@ export const wrappedNeoABI: ABI = {
       name: 'onRevokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
@@ -284,6 +308,7 @@ export const wrappedNeoABI: ABI = {
           type: 'Integer',
         },
         {
+          forwardedValue: false,
           name: 'asset',
           optional: false,
           type: 'Address',
@@ -303,6 +328,7 @@ export const wrappedNeoABI: ABI = {
       parameters: [],
       receive: true,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -314,6 +340,7 @@ export const wrappedNeoABI: ABI = {
       name: 'unwrapNEO',
       parameters: [
         {
+          forwardedValue: false,
           name: 'receiver',
           optional: false,
           type: 'Address',
@@ -321,6 +348,7 @@ export const wrappedNeoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },

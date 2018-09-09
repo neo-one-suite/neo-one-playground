@@ -1,12 +1,12 @@
-/* @hash a8267b7947a634fd633a1652af95db47 */
+/* @hash a7788f0e23dfb1c62cb997346db7f6d3 */
 // tslint:disable
 /* eslint-disable */
 import { FeatureTestSmartContract } from './FeatureTest/types';
-import { ICOSmartContract } from './ICO/types';
+import { OneSmartContract } from './One/types';
 import { WrappedNEOSmartContract } from './WrappedNEO/types';
 
 export interface Contracts {
   readonly featureTest: FeatureTestSmartContract;
-  readonly ico: ICOSmartContract;
+  readonly one: OneSmartContract;
   readonly wrappedNeo: WrappedNEOSmartContract;
 }

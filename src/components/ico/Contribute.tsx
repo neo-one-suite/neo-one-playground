@@ -32,8 +32,8 @@ const Wrapper = styled(Base)`
 
 export const Contribute = (props: ComponentProps<typeof Flex>) => (
   <WithContracts>
-    {({ ico }) => (
-      <FromStream props$={concat(of(new BigNumber(0)), defer(async () => ico.amountPerNEO()))}>
+    {({ one }) => (
+      <FromStream props$={concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}>
         {(amountPerNEO) => (
           <ICOContainer>
             {({ text, amount, loading, onChangeAmount, send }) => (

@@ -4,9 +4,9 @@ import { withContracts } from '../generated/test';
 
 jest.setTimeout(30000);
 
-describe('ICO', () => {
+describe('One', () => {
   test('mintTokens + transfer', async () => {
-    await withContracts(async ({ client, developerClient, ico, masterAccountID, networkName }) => {
+    await withContracts(async ({ client, developerClient, one, masterAccountID, networkName }) => {
       await developerClient.fastForwardOffset(60 * 60);
 
       const toWallet = await client.providers.memory.keystore.addAccount({
@@ -25,15 +25,15 @@ describe('ICO', () => {
         initialRemaining,
         initialBalance,
       ] = await Promise.all([
-        ico.name(),
-        ico.symbol(),
-        ico.decimals(),
-        ico.amountPerNEO(),
-        ico.owner(),
-        ico.icoDurationSeconds(),
-        ico.totalSupply(),
-        ico.remaining(),
-        ico.balanceOf(toWallet.account.id.address),
+        one.name(),
+        one.symbol(),
+        one.decimals(),
+        one.amountPerNEO(),
+        one.owner(),
+        one.icoDurationSeconds(),
+        one.totalSupply(),
+        one.remaining(),
+        one.balanceOf(toWallet.account.id.address),
       ]);
       expect(name).toEqual('One');
       expect(symbol).toEqual('ONE');
@@ -45,7 +45,7 @@ describe('ICO', () => {
       expect(initialRemaining.toString()).toEqual(new BigNumber(10_000_000_000).toString());
       expect(initialBalance.toString()).toEqual('0');
 
-      const mintReceipt = await ico.mintTokens.confirmed({
+      const mintReceipt = await one.mintTokens.confirmed({
         sendTo: [
           {
             amount: new BigNumber(10),
@@ -70,17 +70,17 @@ describe('ICO', () => {
       expect(event.parameters.amount.toString()).toEqual('1000000');
 
       const [totalSupply, remaining, balance, toBalance] = await Promise.all([
-        ico.totalSupply(),
-        ico.remaining(),
-        ico.balanceOf(masterAccountID.address),
-        ico.balanceOf(toWallet.account.id.address),
+        one.totalSupply(),
+        one.remaining(),
+        one.balanceOf(masterAccountID.address),
+        one.balanceOf(toWallet.account.id.address),
       ]);
       expect(totalSupply.toString()).toEqual('1000000');
       expect(remaining.toString()).toEqual(new BigNumber(9_999_000_000).toString());
       expect(balance.toString()).toEqual('1000000');
       expect(toBalance.toString()).toEqual('0');
 
-      const receipt = await ico.transfer.confirmed(
+      const receipt = await one.transfer.confirmed(
         masterAccountID.address,
         toWallet.account.id.address,
         new BigNumber('25'),
@@ -90,9 +90,9 @@ describe('ICO', () => {
       }
 
       const [totalSupplyAfter, balanceAfter, toBalanceAfter] = await Promise.all([
-        ico.totalSupply(),
-        ico.balanceOf(masterAccountID.address),
-        ico.balanceOf(toWallet.account.id.address),
+        one.totalSupply(),
+        one.balanceOf(masterAccountID.address),
+        one.balanceOf(toWallet.account.id.address),
       ]);
       expect(totalSupplyAfter.toString()).toEqual('1000000');
       expect(balanceAfter.toString()).toEqual('999975');

@@ -1,4 +1,4 @@
-/* @hash 27124fd9c04489f27c5d4e106442eee2 */
+/* @hash 0ffee08044fe80064cbe155dcd2c461c */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -21,44 +21,52 @@ export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadS
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly deploy: {
     (owner?: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      owner?: AddressString,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, FeatureTestEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (owner?: AddressString, options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly owner: () => Promise<AddressString>;
   readonly refundAssets: {
     (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      transactionHash: Hash256String,
-      options?: InvokeSendTransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, FeatureTestEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly stackTrace: {
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly typeError: {
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<undefined, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
 }
 

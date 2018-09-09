@@ -1,4 +1,4 @@
-/* @hash d1df3baa370819fd6f381be5c7b74f28 */
+/* @hash 65fca8d085bab0078f9c79fce6a606de */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -11,6 +11,7 @@ export const featureTestABI: ABI = {
       name: 'owner',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Address',
       },
@@ -71,6 +72,7 @@ export const featureTestABI: ABI = {
           default: {
             type: 'sender',
           },
+          forwardedValue: false,
           name: 'owner',
           optional: true,
           type: 'Address',

@@ -1,4 +1,4 @@
-/* @hash 8bafccb2021415340cb21e0c6b00223e */
+/* @hash 760836ff0133ed2ff0f807c54b3037ef */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -48,23 +48,24 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      from: AddressString,
-      amount: BigNumber,
-      asset: AddressString,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (
+        from: AddressString,
+        amount: BigNumber,
+        asset: AddressString,
+        options?: TransactionOptions & GetOptions,
+      ): Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    };
   };
   readonly approveSendTransfer: {
     (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      from: AddressString,
-      to: AddressString,
-      amount: BigNumber,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
   readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
@@ -73,41 +74,45 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly name: () => Promise<string>;
   readonly onRevokeSendTransfer: {
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      from: AddressString,
-      amount: BigNumber,
-      asset: AddressString,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<undefined, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (
+        from: AddressString,
+        amount: BigNumber,
+        asset: AddressString,
+        options?: TransactionOptions & GetOptions,
+      ): Promise<InvokeReceipt<undefined, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    };
   };
   readonly refundAssets: {
     (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      transactionHash: Hash256String,
-      options?: InvokeSendTransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly revokeSendTransfer: {
     (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      from: AddressString,
-      to: AddressString,
-      amount: BigNumber,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly symbol: () => Promise<string>;
   readonly totalSupply: () => Promise<BigNumber>;
@@ -115,29 +120,31 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
     (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      from: AddressString,
-      to: AddressString,
-      amount: BigNumber,
-      options?: TransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (from: AddressString, to: AddressString, amount: BigNumber, options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly unwrapNEO: {
     (receiver: AddressString, options?: InvokeSendTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      receiver: AddressString,
-      options?: InvokeSendTransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (receiver: AddressString, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
   readonly wrapNEO: {
     (options?: InvokeReceiveTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
-    readonly confirmed: (
-      options?: InvokeReceiveTransactionOptions & GetOptions,
-    ) => Promise<InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }>;
+    readonly confirmed: {
+      (options?: InvokeReceiveTransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
   };
 }
 

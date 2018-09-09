@@ -79,7 +79,7 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
 export function Info(props: ComponentProps<typeof StyledGrid>) {
   return (
     <WithContracts>
-      {({ client, ico }) => (
+      {({ client, one }) => (
         <FromStream
           props$={concat(
             of(undefined),
@@ -93,12 +93,12 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
                   remaining,
                   balance,
                 ] = await Promise.all([
-                  ico.startTimeSeconds(),
-                  ico.icoDurationSeconds(),
-                  ico.amountPerNEO(),
-                  ico.totalSupply(),
-                  ico.remaining(),
-                  account === undefined ? Promise.resolve(new BigNumber(0)) : ico.balanceOf(account.id.address),
+                  one.icoStartTimeSeconds(),
+                  one.icoDurationSeconds(),
+                  one.amountPerNEO(),
+                  one.totalSupply(),
+                  one.remaining(),
+                  account === undefined ? Promise.resolve(new BigNumber(0)) : one.balanceOf(account.id.address),
                 ]);
 
                 return {
@@ -109,7 +109,7 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
                   remaining,
                   nowMS: block.time * 1000,
                   balance,
-                  address: ico.definition.networks[network].address,
+                  address: one.definition.networks[network].address,
                 };
               }),
             ),

@@ -1,19 +1,21 @@
-/* @hash c757299779c0252e65415799d6ca5572 */
+/* @hash 3a9f7d158c8e8884c6211adaa93f8009 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
 
-export const icoABI: ABI = {
+export const oneABI: ABI = {
   events: [
     {
       name: 'transfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: true,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: true,
           type: 'Address',
@@ -30,11 +32,13 @@ export const icoABI: ABI = {
       name: 'approveSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -51,11 +55,13 @@ export const icoABI: ABI = {
       name: 'revokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -75,6 +81,7 @@ export const icoABI: ABI = {
       name: 'name',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'String',
       },
@@ -84,6 +91,7 @@ export const icoABI: ABI = {
       name: 'symbol',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'String',
       },
@@ -113,13 +121,14 @@ export const icoABI: ABI = {
       name: 'owner',
       parameters: [],
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Address',
       },
     },
     {
       constant: true,
-      name: 'startTimeSeconds',
+      name: 'icoStartTimeSeconds',
       parameters: [],
       returnType: {
         decimals: 0,
@@ -153,6 +162,7 @@ export const icoABI: ABI = {
       name: 'balanceOf',
       parameters: [
         {
+          forwardedValue: false,
           name: 'address',
           optional: false,
           type: 'Address',
@@ -172,11 +182,13 @@ export const icoABI: ABI = {
       name: 'approvedTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -196,11 +208,13 @@ export const icoABI: ABI = {
       name: 'transfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -211,9 +225,17 @@ export const icoABI: ABI = {
           optional: false,
           type: 'Integer',
         },
+        {
+          forwardedValue: false,
+          name: 'approveArgs',
+          optional: false,
+          rest: true,
+          type: 'ForwardValue',
+        },
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -225,17 +247,19 @@ export const icoABI: ABI = {
       name: 'approveSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
         },
         {
-          decimals: 0,
+          decimals: 8,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -243,6 +267,7 @@ export const icoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -254,6 +279,7 @@ export const icoABI: ABI = {
       name: 'approveReceiveTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
@@ -265,6 +291,7 @@ export const icoABI: ABI = {
           type: 'Integer',
         },
         {
+          forwardedValue: false,
           name: 'asset',
           optional: false,
           type: 'Address',
@@ -272,6 +299,7 @@ export const icoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -283,11 +311,13 @@ export const icoABI: ABI = {
       name: 'revokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
         },
         {
+          forwardedValue: false,
           name: 'to',
           optional: false,
           type: 'Address',
@@ -301,6 +331,7 @@ export const icoABI: ABI = {
       ],
       receive: false,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -312,6 +343,7 @@ export const icoABI: ABI = {
       name: 'onRevokeSendTransfer',
       parameters: [
         {
+          forwardedValue: false,
           name: 'from',
           optional: false,
           type: 'Address',
@@ -323,6 +355,7 @@ export const icoABI: ABI = {
           type: 'Integer',
         },
         {
+          forwardedValue: false,
           name: 'asset',
           optional: false,
           type: 'Address',
@@ -352,6 +385,7 @@ export const icoABI: ABI = {
       parameters: [],
       receive: true,
       returnType: {
+        forwardedValue: false,
         optional: false,
         type: 'Boolean',
       },
@@ -377,13 +411,14 @@ export const icoABI: ABI = {
           default: {
             type: 'sender',
           },
+          forwardedValue: false,
           name: 'owner',
           optional: true,
           type: 'Address',
         },
         {
           decimals: 0,
-          name: 'startTimeSeconds',
+          name: 'icoStartTimeSeconds',
           optional: true,
           type: 'Integer',
         },

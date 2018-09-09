@@ -1,4 +1,4 @@
-/* @hash 9c2fb0d3e91f5d559d3efc36504e7337 */
+/* @hash 3b524eb853c0ad6e56cd21d1899eaa06 */
 // tslint:disable
 /* eslint-disable */
 import { DeveloperTools as DeveloperToolsBase } from '@neo-one/react';
@@ -8,7 +8,7 @@ import { Contracts } from './types';
 import { createClient, createDeveloperClients, createOneClients } from './client';
 import { projectID } from './projectID';
 import { createFeatureTestSmartContract } from './FeatureTest/contract';
-import { createICOSmartContract } from './ICO/contract';
+import { createOneSmartContract } from './One/contract';
 import { createWrappedNEOSmartContract } from './WrappedNEO/contract';
 
 export interface WithClients<TClient extends Client> {
@@ -43,7 +43,7 @@ export const ContractsProvider = <TClient extends Client>({
         developerClients,
         oneClients,
         featureTest: createFeatureTestSmartContract(client),
-        ico: createICOSmartContract(client),
+        one: createOneSmartContract(client),
         wrappedNeo: createWrappedNEOSmartContract(client),
       }}
     >

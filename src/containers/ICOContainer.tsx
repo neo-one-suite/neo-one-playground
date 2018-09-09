@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { ActionMap, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
-import { ICOSmartContract, WithContracts } from '../../one/generated';
+import { OneSmartContract, WithContracts } from '../../one/generated';
 
 interface Actions {
   readonly onChangeAmount: (text: string) => void;
@@ -30,7 +30,7 @@ interface Effects {
   readonly send: () => void;
 }
 
-const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Effects> => ({
+const makeEffects = (client: Client, one: OneSmartContract): EffectMap<State, Effects> => ({
   send: () => ({ state: { amount }, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
     const from = client.getCurrentAccount();
     if (amount === undefined || from === undefined) {
@@ -58,7 +58,7 @@ const makeEffects = (client: Client, ico: ICOSmartContract): EffectMap<State, Ef
         .catch(onError);
     };
 
-    ico
+    one
       .mintTokens({
         sendTo: [
           {
@@ -80,8 +80,8 @@ interface State {
 
 export const ICOContainer = (props: ContainerProps<State, Actions, {}, Effects>) => (
   <WithContracts>
-    {({ client, ico }) => {
-      const effects = makeEffects(client, ico);
+    {({ client, one }) => {
+      const effects = makeEffects(client, one);
 
       return <Container {...props} initialState={{ text: '', loading: false }} actions={actions} effects={effects} />;
     }}
