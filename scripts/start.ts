@@ -89,6 +89,11 @@ const createWebpackConfig = (): webpack.Configuration => ({
         loader: 'file-loader',
       },
       {
+        test: /\.mp3$/,
+        include: [path.resolve(__dirname, '..', 'root')],
+        loader: 'file-loader',
+      },
+      {
         test: /\.woff2?$/,
         loader: 'file-loader',
       },

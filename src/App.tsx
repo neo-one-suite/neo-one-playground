@@ -7,7 +7,7 @@ import { Provider, ThemeProvider } from 'reakit';
 import { ContractsProvider, DeveloperTools } from '../one/generated';
 import { ScrollToTop } from './components';
 import { CoreLayout } from './layout';
-import { Home, ICO } from './pages';
+import { GASVac, Home, ICO } from './pages';
 import { theme } from './theme';
 
 export const App = hot(module)(() => (
@@ -20,6 +20,7 @@ export const App = hot(module)(() => (
               <CoreLayout>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/ico" component={ICO} />
+                <Route exact path="/gasvac" component={GASVac} />
               </CoreLayout>
             </Switch>
           </ScrollToTop>
