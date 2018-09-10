@@ -3,7 +3,6 @@ import { WalletSelectorOptionType } from '@neo-one/react';
 import { ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
-import { WithContracts } from '../../one/generated';
 
 interface State {
   readonly toWallet: UserAccount | undefined;
@@ -23,12 +22,8 @@ const makeEffects = (): EffectMap<State, Effects> => ({
   },
 });
 
-export const WalletContainer = (props: ContainerProps<State, {}, {}, Effects>) => (
-  <WithContracts>
-    {({}) => {
-      const effects = makeEffects();
+export const WalletContainer = (props: ContainerProps<State, {}, {}, Effects>) => {
+  const effects = makeEffects();
 
-      return <Container {...props} effects={effects} />;
-    }}
-  </WithContracts>
-);
+  return <Container {...props} effects={effects} />;
+};

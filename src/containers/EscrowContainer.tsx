@@ -12,44 +12,33 @@ interface Actions {
   readonly onChangeRevokeAmount: (revokeText: string) => void;
 }
 
-const actions: ActionMap<State, Actions> = {
-  // tslint:disable-next-line no-any
-  onChangeSendAmount: (sendText: string) => () => {
-    let sendAmount: BigNumber | undefined;
-    try {
-      sendAmount = new BigNumber(sendText);
-      if (sendAmount.toString() !== sendText) {
-        sendAmount = undefined;
-      }
-    } catch {
-      // do nothing
+const onChangeAmount = (text: string) => {
+  let amount: BigNumber | undefined;
+  try {
+    amount = new BigNumber(text);
+    if (amount.toString() !== text) {
+      amount = undefined;
     }
+  } catch {
+    // do nothing
+  }
+
+  return amount;
+};
+
+const actions: ActionMap<State, Actions> = {
+  onChangeSendAmount: (sendText: string) => () => {
+    const sendAmount = onChangeAmount(sendText);
 
     return { sendText, sendAmount };
   },
   onChangeReceiveAmount: (receiveText: string) => () => {
-    let receiveAmount: BigNumber | undefined;
-    try {
-      receiveAmount = new BigNumber(receiveText);
-      if (receiveAmount.toString() !== receiveText) {
-        receiveAmount = undefined;
-      }
-    } catch {
-      // do nothing
-    }
+    const receiveAmount = onChangeAmount(receiveText);
 
     return { receiveText, receiveAmount };
   },
   onChangeRevokeAmount: (revokeText: string) => () => {
-    let revokeAmount: BigNumber | undefined;
-    try {
-      revokeAmount = new BigNumber(revokeText);
-      if (revokeAmount.toString() !== revokeText) {
-        revokeAmount = undefined;
-      }
-    } catch {
-      // do nothing
-    }
+    const revokeAmount = onChangeAmount(revokeText);
 
     return { revokeText, revokeAmount };
   },
@@ -153,9 +142,9 @@ const makeEffects = (
       addError(error);
     };
 
-    escrow
+    return escrow
       .balanceOf(from.id.address, toWallet.id.address)
-      .then((balance) => {
+      .then(async (balance) =>
         escrow.receiveONE
           .confirmed(from.id.address, toWallet.id.address, receiveAmount === undefined ? balance : receiveAmount, {
             from: toWallet.id,
@@ -167,10 +156,10 @@ const makeEffects = (
             if (!receipt.result.value) {
               throw new Error('Unable to complete transfer. Not enough balance.');
             }
+
             onComplete(true);
-          })
-          .catch(onError);
-      })
+          }),
+      )
       .catch(onError);
   },
   revoke: () => ({
@@ -208,9 +197,9 @@ const makeEffects = (
       addError(error);
     };
 
-    escrow
+    return escrow
       .balanceOf(from.id.address, toWallet.id.address)
-      .then((balance) => {
+      .then(async (balance) =>
         escrow.revokeONE
           .confirmed(from.id.address, toWallet.id.address, revokeAmount === undefined ? balance : revokeAmount, {
             from: from.id,
@@ -222,10 +211,10 @@ const makeEffects = (
             if (!receipt.result.value) {
               throw new Error('Unable to complete transfer. Not enough balance.');
             }
+
             onComplete(true);
-          })
-          .catch(onError);
-      })
+          }),
+      )
       .catch(onError);
   },
 });

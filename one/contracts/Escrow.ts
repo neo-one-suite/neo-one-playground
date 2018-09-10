@@ -42,61 +42,35 @@ export class Escrow extends SmartContract {
   }
 
   public revokeONE(from: Address, to: Address, amount: Fixed<8> | undefined): boolean {
-    if (!Address.isCaller(from)) {
-      return false;
-    }
-
-    const [revokeAmount, balance] = this.setupReceiveRevoke(from, to, amount);
-    if (revokeAmount === undefined || balance === undefined) {
-      return false;
-    }
-
-    const success = one.transfer(this.address, from, revokeAmount);
-    if (success) {
-      this.balances.set([from, to], balance - revokeAmount);
-
-      return true;
-    }
-
-    return false;
+    return this.resolveEscrow(from, to, amount, from);
   }
 
   public receiveONE(from: Address, to: Address, amount: Fixed<8> | undefined): boolean {
-    if (!Address.isCaller(to)) {
-      return false;
-    }
-
-    const [receiveAmount, balance] = this.setupReceiveRevoke(from, to, amount);
-    if (receiveAmount === undefined || balance === undefined) {
-      return false;
-    }
-
-    const success = one.transfer(this.address, to, receiveAmount);
-    if (success) {
-      this.balances.set([from, to], balance - receiveAmount);
-
-      return true;
-    }
-
-    return false;
+    return this.resolveEscrow(from, to, amount, to);
   }
 
-  private setupReceiveRevoke(
-    from: Address,
-    to: Address,
-    amount: Fixed<8> | undefined,
-  ): [Fixed<8> | undefined, Fixed<8> | undefined] {
+  private resolveEscrow(from: Address, to: Address, amount: Fixed<8> | undefined, claimAddress: Address): boolean {
+    if (!Address.isCaller(claimAddress)) {
+      return false;
+    }
+
     const balance = this.balanceOf(from, to);
     let receiveRevokeAmount: Fixed<8>;
     if (amount === undefined) {
       receiveRevokeAmount = balance;
     } else {
       if (balance < amount) {
-        return [undefined, undefined];
+        return false;
       }
       receiveRevokeAmount = amount;
     }
 
-    return [receiveRevokeAmount, balance];
+    if (one.transfer(this.address, claimAddress, receiveRevokeAmount)) {
+      this.balances.set([from, to], balance - receiveRevokeAmount);
+
+      return true;
+    }
+
+    return false;
   }
 }
