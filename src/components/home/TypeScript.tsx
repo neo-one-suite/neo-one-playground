@@ -1,10 +1,12 @@
 import * as React from 'react';
+import typescript from '../../../root/video/typescript.mp4';
 import { Code, TryItOut } from '../../elements';
 import { AssetSectionGrid } from '../../layout';
+import { Video } from './Video';
 
 export function TypeScript() {
   return (
-    <AssetSectionGrid title="TypeScript" bg="darkLight" asset="video" reverse>
+    <AssetSectionGrid title="TypeScript" bg="darkLight" asset={<Video src={typescript} />} reverse>
       <div>
         NEO•ONE's first class TypeScript integration means that smart contracts are strongly typed and will never leave
         you guessing at what's supported. Client APIs for interacting with smart contracts are generated automatically,

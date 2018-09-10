@@ -10,17 +10,23 @@ import {
   TypeScript,
 } from '../components/home';
 
-export function Home() {
-  return (
-    <>
-      <Hero />
-      <Authoring />
-      <TypeScript />
-      <Testing />
-      <Debugging />
-      <DeveloperTools />
-      <NEOTracker />
-      <Contribute />
-    </>
-  );
+export class Home extends React.Component {
+  public shouldComponentUpdate(): boolean {
+    return false;
+  }
+
+  public render() {
+    return (
+      <>
+        <Hero />
+        <Authoring />
+        <TypeScript />
+        <Testing />
+        <Debugging />
+        <DeveloperTools />
+        <NEOTracker />
+        <Contribute />
+      </>
+    );
+  }
 }
