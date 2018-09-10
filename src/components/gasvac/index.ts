@@ -1,3 +1,3 @@
 export * from './Hero';
-export * from './Participate';
+export * from './Vacuum';
 export * from './WhitePaper';

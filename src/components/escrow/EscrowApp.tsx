@@ -29,11 +29,13 @@ const StyledGrid = styled(Grid)`
 
 const Cell = styled(Grid.Item)`
   border: inherit;
+  width: 100%;
 `;
 
-const DoubleCell = styled(Cell)`
-  grid-column: span 2;
+const DoubleCell = styled(Grid.Item)`
+  align-self: center;
   justify-self: center;
+  border: inherit;
 `;
 
 const InputCell = styled(DoubleCell)`
@@ -42,12 +44,10 @@ const InputCell = styled(DoubleCell)`
 
 const HeaderCell = styled(Cell)`
   font-weight: bold;
-  grid-column: span 2;
-  background-color: rgba(0, 0, 0, 0.05);
 `;
 
 const WalletSelector = styled(WalletSelectorBase)`
-  width: 150px;
+  width: 100%;
 `;
 
 const StyledLogo = styled(Logo)`
@@ -58,6 +58,14 @@ interface Props extends ComponentProps<typeof StyledGrid> {
   readonly toWallet: UserAccount | undefined;
   readonly setToWallet: (wallet: WalletSelectorOptionType | undefined) => void;
 }
+
+const template = `
+  "from from escrow escrow to to" auto
+  "fbalance fvalue ebalance evalue tbalance tvalue" auto
+  "send send logo logo selector selector" auto
+  "revoke revoke logo logo receive receive" auto
+  / 1fr 1fr 1fr 1fr 1fr 1fr
+`;
 
 export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
   return (
@@ -93,23 +101,41 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
           )}
         >
           {(value) => (
-            <StyledGrid {...props} columns="repeat(6, 1fr)" autoRows="auto">
-              <HeaderCell data-test="from-account-header">From Account</HeaderCell>
-              <HeaderCell data-test="escrow-account-header">Escrow Account</HeaderCell>
-              <HeaderCell data-test="to-account-header">To Account</HeaderCell>
-              <Cell data-test="from-account-balance-label">Balance:</Cell>
-              <Cell data-test="from-account-balance">{value === undefined ? '' : value.fromBalance.toFormat()}</Cell>
-              <Cell data-test="escrow-account-balance-label">Balance:</Cell>
-              <Cell data-test="escrow-account-balance">{value === undefined ? '' : value.balance.toFormat()}</Cell>
-              <Cell data-test="to-account-balance-label">Balance:</Cell>
-              <Cell data-test="to-account-balance">{value === undefined ? '' : value.toBalance.toFormat()}</Cell>
-              <InputCell column="span 2">
+            <StyledGrid {...props} template={template}>
+              <HeaderCell area="from" data-test="from-account-header">
+                From Account
+              </HeaderCell>
+              <HeaderCell area="escrow" data-test="escrow-account-header">
+                Escrow Account
+              </HeaderCell>
+              <HeaderCell area="to" data-test="to-account-header">
+                To Account
+              </HeaderCell>
+              <Cell area="fbalance" data-test="from-account-balance-label">
+                Balance:
+              </Cell>
+              <Cell area="fvalue" data-test="from-account-balance">
+                {value === undefined ? '' : value.fromBalance.toFormat()}
+              </Cell>
+              <Cell area="ebalance" data-test="escrow-account-balance-label">
+                Balance:
+              </Cell>
+              <Cell area="evalue" data-test="escrow-account-balance">
+                {value === undefined ? '' : value.balance.toFormat()}
+              </Cell>
+              <Cell area="tbalance" data-test="to-account-balance-label">
+                Balance:
+              </Cell>
+              <Cell area="tvalue" data-test="to-account-balance">
+                {value === undefined ? '' : value.toBalance.toFormat()}
+              </Cell>
+              <InputCell area="send">
                 <SendONEBox toWallet={toWallet} />
               </InputCell>
-              <DoubleCell column="span 2" row="span 2">
+              <DoubleCell area="logo">
                 <StyledLogo />
               </DoubleCell>
-              <Cell column="span 2">
+              <Cell area="selector">
                 <WalletSelector
                   data-test="escrow-wallet-selector"
                   value={toWallet === undefined ? undefined : makeWalletSelectorValueOption({ userAccount: toWallet })}
@@ -121,10 +147,10 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
                   }}
                 />
               </Cell>
-              <InputCell column="span 2">
+              <InputCell area="revoke">
                 <RevokeONEBox toWallet={toWallet} />
               </InputCell>
-              <InputCell column="span 2">
+              <InputCell area="receive">
                 <ReceiveONEBox toWallet={toWallet} />
               </InputCell>
             </StyledGrid>

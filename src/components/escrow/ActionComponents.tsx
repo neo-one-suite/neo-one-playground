@@ -6,12 +6,12 @@ import { Base, Flex, Group, Input, styled } from 'reakit';
 import { EscrowContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
-const StyledInput = styled(Input)`
-  width: 150px;
-`;
-
 const Wrapper = styled(Base)`
   display: inline-block;
+`;
+
+const StyledButton = styled(Button)`
+  width: 72px;
 `;
 
 interface Props extends ComponentProps<typeof Flex> {
@@ -23,15 +23,15 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
-          <StyledInput
+          <Input
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeSendAmount(event.currentTarget.value)}
           />
-          <Button data-test="send-one-button" disabled={sendAmount === undefined || sendLoading} onClick={send}>
+          <StyledButton data-test="send-one-button" disabled={sendAmount === undefined || sendLoading} onClick={send}>
             Send
-          </Button>
+          </StyledButton>
         </Group>
       </Wrapper>
     )}
@@ -43,19 +43,19 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
-          <StyledInput
+          <Input
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeReceiveAmount(event.currentTarget.value)}
           />
-          <Button
+          <StyledButton
             data-test="receive-one-button"
             disabled={receiveAmount === undefined || receiveLoading}
             onClick={receive}
           >
             Receive
-          </Button>
+          </StyledButton>
         </Group>
       </Wrapper>
     )}
@@ -67,15 +67,19 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
-          <StyledInput
+          <Input
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeRevokeAmount(event.currentTarget.value)}
           />
-          <Button data-test="revoke-one-button" disabled={revokeAmount === undefined || revokeLoading} onClick={revoke}>
+          <StyledButton
+            data-test="revoke-one-button"
+            disabled={revokeAmount === undefined || revokeLoading}
+            onClick={revoke}
+          >
             Revoke
-          </Button>
+          </StyledButton>
         </Group>
       </Wrapper>
     )}

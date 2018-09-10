@@ -1,4 +1,4 @@
-import { contribute, fastForward, initializeOne, ONE_ADDRESS } from './__data__';
+import { contribute, fastForward, initializeOne, ONE_ADDRESS } from '../common';
 
 describe('One', () => {
   it('participation', () => {

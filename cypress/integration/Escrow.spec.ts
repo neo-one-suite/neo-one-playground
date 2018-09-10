@@ -1,4 +1,4 @@
-import { contribute, fastForward, initializeOne } from './__data__';
+import { contribute, fastForward, initializeOne } from '../common';
 
 describe('Escrow', () => {
   it('escrow contract', () => {
