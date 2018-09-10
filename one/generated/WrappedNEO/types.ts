@@ -1,4 +1,4 @@
-/* @hash 760836ff0133ed2ff0f807c54b3037ef */
+/* @hash 0fc9a32274789c055eb07ed22935e42f */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -16,11 +16,6 @@ import {
   TransactionResult,
 } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
-
-export type WrappedNEOEvent =
-  | WrappedNEOTransferEvent
-  | WrappedNEOApproveSendTransferEvent
-  | WrappedNEORevokeSendTransferEvent;
 
 export interface WrappedNEOTransferEventParameters {
   readonly from: AddressString | undefined;
@@ -42,6 +37,10 @@ export interface WrappedNEORevokeSendTransferEventParameters {
 }
 export interface WrappedNEORevokeSendTransferEvent
   extends Event<'revokeSendTransfer', WrappedNEORevokeSendTransferEventParameters> {}
+export type WrappedNEOEvent =
+  | WrappedNEOTransferEvent
+  | WrappedNEOApproveSendTransferEvent
+  | WrappedNEORevokeSendTransferEvent;
 
 export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSmartContract> {
   readonly approveReceiveTransfer: {

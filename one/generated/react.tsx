@@ -1,4 +1,4 @@
-/* @hash 04164483a7ba77a485930eb3b5ae6377 */
+/* @hash a63563bad0408c07b578dda4baee32f2 */
 // tslint:disable
 /* eslint-disable */
 import { DeveloperTools as DeveloperToolsBase } from '@neo-one/react';
@@ -7,10 +7,11 @@ import * as React from 'react';
 import { Contracts } from './types';
 import { createClient, createDeveloperClients, createOneClients } from './client';
 import { projectID } from './projectID';
+import { createOneSmartContract } from './One/contract';
 import { createFeatureTestSmartContract } from './FeatureTest/contract';
 import { createGASVacSmartContract } from './GASVac/contract';
-import { createOneSmartContract } from './One/contract';
 import { createWrappedNEOSmartContract } from './WrappedNEO/contract';
+import { createEscrowSmartContract } from './Escrow/contract';
 
 export interface WithClients<TClient extends Client> {
   readonly client: TClient;
@@ -43,10 +44,11 @@ export const ContractsProvider = <TClient extends Client>({
         client,
         developerClients,
         oneClients,
+        one: createOneSmartContract(client),
         featureTest: createFeatureTestSmartContract(client),
         gasVac: createGASVacSmartContract(client),
-        one: createOneSmartContract(client),
         wrappedNeo: createWrappedNEOSmartContract(client),
+        escrow: createEscrowSmartContract(client),
       }}
     >
       {children}
