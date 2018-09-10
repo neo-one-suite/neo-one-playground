@@ -81,6 +81,9 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
         <Toolbar.Focusable data-test="header-escrow" as={NavigationLink} to="/escrow">
           Escrow
         </Toolbar.Focusable>
+        <Toolbar.Focusable data-test="header-ico" as={NavigationLink} to="/slots">
+          Slots
+        </Toolbar.Focusable>
       </Toolbar.Content>
       <Toolbar.Content align="end">
         <Toolbar.Focusable

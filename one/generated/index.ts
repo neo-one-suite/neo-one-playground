@@ -1,4 +1,4 @@
-/* @hash ec9eb2bc88223219577504430eab5236 */
+/* @hash 35069d0f18ab2fe959f78bf119241dc5 */
 // tslint:disable
 /* eslint-disable */
 export * from './types';
@@ -13,6 +13,9 @@ export * from './FeatureTest/abi';
 export * from './GASVac/contract';
 export * from './GASVac/types';
 export * from './GASVac/abi';
+export * from './Slots/contract';
+export * from './Slots/types';
+export * from './Slots/abi';
 export * from './WrappedNEO/contract';
 export * from './WrappedNEO/types';
 export * from './WrappedNEO/abi';
