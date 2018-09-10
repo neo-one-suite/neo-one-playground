@@ -1,4 +1,5 @@
 import execa from 'execa';
+import * as path from 'path';
 import * as semver from 'semver';
 
 // tslint:disable-next-line no-let
@@ -9,7 +10,8 @@ if (semver.satisfies(process.version, '8.x')) {
   args = ['--harmony'];
 }
 
-const proc = execa('node', args.concat(['./node_modules/jest/bin/jest.js']).concat(process.argv.slice(2)), {
+const jest = path.resolve(require.resolve('jest'), '..', '..', 'bin', 'jest.js');
+const proc = execa('node', args.concat([jest]).concat(process.argv.slice(2)), {
   stdio: 'inherit',
   env: {
     NODE_NO_WARNINGS: '1',
