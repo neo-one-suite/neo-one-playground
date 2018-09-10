@@ -77,6 +77,7 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
         </Toolbar.Focusable>
         <Toolbar.Focusable data-test="header-gasvac" as={NavigationLink} to="/gasvac">
           GASVac
+        </Toolbar.Focusable>
         <Toolbar.Focusable data-test="header-escrow" as={NavigationLink} to="/escrow">
           Escrow
         </Toolbar.Focusable>
