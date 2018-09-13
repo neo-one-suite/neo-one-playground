@@ -1,4 +1,4 @@
-import { Address, Blockchain, constant, crypto, Deploy, SmartContract, Hash256 } from '@neo-one/smart-contract';
+import { Address, Blockchain, constant, crypto, Deploy, SmartContract, Integer, Fixed } from '@neo-one/smart-contract';
 
 export class Slots extends SmartContract {
   public readonly properties = {
@@ -46,18 +46,28 @@ export class Slots extends SmartContract {
   }
 
   @constant
-  public spin(wager: '1' | '2' | '5', Address: Hash256): ReadonlyArray<number> {
+  public spin(wager: Integer, spinCount: Integer, address: Address): ReadonlyArray<Integer> {
     if (!this.mutableSeed) {
       return [];
     }
+    let spins: Array<Fixed<8>> = [];
+    for (let i = 1; i < 100 ** spinCount; i *= 100) {
+      spins.push((this.mutableSeed / i) % 100);
+    }
 
-    const spin1 = this.mutableSeed % 100;
-    const spin2 = (this.mutableSeed / 100) % 100;
-    const spin3 = (this.mutableSeed / 10000) % 100;
-    const spin4 = (this.mutableSeed / 1000000) % 100;
-    const spin5 = (this.mutableSeed / 100000000) % 100;
-    const spin6 = (this.mutableSeed / 10000000000) % 100;
+    const winningSpin = 1;
+    let isWinner = spins.reduce((final, cur) => (final === -1 && cur === winningSpin ? -1 : -2), -1);
 
-    return [spin1, spin2, spin3, spin4, spin5, spin6];
+    if (isWinner) {
+      // transfer to user
+    } else {
+      // transfer to SC address
+    }
+
+    // transfer funds to escrow
+
+    // transfer funds to account
+
+    return [isWinner, ...spins];
   }
 }

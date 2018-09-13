@@ -1,4 +1,4 @@
-/* @hash 03da417f6ee8249ec29b82f39ecd47e6 */
+/* @hash f1c6d396eae02adb54d3b851f86fa707 */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -40,11 +40,11 @@ export interface SlotsSmartContract extends SmartContract<SlotsReadSmartContract
       >;
     };
   };
-  readonly spin: (wager: string, Address: Hash256String) => Promise<Array<BigNumber>>;
+  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: AddressString) => Promise<Array<BigNumber>>;
 }
 
 export interface SlotsReadSmartContract extends ReadSmartContract<SlotsEvent> {
   readonly contractInfo: () => Promise<undefined>;
   readonly owner: () => Promise<AddressString>;
-  readonly spin: (wager: string, Address: Hash256String) => Promise<Array<BigNumber>>;
+  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: AddressString) => Promise<Array<BigNumber>>;
 }

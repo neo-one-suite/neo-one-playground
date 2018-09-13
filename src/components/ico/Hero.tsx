@@ -14,11 +14,11 @@ const StyledBackground = styled(FlexBackground)`
   width: 100%;
 `;
 
-export function Hero() {
+export function Hero({ text }) {
   return (
     <StyledBackground>
       <ContentWrapper justifyContent="center">
-        <Header data-test="hero-text">The One ICO</Header>
+        <Header data-test="hero-text">{text ? text : 'The One ICO'}</Header>
       </ContentWrapper>
     </StyledBackground>
   );

@@ -5,7 +5,6 @@ import { Base, Flex, Input, styled } from 'reakit';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../one/generated';
 import { Hero, Participate } from '../components/ico';
-import { SlotsResult } from '../components/slots';
 import { SlotMachine } from '../components/slots';
 
 import { SlotsContainer } from '../containers';
@@ -51,22 +50,34 @@ const address = '123.234';
 export const Slots = (props: ComponentProps<typeof Flex>) => {
   return (
     <>
-      <Hero>Progressive Slots</Hero>
+      <Hero text="Progressive Slots" />
 
       <WithContracts>
-        {({ slots }) => (
+        {({ slots, client }) => (
           <SlotsContainer>
-            {({ loading, onChangeAmount, send, spin, address }) => (
+            {({ loading, onChangeAmount, spin, spinning, address, results }) => (
               <Wrapper>
-                <SlotMachine />
+                <SlotMachine results={results} />
                 <StyledActionTray justifyContent="center">
-                  <StyledButton data-test="contribute-button1" onClick={() => spin(1, address)}>
+                  <StyledButton
+                    data-test="contribute-button1"
+                    disabled={spinning}
+                    onClick={() => spin(new BigNumber('1'), address)}
+                  >
                     1 Token Spin
                   </StyledButton>
-                  <StyledButton data-test="contribute-button2" onClick={() => spin(2, address)}>
+                  <StyledButton
+                    data-test="contribute-button2"
+                    disabled={spinning}
+                    onClick={() => spin(new BigNumber('2'), address)}
+                  >
                     2 Token Spin
                   </StyledButton>
-                  <StyledButton data-test="contribute-button5" onClick={() => spin(5, address)}>
+                  <StyledButton
+                    data-test="contribute-button5"
+                    disabled={spinning}
+                    onClick={() => spin(new BigNumber('5'), address)}
+                  >
                     5 Token Spin
                   </StyledButton>
                 </StyledActionTray>

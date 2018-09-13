@@ -83,27 +83,25 @@ const RepeatButton = (props: RepeatButtonProps) => (
   <RepeatButtonStyles aria-label="Play again." id="repeatButton" onClick={props.onClick} />
 );
 
-interface MachineState {
-  winner?: boolean;
-  result: number[];
+interface SlotMachineProps {
+  winner: number[];
+  results: number[];
 }
-interface SlotMachineProps {}
 
 export class SlotMachine extends React.Component<SlotMachineProps> {
-  state: MachineState;
   slotWindows: Spinner[];
   matches: number[];
+  results: number[];
 
   constructor(props: SlotMachineProps) {
     super(props);
     this.slotWindows = [];
     this.matches = [];
-    this.state = {
-      result: [3, 4, 5],
-      winner: undefined,
-    };
+    this.results = props.results;
+
     this.finishHandler = this.finishHandler.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
+    this.render = this.render.bind(this);
   }
 
   protected updateDisplay() {
@@ -131,7 +129,9 @@ export class SlotMachine extends React.Component<SlotMachineProps> {
   }
 
   render() {
-    const { winner, result } = this.state;
+    const { winner, results } = this.props;
+    console.log('props look like this');
+    console.log(this.props);
     const getLoser = () => {
       return 'oi';
     };
@@ -141,13 +141,11 @@ export class SlotMachine extends React.Component<SlotMachineProps> {
     if (winner !== null) {
       repeatButton = <RepeatButton onClick={this.updateDisplay} />;
     }
+    const winningScore = -1;
 
-    if (winner) {
+    if (winner === -1) {
       winningSound = <WinningSound />;
     }
-    const [result1, result2, result3] = result;
-    const randOffset = Math.random();
-
     return (
       <MachineContainer>
         {winningSound}
@@ -156,30 +154,17 @@ export class SlotMachine extends React.Component<SlotMachineProps> {
         </h1>
         {repeatButton}
         <SpinnerContainer>
-          <Spinner
-            onFinish={this.finishHandler}
-            ref={(child) => {
-              if (child) this.slotWindows.push(child);
-            }}
-            result={result1}
-            offset={randOffset}
-          />
-          <Spinner
-            onFinish={this.finishHandler}
-            ref={(child) => {
-              if (child) this.slotWindows.push(child);
-            }}
-            result={result2}
-            offset={randOffset}
-          />
-          <Spinner
-            onFinish={this.finishHandler}
-            ref={(child) => {
-              if (child) this.slotWindows.push(child);
-            }}
-            result={result3}
-            offset={randOffset}
-          />
+          {results.map((result, idx) => (
+            <Spinner
+              onFinish={this.finishHandler}
+              ref={(child) => {
+                if (child) this.slotWindows.push(child);
+              }}
+              result={result}
+              offset={offset}
+              key={idx}
+            />
+          ))}
           <GradientFadeOut />
         </SpinnerContainer>
       </MachineContainer>
@@ -194,8 +179,6 @@ interface SpinnerProps {
 interface SpinnerState {
   timeRemaining: number;
   position: number;
-  result: number;
-  offset: number;
 }
 class Spinner extends React.Component<SpinnerProps> {
   timer?: NodeJS.Timer;
@@ -205,9 +188,7 @@ class Spinner extends React.Component<SpinnerProps> {
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.state = {
       position: 0,
-      offset: 0,
       timeRemaining: 0,
-      result: 0,
     };
   }
 
@@ -215,13 +196,22 @@ class Spinner extends React.Component<SpinnerProps> {
     this.reset();
   }
 
+  endSpin(results) {
+    // if results undefined display:
+    //     !  ?  !
+    // on the spinner.
+    // add/subtract from the start position
+  }
+
+  spinToErrorState() {}
+
   reset() {
     if (this.timer) {
       clearInterval(this.timer);
     }
 
     this.start = this.setStartPosition.bind(this);
-
+    console.log('%c,  is where I am... ', 'background-color: green; color: white;');
     this.setState({
       position: this.start,
       timeRemaining: this.props.result,
@@ -238,7 +228,13 @@ class Spinner extends React.Component<SpinnerProps> {
   speed = Spinner.iconHeight;
 
   setStartPosition() {
-    return Math.floor(this.state.result * (9 * this.state.offset)) * Spinner.iconHeight * -1;
+    const retv = Math.floor(this.props.result * (9 * this.props.offset) * Spinner.iconHeight * -1);
+    console.log(
+      'SlotMachine.tsx: class Spinner: setStartPosition(): this.props.result: this.props.result * (9 * this.props.offset) * Spinner.iconHeight  ' +
+        retv,
+    );
+    return retv;
+    l;
   }
 
   moveBackground() {
@@ -253,6 +249,7 @@ class Spinner extends React.Component<SpinnerProps> {
     const totalSymbols = 9;
     const maxPosition = Spinner.iconHeight * (totalSymbols - 1) * -1;
     let moved = 0;
+    console.log('SlotMachine.tsx: class Spinner: getSymbolFromPosition(): this.props.result: ' + this.props.result);
     if (this.props.result) {
       moved = this.props.result / 100;
     }
@@ -263,7 +260,7 @@ class Spinner extends React.Component<SpinnerProps> {
       currentPosition -= Spinner.iconHeight;
 
       if (currentPosition < maxPosition) {
-        currentPosition = 0;
+        currentPosition = currentPosition % maxPosition;
       }
     }
 
@@ -295,7 +292,7 @@ class Spinner extends React.Component<SpinnerProps> {
   render() {
     let { position } = this.state;
 
-    return <StyledIcons style={{ backgroundPosition: '0px ' + position + 'px' }} />;
+    return <StyledIcons style={{ backgroundPosition: '0 ' + position + 'px' }} />;
   }
 }
 

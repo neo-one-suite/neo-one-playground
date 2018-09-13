@@ -1,4 +1,4 @@
-/* @hash 988ebfe5ad764078e4c5f1a20344162a */
+/* @hash 9893d3f52480865d732c85b462329be5 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -34,16 +34,22 @@ export const slotsABI: ABI = {
       name: 'spin',
       parameters: [
         {
-          forwardedValue: false,
+          decimals: 0,
           name: 'wager',
           optional: false,
-          type: 'String',
+          type: 'Integer',
+        },
+        {
+          decimals: 0,
+          name: 'spinCount',
+          optional: false,
+          type: 'Integer',
         },
         {
           forwardedValue: false,
-          name: 'Address',
+          name: 'address',
           optional: false,
-          type: 'Hash256',
+          type: 'Address',
         },
       ],
       receive: false,
