@@ -2,7 +2,7 @@
 import { Button, FromStream } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Base, Flex, Input, styled } from 'reakit';
+import { Box, Flex, Input, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
@@ -26,7 +26,7 @@ const StyledBody2 = styled(Body2)`
   white-space: nowrap;
 `;
 
-const Wrapper = styled(Base)`
+const Wrapper = styled(Box)`
   display: inline-block;
 `;
 

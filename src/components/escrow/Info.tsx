@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { Base, List, styled } from 'reakit';
+import { Box, List, styled } from 'reakit';
 import { SectionGrid } from '../../layout';
 import { ComponentProps } from '../../types';
 import { Description } from './Description';
 
-const Wrapper = styled(Base)`
+const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const ListHeader = styled(Base.as('li'))`
+const ListHeader = styled(Box.as('li'))`
   font-weight: bold;
   font-size: 18pt;
   margin-top: 25px;
 `;
 
-const ListItem = styled(Base.as('li'))`
+const ListItem = styled(Box.as('li'))`
   list-style-type: disc;
   margin-left: 25px;
   font-size: 10pt;

@@ -203,7 +203,7 @@ const run = async ({
   proc.stderr.pipe(process.stderr);
 
   // Wait for server to startup
-  await new Promise<void>((resolve) => setTimeout(resolve, 30000));
+  await new Promise<void>((resolve) => setTimeout(resolve, 60000));
 
   proc.stdout.unpipe(process.stdout);
   proc.stderr.unpipe(process.stderr);

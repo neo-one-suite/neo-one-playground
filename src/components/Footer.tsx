@@ -7,6 +7,10 @@ import { ComponentProps } from '../types';
 
 const year = new Date().getFullYear();
 
+const StyledParagraph = styled(Paragraph)`
+  /* empty block */
+`;
+
 const Wrapper = styled(Flex)`
   justify-content: center;
   width: 100%;
@@ -14,7 +18,7 @@ const Wrapper = styled(Flex)`
   color: ${prop('theme.gray0')};
   background-color: ${prop('theme.black')};
 
-  ${/* sc-sel */ Paragraph} {
+  ${/* sc-sel */ StyledParagraph} {
     margin: 0;
     line-height: 1.5;
   }
@@ -56,16 +60,16 @@ export const Footer = (props: ComponentProps<typeof Wrapper>) => (
           </Link>
         </li>
       </Icons>
-      <Paragraph>
+      <StyledParagraph>
         Released under the{' '}
         <Link href="https://opensource.org/licenses/MIT" target="_blank">
           MIT License
         </Link>
-      </Paragraph>
-      <Paragraph>
+      </StyledParagraph>
+      <StyledParagraph>
         Copyright © 2017-
         {year} NEO•ONE
-      </Paragraph>
+      </StyledParagraph>
     </ContentWrapper>
   </Wrapper>
 );

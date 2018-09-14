@@ -4,13 +4,14 @@ import { prop, switchProp } from 'styled-tools';
 import { Headline, SectionContentWrapper, Subheading } from '../elements';
 import { ComponentProps } from '../types';
 
+type Background = 'dark' | 'light' | 'darkLight' | 'gray5';
 interface Props {
-  readonly bg: 'dark' | 'light' | 'darkLight' | 'gray5';
+  readonly bg: Background;
   readonly title: string;
   readonly children: React.ReactNode;
 }
 
-const StyledHeading = styled(Headline)`
+const StyledHeading = styled(Headline)<{ readonly bg: Background }>`
   ${prop('theme.fonts.axiformaMedium')};
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {

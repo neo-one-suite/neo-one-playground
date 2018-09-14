@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Base, styled } from 'reakit';
+import { Box, styled } from 'reakit';
 import { prop } from 'styled-tools';
 
-const Wrapper = styled(Base)`
+const Wrapper = styled(Box)`
   ${prop('theme.fonts.axiformaBold')};
   font-size: 1rem;
   line-height: 1.5em;

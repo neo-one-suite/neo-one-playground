@@ -4,7 +4,7 @@ describe('Escrow', () => {
   it('escrow contract', () => {
     // Load wallet with ONE tokens from the ico page
     initializeOne();
-    fastForward(3600);
+    fastForward(3610);
     contribute();
 
     cy.visit('/escrow');

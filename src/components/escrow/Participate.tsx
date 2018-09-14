@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Base, styled } from 'reakit';
+import { Box, styled } from 'reakit';
 import { WalletContainer } from '../../containers';
 import { SectionContentWrapper } from '../../elements';
 import { SectionGrid } from '../../layout';
 import { ComponentProps } from '../../types';
 import { EscrowApp } from './EscrowApp';
 
-const Wrapper = styled(Base)`
+const Wrapper = styled(Box)`
   display: inline-block;
 `;
 

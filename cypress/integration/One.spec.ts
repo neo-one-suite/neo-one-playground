@@ -16,7 +16,7 @@ describe('One', () => {
     cy.get('[data-test=contribute-input]').clear();
 
     // Fast forward and contribute
-    fastForward(3600);
+    fastForward(3610);
     contribute();
 
     // Add ONE to settings

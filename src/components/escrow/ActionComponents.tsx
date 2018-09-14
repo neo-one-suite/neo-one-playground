@@ -2,11 +2,11 @@
 import { UserAccount } from '@neo-one/client';
 import { Button } from '@neo-one/react';
 import * as React from 'react';
-import { Base, Flex, Group, Input, styled } from 'reakit';
+import { Box, Flex, Group, Input, styled } from 'reakit';
 import { EscrowContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
-const Wrapper = styled(Base)`
+const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
