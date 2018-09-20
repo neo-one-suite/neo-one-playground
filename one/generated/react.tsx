@@ -11,6 +11,7 @@ import { createFeatureTestSmartContract } from './FeatureTest/contract';
 import { createGASVacSmartContract } from './GASVac/contract';
 import { createWrappedNEOSmartContract } from './WrappedNEO/contract';
 import { createEscrowSmartContract } from './Escrow/contract';
+import { createSmartDonationSmartContract } from './SmartDonation/contract';
 
 export interface WithClients<TClient extends Client> {
   readonly client: TClient;
@@ -49,6 +50,7 @@ export const ContractsProvider = <TClient extends Client>({
         gasVac: createGASVacSmartContract(client),
         wrappedNeo: createWrappedNEOSmartContract(client),
         escrow: createEscrowSmartContract(client),
+        smartDonation: createSmartDonationSmartContract(client),
       }}
     >
       {children}
