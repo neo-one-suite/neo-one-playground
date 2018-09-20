@@ -3,7 +3,7 @@
 /* eslint-disable */
 import { DeveloperTools as DeveloperToolsBase } from '@neo-one/react';
 import { Client, DeveloperClient, OneClient } from '@neo-one/client';
-import * as React from 'react';
+import React, { ComponentType } from 'react';
 import { Contracts } from './types';
 import { createClient, createDeveloperClients, createOneClients } from './client';
 import { projectID } from './projectID';

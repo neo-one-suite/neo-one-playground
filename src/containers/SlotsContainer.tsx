@@ -1,105 +1,105 @@
-import { Client, Hash256, TransactionResult } from '@neo-one/client';
+import { UserAccount } from '@neo-one/client';
+import { WalletSelectorOptionType } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
-import { ActionMap, ContainerProps, EffectMap } from 'constate';
-import * as React from 'react';
+import { Client } from '@neo-one/client';
+import { ContainerProps, EffectMap } from 'constate';
+import React, { MouseEvent, ReactNode, SFC } from 'react';
 import { Container } from 'reakit';
+import { SpinnerProps } from '../components/slots/Spinner';
 import { SlotsSmartContract, WithContracts } from '../../one/generated';
 
-/* COMPONENT
-     LAYOUT
-     STATE
-     ACTIONS
-*/
-
-interface Actions {
-  readonly onChangeAmount: (text: string) => void;
-  readonly spin: (state: State) => void;
+export enum TSpinnerState {
+  RESTING,
+  SPINNING,
+  SETTLING,
 }
 
-interface State {
-  readonly text: string;
-  readonly amount: BigNumber | undefined;
-  readonly loading: boolean;
-  readonly results: BigNumber[];
-  readonly address: string;
-  readonly offset: number;
-  readonly winner: boolean;
-  readonly winnings: number;
-  readonly spinning: boolean;
-  readonly spinsStart: number[];
-  readonly spinsPosition: number[];
-}
+const WHEEL_COUNT = 3;
+const WINNER_DEF = -2;
+const WAGER = 1;
 
-const actions: ActionMap<State, Actions> = {
-  onChangeAmount: (text: string) => () => {
-    let amount: BigNumber | undefined;
-    try {
-      amount = new BigNumber(text);
-      if (amount.toString() !== text) {
-        amount = undefined;
-      }
-    } catch {
-      // do nothing
-    }
-
-    return { text, amount };
-  },
-  spin: ({ amount }) => () => {
-    console.log(' Spin on Actions: ' + amount);
-    return { amount };
-  },
+const slotStateSpinning = { spinnerState: TSpinnerState.SPINNING };
+const slotStateSettling = { spinnerState: TSpinnerState.SETTLING };
+const slotStateResting = { spinnerState: TSpinnerState.RESTING };
+const spinFailed = {
+  isWinner: false,
+  amount: 0,
+  results: [...Array().keys()].map(() => -1),
 };
 
-interface Effects {
-  readonly spin: (wager: BigNumber, address: string) => void;
+interface State {
+  //  readonly fromWallet: UserAccount | undefined;
+  readonly isWinner: boolean;
+  readonly wager: number;
+  readonly wheels: number;
+  readonly spinnerState: TSpinnerState;
+  readonly results: number[];
+  readonly spinners: SpinnerProps[];
+  readonly amount: number;
+  readonly playersWallet: UserAccount;
 }
 
-const makeEffects = (client: Client, slots: SlotsSmartContract): EffectMap<State, Effects> => ({
-  spin: (wager, address) => ({
-    state: { amount },
+const initialState: Partial<State> = {
+  isWinner: false,
+  spinnerState: TSpinnerState.RESTING,
+  wager: WAGER,
+  wheels: WHEEL_COUNT,
+  results: [...Array(3).keys()].map(() => -1),
+  playersWallet: undefined,
+};
+
+export interface EffectsSpinProps {
+  state: State;
+  setState: (state: Partial<State>) => void;
+}
+
+export interface SlotsContainerEffects {
+  readonly setFromWallet: (Wallet: WalletSelectorOptionType | undefined) => void;
+  readonly spin: (e: MouseEvent<HTMLElement>) => void;
+}
+
+const makeEffects = (client: Client, slots: SlotsSmartContract): EffectMap<State, SlotsContainerEffects> => ({
+  setFromWallet: (valueWallet: WalletSelectorOptionType | undefined) => ({
     setState,
   }: {
-    state: State;
     setState: (state: Partial<State>) => void;
   }) => {
-    console.log(' Starting Spin ');
-    setState({ spinning: true });
-    setState({ results: [new BigNumber('30000'), new BigNumber('30000'), new BigNumber('30000')] });
+    setState({ playersWallet: valueWallet === undefined ? undefined : valueWallet.userAccount });
+  },
 
-    const WINNING = -2;
-    const slotWindowsQty = new BigNumber('3');
+  spin: (e: MouseEvent<HTMLElement>) => ({ state, setState }) => {
+    console.log(' HERE WE ARE ');
+    // set state that we are spinning...
+    setState({ spinnerState: TSpinnerState.SPINNING });
+
+    // ToDo: Take Wager from Player, validate transaction
+
+    // Produce random numbers....
+    const updateResults = ([isWinner, amount, ...spins]: BigNumber[]) => {
+      setState({
+        isWinner: isWinner.toNumber() === WINNER_DEF ? true : false,
+        amount: amount.toNumber(),
+        results: spins.map((bn: BigNumber) => bn.toNumber()),
+      });
+    };
+
+    const onError = () => {
+      setState(spinFailed);
+    };
 
     slots
-      .spin(wager, slotWindowsQty, 'APyEx5f4Zm4oCHwFWiSTaph1fPBxZacYVR')
-      .then(([winner, winAmount, ...spins]) => {
-        console.log(' FINISHED THE SPIN ');
-        const offset = Math.floor(Math.random() * 100);
-
-        console.log(' Offset: ' + offset);
-        setState({
-          winner: winner.toNumber() == WINNING ? true : false,
-          results: spins,
-          spinning: false,
-          offset,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .spin(
+        new BigNumber(state.wheels.toString()),
+        new BigNumber(state.wager.toString()), //
+        'MakeSmartContractAcceptUserAccount', // address
+      )
+      .then(updateResults)
+      .catch(onError);
   },
 });
-export const SlotsContainer = (props: ContainerProps<State, Actions, {}, Effects>) => (
+
+export const SlotsContainer = (props: ContainerProps<State, {}, {}, SlotsContainerEffects>) => (
   <WithContracts>
-    {({ client, slots }) => {
-      const effects = makeEffects(client, slots);
-      return (
-        <Container
-          {...props}
-          initialState={{ text: '', results: [], loading: false }}
-          actions={actions}
-          effects={effects}
-        />
-      );
-    }}
+    {({ client, slots }) => <Container {...props} effects={makeEffects(client, slots)} initialState={initialState} />}
   </WithContracts>
 );

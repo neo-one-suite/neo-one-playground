@@ -21,31 +21,6 @@ export class Slots extends SmartContract {
   }
 
   @constant
-  public contractInfo() {
-    // const myHash = Blockchain.currentTransaction.hash.toString('utf8');
-    const myHash = Blockchain.currentTransaction.hash.toString('utf8');
-    const items = [
-      {
-        name: 'txHash',
-        value: myHash,
-      },
-      {
-        name: 'hashHeight',
-        value: Blockchain.currentHeight,
-      },
-      {
-        name: 'timeStamp',
-        value: Blockchain.currentBlockTime,
-      },
-      {
-        name: "this contract's address",
-        value: this.address,
-      },
-    ];
-    console.log(items.map((item) => `${item.name} = ${item.value}`).join('\n'));
-  }
-
-  @constant
   public spin(wager: Integer, spinCount: Integer, address: Address): ReadonlyArray<Integer> {
     if (!this.mutableSeed) {
       return [];
@@ -56,18 +31,19 @@ export class Slots extends SmartContract {
     }
 
     const winningSpin = 1;
-    let isWinner = spins.reduce((final, cur) => (final === -1 && cur === winningSpin ? -1 : -2), -1);
+    let winState = spins.reduce((final, cur) => (final === -1 && cur === winningSpin ? -1 : -2), -1);
 
-    if (isWinner) {
+    if (winState) {
       // transfer to user
     } else {
       // transfer to SC address
     }
-
+    winState = -1;
+    let amount = 1;
     // transfer funds to escrow
 
     // transfer funds to account
 
-    return [isWinner, ...spins];
+    return [winState, amount, ...spins];
   }
 }

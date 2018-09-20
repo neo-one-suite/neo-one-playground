@@ -1,4 +1,4 @@
-/* @hash f1c6d396eae02adb54d3b851f86fa707 */
+/* @hash 0d839ecf23a570fc7c535f64bf14afa0 */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -18,7 +18,6 @@ import BigNumber from 'bignumber.js';
 export type SlotsEvent = never;
 
 export interface SlotsSmartContract extends SmartContract<SlotsReadSmartContract> {
-  readonly contractInfo: () => Promise<undefined>;
   readonly deploy: {
     (owner?: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, SlotsEvent>, InvocationTransaction>
@@ -40,11 +39,10 @@ export interface SlotsSmartContract extends SmartContract<SlotsReadSmartContract
       >;
     };
   };
-  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: AddressString) => Promise<Array<BigNumber>>;
+  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: UserAccount) => Promise<Array<BigNumber>>;
 }
 
 export interface SlotsReadSmartContract extends ReadSmartContract<SlotsEvent> {
-  readonly contractInfo: () => Promise<undefined>;
   readonly owner: () => Promise<AddressString>;
   readonly spin: (wager: BigNumber, spinCount: BigNumber, address: AddressString) => Promise<Array<BigNumber>>;
 }

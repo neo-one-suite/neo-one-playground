@@ -1,4 +1,4 @@
-/* @hash 9893d3f52480865d732c85b462329be5 */
+/* @hash df33ba3ff30b7c9d0f0449f95ee5b874 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -15,18 +15,6 @@ export const slotsABI: ABI = {
         optional: false,
         type: 'Address',
       },
-    },
-    {
-      claim: false,
-      constant: true,
-      name: 'contractInfo',
-      parameters: [],
-      receive: false,
-      returnType: {
-        optional: false,
-        type: 'Void',
-      },
-      send: false,
     },
     {
       claim: false,
