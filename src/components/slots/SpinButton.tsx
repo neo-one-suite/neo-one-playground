@@ -9,7 +9,7 @@ type SpinButtonProps = {
 
 export const SpinButton: SFC<SpinButtonProps> = ({ clickHandler, spinnerState, children }) => (
   <button
-    style={{ margin: '.5em', fontSize: '2em', borderRadius: '.5em' }}
+    style={{ margin: '.5em', fontSize: '2em', borderRadius: '.5em' width: '100%'}}
     onClick={clickHandler}
     disabled={spinnerState !== TSpinnerState.RESTING}
   >

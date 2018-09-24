@@ -39,10 +39,10 @@ export interface SlotsSmartContract extends SmartContract<SlotsReadSmartContract
       >;
     };
   };
-  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: UserAccount) => Promise<Array<BigNumber>>;
+  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: string) => Promise<Array<BigNumber>>;
 }
 
 export interface SlotsReadSmartContract extends ReadSmartContract<SlotsEvent> {
-  readonly owner: () => Promise<AddressString>;
-  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: AddressString) => Promise<Array<BigNumber>>;
+  readonly owner: () => Promise<string>;
+  readonly spin: (wager: BigNumber, spinCount: BigNumber, address: string) => Promise<Array<BigNumber>>;
 }

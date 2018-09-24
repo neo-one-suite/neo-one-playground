@@ -9,6 +9,7 @@ import { SpinnerProps } from '../components/slots/Spinner';
 import { SlotsSmartContract, WithContracts } from '../../one/generated';
 
 export enum TSpinnerState {
+  ERROR,
   RESTING,
   SPINNING,
   SETTLING,
@@ -68,33 +69,49 @@ const makeEffects = (client: Client, slots: SlotsSmartContract): EffectMap<State
   },
 
   spin: (e: MouseEvent<HTMLElement>) => ({ state, setState }) => {
-    console.log(' HERE WE ARE ');
     // set state that we are spinning...
+    //    console.log(' SPINNER STATE: spinning');
     setState({ spinnerState: TSpinnerState.SPINNING });
 
     // ToDo: Take Wager from Player, validate transaction
-
+    const onFinal = () => {
+      setState({
+        spinnerState: TSpinnerState.RESTING,
+      });
+    };
     // Produce random numbers....
     const updateResults = ([isWinner, amount, ...spins]: BigNumber[]) => {
+      //      console.log(' SPINNER STATE: Settling');
+      //      console.log(`isWinner: ${isWinner}\namount: ${amount}\nspins: ${spins}\n`);
       setState({
+        spinnerState: TSpinnerState.SETTLING,
         isWinner: isWinner.toNumber() === WINNER_DEF ? true : false,
         amount: amount.toNumber(),
         results: spins.map((bn: BigNumber) => bn.toNumber()),
       });
+      setTimeout(onFinal, 10000);
     };
 
     const onError = () => {
       setState(spinFailed);
     };
 
-    slots
-      .spin(
-        new BigNumber(state.wheels.toString()),
-        new BigNumber(state.wager.toString()), //
-        'MakeSmartContractAcceptUserAccount', // address
-      )
-      .then(updateResults)
-      .catch(onError);
+    const randomBn = () => {
+      return new BigNumber(Math.floor(Math.random() * 100).toString());
+    };
+
+    setTimeout(() => {
+      updateResults([new BigNumber('0'), new BigNumber('3'), randomBn(), randomBn(), randomBn()]);
+    }, 2000);
+
+    // slots
+    //   .spin(
+    //     new BigNumber(state.wheels.toString()),
+    //     new BigNumber(state.wager.toString()), //
+    //     'MakeSmartContractAcceptUserAccount', // address
+    //   )
+    //   .then(updateResults)
+    //   .catch(onError);
   },
 });
 

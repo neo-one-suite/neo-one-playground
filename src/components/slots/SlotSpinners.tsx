@@ -3,24 +3,27 @@ import { Spinner, SpinnerProps } from './Spinner';
 import { Flex, styled } from 'reakit';
 import { TSpinnerState } from '../../containers/SlotsContainer';
 
+const defaultWheelCount = 3;
+
 const defaultProps = {
-  results: [],
+  results: [...Array(defaultWheelCount).keys()].map(() => -1),
   isWinner: false,
+  wheels: 3,
   amount: 0,
   spinningState: TSpinnerState.RESTING,
 };
 
 const StandardSlot = styled(Flex)`
-  min-width: 330px;
-  width: 33%;
-  max-width: 800px;
-  position: relative;
-  padding: 0;
+  height: 100%;
+  display: block;
+  border-radius: 1em;
+  overflow: hidden;
 `;
 
 export type SlotSpinnerProps = {
   results: number[];
   isWinner: boolean;
+  wheels: number;
   amount: number;
   spinningState: TSpinnerState;
   spinners?: SpinnerProps[];
@@ -29,21 +32,20 @@ export type SlotSpinnerProps = {
 export const SlotSpinners = (props: SlotSpinnerProps = defaultProps) => {
   // How To make Props work?!
   // const { isWinner, results, spinningState } = this.props;
-  const results = [1, 2, 3];
-  const isWinner = true;
+  const isWinner = false;
 
   console.log('props look like this');
   console.log(props);
   let winningSound = null;
 
-  const winningScore = -1;
+  const winningScore = -2;
 
   if (isWinner) {
     winningSound = <WinningSound />;
   }
   return (
     <StandardSlot>
-      {results.map((result: number, idx: number) => (
+      {props.results.map((result: number, idx: number) => (
         <Spinner result={result} key={idx} spinningState={props.spinningState} />
       ))}
     </StandardSlot>

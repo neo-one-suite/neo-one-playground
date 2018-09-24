@@ -21,7 +21,7 @@ export class Slots extends SmartContract {
   }
 
   @constant
-  public spin(wager: Integer, spinCount: Integer, address: Address): ReadonlyArray<Integer> {
+  public spin(wager: Integer, spinCount: Integer, address: string): ReadonlyArray<Integer> {
     if (!this.mutableSeed) {
       return [];
     }
