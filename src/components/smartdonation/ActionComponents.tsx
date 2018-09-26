@@ -5,8 +5,7 @@ import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, Grid, Input, styled } from 'reakit';
 import { prop } from 'styled-tools';
-import { SDViewerContainer } from '../../containers';
-import { SDManagerContainer } from '../../containers/SDManagerContainer';
+import { CollectContainer, ContributeContainer, MessageContainer, SetupContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
 const Wrapper = styled(Box)`
@@ -34,11 +33,11 @@ const StyledGrid = styled(Grid)`
   background-color: ${prop('theme.gray1')};
 `;
 
-interface ManagerProps extends ComponentProps<typeof Flex> {
+interface Props extends ComponentProps<typeof Flex> {
   readonly disabled: boolean;
 }
 
-interface ViewerProps extends ManagerProps {
+interface WalletProps extends Props {
   readonly toWallet: UserAccount | undefined;
 }
 
@@ -47,8 +46,14 @@ const contributeTemplate = `
   "cinput button" auto
 `;
 
-export const SetupAddressBox = (props: ManagerProps) => (
-  <SDManagerContainer>
+const messageTemplate = `
+  "input" auto
+  "input" auto
+  "button" auto
+`;
+
+export const SetupAddressBox = (props: Props) => (
+  <SetupContainer>
     {({ setupLoading, setup }) => (
       <Wrapper>
         <StyledButton data-test="setup-button" disabled={setupLoading || props.disabled} onClick={setup}>
@@ -56,11 +61,50 @@ export const SetupAddressBox = (props: ManagerProps) => (
         </StyledButton>
       </Wrapper>
     )}
-  </SDManagerContainer>
+  </SetupContainer>
 );
 
-export const ContributeBox = (props: ViewerProps) => (
-  <SDViewerContainer toWallet={props.toWallet}>
+export const CollectBox = (props: Props) => (
+  <CollectContainer>
+    {({ collectLoading, collect }) => (
+      <Wrapper>
+        <StyledButton data-test="collect-button" disabled={collectLoading || props.disabled} onClick={collect}>
+          Collect
+        </StyledButton>
+      </Wrapper>
+    )}
+  </CollectContainer>
+);
+
+export const MessageBox = (props: Props) => (
+  <MessageContainer>
+    {({ loading, update, message, onChangeMessage }) => (
+      <StyledGrid {...props} template={messageTemplate}>
+        <Cell area="input">
+          <StyledInput
+            as="textarea"
+            data-test="message-box-input"
+            value={message}
+            placeholder="Update your global message!"
+            onChange={(event: React.SyntheticEvent<any>) => onChangeMessage(event.currentTarget.value)}
+          />
+        </Cell>
+        <Cell area="button">
+          <StyledButton
+            data-test="message-button"
+            disabled={props.disabled || loading || message === ''}
+            onClick={update}
+          >
+            Update
+          </StyledButton>
+        </Cell>
+      </StyledGrid>
+    )}
+  </MessageContainer>
+);
+
+export const ContributeBox = (props: WalletProps) => (
+  <ContributeContainer toWallet={props.toWallet}>
     {({ contributeLoading, message, amountText, amount, onChangeContributeAmount, onChangeMessage, contribute }) => (
       <StyledGrid {...props} template={contributeTemplate}>
         <Cell area="minput">
@@ -86,6 +130,7 @@ export const ContributeBox = (props: ViewerProps) => (
             disabled={
               props.disabled ||
               contributeLoading ||
+              props.toWallet === undefined ||
               (amount === undefined && message === '') ||
               (amount !== undefined && !amount.isEqualTo(new BigNumber(amountText)))
             }
@@ -96,5 +141,5 @@ export const ContributeBox = (props: ViewerProps) => (
         </Cell>
       </StyledGrid>
     )}
-  </SDViewerContainer>
+  </ContributeContainer>
 );

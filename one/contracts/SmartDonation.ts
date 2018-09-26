@@ -116,7 +116,7 @@ export class SmartDonation extends SmartContract {
     if (Address.isCaller(address) && account !== undefined) {
       const confirmation = one.transfer(this.address, address, account[2]);
       if (confirmation) {
-        this.balances.set(address, ['', account[1], 0, account[3]]);
+        this.balances.set(address, [account[0], account[1], 0, account[3]]);
       }
 
       return confirmation;
@@ -147,7 +147,7 @@ export class SmartDonation extends SmartContract {
     return false;
   }
 
-  private contribute(from: Address, to: Address, amount: Fixed<8>, messageIn?: string): boolean {
+  private contribute(from: Address, to: Address, amount: Fixed<8>, messageIn: string): boolean {
     const balances = this.balances.get(to);
 
     if (balances === undefined) {
@@ -155,7 +155,7 @@ export class SmartDonation extends SmartContract {
     }
 
     const contributor = this.storage.get([to, from]);
-    const message = messageIn === undefined ? (contributor === undefined ? '' : contributor[1]) : messageIn;
+    const message = messageIn === '' ? (contributor === undefined ? '' : contributor[1]) : messageIn;
     const contribBalance = contributor === undefined ? amount : contributor[0] + amount;
 
     // this value is actually definitely defined for real I'm not kidding no bamboozlerino

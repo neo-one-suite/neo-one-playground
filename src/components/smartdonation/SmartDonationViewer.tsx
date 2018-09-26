@@ -195,7 +195,9 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
                   <HeaderCell area="cheader">Top Contributor Message</HeaderCell>
                   <Cell area="address">{source === undefined ? '' : source.id.address}</Cell>
                   <Cell area="message">{value === undefined ? '' : value.sourceMessage}</Cell>
-                  <Cell area="balance">{value === undefined ? '' : value.sourceContributions.toFormat()}</Cell>
+                  <Cell area="balance">
+                    {value === undefined || value.sourceContributions.lt(0) ? '' : value.sourceContributions.toFormat()}
+                  </Cell>
                   <Cell area="contrib">{value === undefined ? '' : value.topContribution}</Cell>
                 </StyledGrid>
               </Cell>

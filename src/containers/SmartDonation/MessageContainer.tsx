@@ -2,18 +2,33 @@ import { Client } from '@neo-one/client';
 import { WithAddError } from '@neo-one/react';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { SmartDonationSmartContract, WithContracts } from '../../one/generated';
+import { SmartDonationSmartContract, WithContracts } from '../../../one/generated';
 
-interface Actions {}
+interface Actions {
+  readonly onChangeMessage: (text: string) => void;
+}
 
-const actions: ActionMap<State, Actions> = {};
+const onChangeMessage = (text: string) => {
+  if (text.length > 200) {
+    return undefined;
+  }
+
+  return text;
+};
+
+const actions: ActionMap<State, Actions> = {
+  onChangeMessage: (message: string) => () => ({
+    message: onChangeMessage(message),
+  }),
+};
 
 interface Effects {
-  readonly setup: () => void;
+  readonly update: () => void;
 }
 
 interface State {
-  readonly setupLoading: boolean;
+  readonly message: string;
+  readonly loading: boolean;
 }
 
 const makeEffects = (
@@ -21,18 +36,18 @@ const makeEffects = (
   smartDonation: SmartDonationSmartContract,
   addError: (error: Error) => void,
 ): EffectMap<State, Effects> => ({
-  setup: () => ({ state: {}, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
+  update: () => ({ state: { message }, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
     const account = client.getCurrentAccount();
     if (account === undefined) {
-      addError(new Error('Unable to setup account. No account selected.'));
+      addError(new Error('No account selected.'));
 
       return;
     }
 
-    setState({ setupLoading: true });
+    setState({ loading: true });
 
     const onComplete = () => {
-      setState({ setupLoading: false });
+      setState({ loading: false });
     };
 
     const onError = (error: Error) => {
@@ -40,8 +55,8 @@ const makeEffects = (
       addError(error);
     };
 
-    smartDonation.setupContributions
-      .confirmed(account.id.address)
+    smartDonation.updateMessage
+      .confirmed(account.id.address, message)
       .then((receipt) => {
         if (receipt.result.state === 'FAULT') {
           throw new Error(receipt.result.message);
@@ -54,7 +69,7 @@ const makeEffects = (
 
 interface Props extends ContainerProps<State, Actions, {}, Effects> {}
 
-export const SDManagerContainer = (props: Props) => (
+export const MessageContainer = (props: Props) => (
   <WithContracts>
     {({ client, smartDonation }) => (
       <WithAddError>
@@ -65,7 +80,8 @@ export const SDManagerContainer = (props: Props) => (
             <Container
               {...props}
               initialState={{
-                setupLoading: false,
+                message: '',
+                loading: false,
               }}
               actions={actions}
               effects={effects}

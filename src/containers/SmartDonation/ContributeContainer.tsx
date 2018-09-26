@@ -3,7 +3,7 @@ import { WithAddError } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { OneSmartContract, SmartDonationSmartContract, WithContracts } from '../../one/generated';
+import { OneSmartContract, SmartDonationSmartContract, WithContracts } from '../../../one/generated';
 
 interface Actions {
   readonly onChangeContributeAmount: (amountText: string) => void;
@@ -141,7 +141,7 @@ interface Props extends ContainerProps<State, Actions, {}, Effects> {
   readonly toWallet: UserAccount | undefined;
 }
 
-export const SDViewerContainer = (props: Props) => (
+export const ContributeContainer = (props: Props) => (
   <WithContracts>
     {({ client, one, smartDonation }) => (
       <WithAddError>

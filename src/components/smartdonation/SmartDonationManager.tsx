@@ -7,15 +7,23 @@ import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
 import { ComponentProps } from '../../types';
-import { SetupAddressBox } from './ActionComponents';
+import { CollectBox, MessageBox, SetupAddressBox } from './ActionComponents';
 
 const StyledGrid = styled(Grid)`
-  gap: 10px;
+  gap: 12px;
   padding: 8px 8px;
-  justify-items: right;
+  justify-items: center;
   text-align: center;
   align-items: center;
   background-color: ${prop('theme.gray1')};
+`;
+
+const Wrapper = styled(Grid)`
+  gap: 4px;
+  justify-items: center;
+  align-items: center;
+  padding: 2px 2px;
+  background-color: ${prop('theme.gray2')};
   color: black;
   width: 700px;
 `;
@@ -29,10 +37,35 @@ const HeaderCell = styled(Cell)`
   font-weight: bold;
 `;
 
+const accountTemplate = `
+  "aheader address" auto
+  "gheader balance" auto
+  "cheader current" auto
+`;
+
+const infoTemplate = `
+  "info" auto
+  "info" auto
+  "button" auto
+`;
+
+const subTemplate = `
+  "aheader mheader" auto
+  "address message" auto
+`;
+
+const footerTemplate = `
+  "info info update"
+`;
+
 const template = `
-"account gmessage gbalance cbalance sbutton" auto
-"faccount message global current setup" auto
-/ 1fr 2fr 1fr 1fr
+  "header" auto
+  "subheader" auto
+  "subheader" auto
+  "footer" auto
+  "footer" auto
+  "footer" auto
+  / 1fr
 `;
 
 export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledGrid>) {
@@ -72,35 +105,57 @@ export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledG
           )}
         >
           {(value) => (
-            <StyledGrid {...props} template={template}>
-              <HeaderCell area="account" data-test="account">
-                Account
-              </HeaderCell>
-              <Cell area="faccount" data-test="selected-account">
-                {value === undefined ? '' : value.account === undefined ? '' : value.account.name}
+            <Wrapper {...props} template={template}>
+              <Cell area="header">
+                <StyledGrid {...props}>
+                  <HeaderCell>Smart Donation Manager</HeaderCell>
+                </StyledGrid>
               </Cell>
-              <HeaderCell area="gmessage" data-test="global-message">
-                Global Message
-              </HeaderCell>
-              <HeaderCell area="gbalance" data-test="global-balance">
-                Total Balance
-              </HeaderCell>
-              <HeaderCell area="cbalance" data-test="current-balance">
-                Current Balance
-              </HeaderCell>
-              <Cell area="message" data-test="account-contribution-message">
-                {value === undefined ? '' : value.message}
+              <Cell area="subheader">
+                <StyledGrid {...props} template={subTemplate}>
+                  <HeaderCell area="aheader">Current Address</HeaderCell>
+                  <HeaderCell area="mheader">Current Message</HeaderCell>
+                  <Cell area="address">
+                    {value === undefined || value.account === undefined ? '' : value.account.id.address}
+                  </Cell>
+                  <Cell area="message">{value === undefined ? '' : value.message}</Cell>
+                </StyledGrid>
               </Cell>
-              <Cell area="global" data-test="account-global-balance">
-                {value === undefined ? '' : value.totalBalance.lt(0) ? '' : value.totalBalance.toFormat()}
+              <Cell area="footer">
+                <StyledGrid {...props} template={footerTemplate}>
+                  <Cell area="info">
+                    <StyledGrid {...props} template={infoTemplate}>
+                      <Cell area="info">
+                        <StyledGrid {...props} template={accountTemplate}>
+                          <HeaderCell area="aheader">Selected Account:</HeaderCell>
+                          <HeaderCell area="gheader">Total Contributions:</HeaderCell>
+                          <HeaderCell area="cheader">Available Balance:</HeaderCell>
+                          <Cell area="address">
+                            {value === undefined || value.account === undefined ? '' : value.account.name}
+                          </Cell>
+                          <Cell area="balance">
+                            {value === undefined || value.totalBalance.lte(0) ? '' : value.totalBalance.toFormat()}
+                          </Cell>
+                          <Cell area="current">
+                            {value === undefined || value.totalBalance.lte(0) ? '' : value.balance.toFormat()}
+                          </Cell>
+                        </StyledGrid>
+                      </Cell>
+                      <Cell area="button">
+                        {value === undefined || value.totalBalance.lt(0) ? (
+                          <SetupAddressBox disabled={value === undefined} />
+                        ) : (
+                          <CollectBox disabled={value.balance.lte(0)} />
+                        )}
+                      </Cell>
+                    </StyledGrid>
+                  </Cell>
+                  <Cell area="update">
+                    <MessageBox disabled={value === undefined} />
+                  </Cell>
+                </StyledGrid>
               </Cell>
-              <Cell area="current" data-test="account-current-balance">
-                {value === undefined ? '' : value.totalBalance.lt(0) ? '' : value.balance.toFormat()}
-              </Cell>
-              <Cell area="setup" data-test="setup-button">
-                <SetupAddressBox disabled={value === undefined ? true : value.totalBalance.gte(0)} />
-              </Cell>
-            </StyledGrid>
+            </Wrapper>
           )}
         </FromStream>
       )}
