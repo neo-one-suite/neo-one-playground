@@ -7,7 +7,7 @@ import { Provider, ThemeProvider } from 'reakit';
 import { ContractsProvider } from '../one/generated';
 import { ScrollToTop } from './components';
 import { CoreLayout } from './layout';
-import { Escrow, GASVac, Home, ICO } from './pages';
+import { Escrow, GASVac, Home, ICO, SmartDonation } from './pages';
 import { theme } from './theme';
 
 export const App = hot(module)(() => (
@@ -22,6 +22,7 @@ export const App = hot(module)(() => (
                 <Route exact path="/ico" component={ICO} />
                 <Route exact path="/gasvac" component={GASVac} />
                 <Route exact path="/escrow" component={Escrow} />
+                <Route exact path="/smart-donation" component={SmartDonation} />
               </CoreLayout>
             </Switch>
           </ScrollToTop>

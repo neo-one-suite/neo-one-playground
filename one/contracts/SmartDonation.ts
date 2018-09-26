@@ -3,6 +3,7 @@ import {
   constant,
   Deploy,
   Fixed,
+  ForwardedValue,
   LinkedSmartContract,
   MapStorage,
   SmartContract,
@@ -20,6 +21,7 @@ export class SmartDonation extends SmartContract {
   };
 
   private readonly storage = MapStorage.for<[Address /*receiver*/, Address /*contributor*/], [Fixed<8>, string]>();
+  private readonly balances = MapStorage.for<Address /*receiver*/, [string, Fixed<8>, Fixed<8>, Address]>();
 
   public constructor(public readonly owner: Address = Deploy.senderAddress) {
     super();
@@ -31,26 +33,47 @@ export class SmartDonation extends SmartContract {
   // Meta Donation Info Getters
   @constant
   public getMessage(address: Address): string {
-    const info = this.storage.get([address, address]);
+    const info = this.balances.get(address);
 
-    return info === undefined ? 'this address has not been set up for donations.' : info[1];
+    return info === undefined ? 'Address not set up.' : info[0];
   }
 
   @constant
   public getBalance(address: Address): Fixed<8> {
-    const info = this.storage.get([address, address]);
+    const info = this.balances.get(address);
 
-    return info === undefined ? 0 : info[0];
+    return info === undefined ? -1 : info[1];
   }
 
   @constant
   public getCurrentBalance(address: Address): Fixed<8> {
-    const info = this.storage.get([address, this.address]);
+    const info = this.balances.get(address);
 
-    return info === undefined ? 0 : info[0];
+    return info === undefined ? -1 : info[2];
+  }
+
+  @constant
+  public getTopContributor(address: Address): Address {
+    const info = this.balances.get(address);
+
+    return info === undefined ? this.address : info[3];
+  }
+
+  @constant
+  public getTopContributorMessage(address: Address): string {
+    const topContrib = this.getTopContributor(address);
+
+    return this.getContributorMessage(address, topContrib);
   }
 
   // Donation Contributor Getters
+  @constant
+  public getContributorAmount(source: Address, contributor: Address): Fixed<8> {
+    const info = this.storage.get([source, contributor]);
+
+    return info === undefined ? -1 : info[0];
+  }
+
   @constant
   public getContributorMessage(source: Address, contributor: Address): string {
     const info = this.storage.get([source, contributor]);
@@ -58,65 +81,56 @@ export class SmartDonation extends SmartContract {
     return info === undefined ? '' : info[1];
   }
 
-  @constant
-  public getContributorAmount(source: Address, contributor: Address): Fixed<8> {
-    const info = this.storage.get([source, contributor]);
-
-    return info === undefined ? 0 : info[0];
-  }
-
   // One interface functions
-  public approveReceiveTransfer(_from: Address, _amount: Fixed<0>, _asset: Address) {
-    return false;
+  public approveReceiveTransfer(
+    from: Address,
+    amount: Fixed<8>,
+    asset: Address,
+    to: ForwardedValue<Address>,
+    message: ForwardedValue<string>,
+  ): boolean {
+    if (!Address.isCaller(asset)) {
+      return false;
+    }
+
+    return this.contribute(from, to, amount, message);
   }
 
   public onRevokeSendTransfer(_from: Address, _amount: Fixed<0>, _asset: Address) {
-    return false;
+    // do nothing
   }
 
   // add your address to allow contributions to be tracked (global donation message optional)
-  public setupContributions(address: Address, message?: string): void {
-    const info = this.storage.get([address, address]);
+  public setupContributions(address: Address): void {
+    const info = this.balances.get(address);
     if (info !== undefined) {
       throw new Error(`This address is already setup to track contributions.`);
     }
 
-    this.storage.set([address, address], [0, message === undefined ? '' : message]);
+    this.balances.set(address, ['', 0, 0, this.address]);
     this.storage.set([address, this.address], [0, '']);
   }
 
-  public contribute(from: Address, to: Address, amount: Fixed<8>, messageIn?: string): boolean {
-    const balance = this.storage.get([to, to]);
-    const current = this.storage.get([to, this.address]);
+  public collect(address: Address): boolean {
+    const account = this.balances.get(address);
+    if (Address.isCaller(address) && account !== undefined) {
+      const confirmation = one.transfer(this.address, address, account[2]);
+      if (confirmation) {
+        this.balances.set(address, ['', account[1], 0, account[3]]);
+      }
 
-    if (balance === undefined || current === undefined) {
-      throw new Error(`That address hasn't been setup to receive contributions yet.`);
-    }
-
-    if (one.transfer(from, this.address, amount)) {
-      const contributor = this.storage.get([to, from]);
-      const message = messageIn === undefined ? (contributor === undefined ? '' : contributor[1]) : messageIn;
-      const contribBalance = contributor === undefined ? amount : contributor[0] + amount;
-
-      this.storage.set([to, to], [balance[0] + amount, balance[1]]);
-      this.storage.set([to, this.address], [current[0] + amount, '']);
-      this.storage.set([to, from], [contribBalance, message]);
-
-      return true;
+      return confirmation;
     }
 
     return false;
   }
 
-  public collect(address: Address): boolean {
-    const account = this.storage.get([address, this.address]);
-    if (Address.isCaller(address) && account !== undefined) {
-      const confirmation = one.transfer(this.address, address, account[0]);
-      if (confirmation) {
-        this.storage.set([address, this.address], [0, '']);
-      }
+  public updateMessage(address: Address, message: string): boolean {
+    const account = this.balances.get(address);
+    if (account !== undefined && Address.isCaller(address)) {
+      this.balances.set(address, [message, account[1], account[2], account[3]]);
 
-      return confirmation;
+      return true;
     }
 
     return false;
@@ -131,5 +145,26 @@ export class SmartDonation extends SmartContract {
     }
 
     return false;
+  }
+
+  private contribute(from: Address, to: Address, amount: Fixed<8>, messageIn?: string): boolean {
+    const balances = this.balances.get(to);
+
+    if (balances === undefined) {
+      throw new Error(`That address hasn't been setup to receive contributions yet.`);
+    }
+
+    const contributor = this.storage.get([to, from]);
+    const message = messageIn === undefined ? (contributor === undefined ? '' : contributor[1]) : messageIn;
+    const contribBalance = contributor === undefined ? amount : contributor[0] + amount;
+
+    // this value is actually definitely defined for real I'm not kidding no bamboozlerino
+    const currentTop = (this.storage.get([to, balances[3]]) as [Fixed<8>, string])[0];
+    const topContributor = contribBalance > currentTop ? from : balances[3];
+
+    this.balances.set(to, [balances[0], balances[1] + amount, balances[2] + amount, topContributor]);
+    this.storage.set([to, from], [contribBalance, message]);
+
+    return true;
   }
 }

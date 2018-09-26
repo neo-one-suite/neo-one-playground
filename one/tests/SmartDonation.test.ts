@@ -8,6 +8,7 @@ test('SmartDonation - Test', async () => {
   await withContracts(async ({ networkName, one, client, developerClient, smartDonation, masterAccountID }) => {
     // setup our test account to have some ONE, also create a second wallet for testing
     await developerClient.fastForwardOffset(60 * 60);
+    const testMessage = 'take my money.';
 
     const receiveWallet = await client.providers.memory.keystore.addAccount({
       network: networkName,
@@ -32,16 +33,14 @@ test('SmartDonation - Test', async () => {
     }
 
     // setup an account to receive contributions
-    const setup = await smartDonation.setupContributions(receiveAddress, 'test message');
-    await setup.confirmed({ timeoutMS: 2500 });
+    await smartDonation.setupContributions.confirmed(receiveAddress, { timeoutMS: 2500 });
 
     // use our master account to contribute to our receive account
-    await one.approveSendTransfer(masterAddress, contractAddress, new BigNumber('100'));
-    const contributeReceipt = await smartDonation.contribute.confirmed(
+    const contributeReceipt = await one.transfer.confirmed(
       masterAddress,
-      receiveAddress,
+      contractAddress,
       new BigNumber('100'),
-      'take my money',
+      ...smartDonation.forwardApproveReceiveTransferArgs(receiveAddress, testMessage),
     );
     if (contributeReceipt.result.state === 'FAULT') {
       throw new Error(contributeReceipt.result.state);
@@ -53,10 +52,12 @@ test('SmartDonation - Test', async () => {
     const currBalance = await smartDonation.getCurrentBalance(receiveAddress);
     const contribMessage = await smartDonation.getContributorMessage(receiveAddress, masterAddress);
     const contribAmount = await smartDonation.getContributorAmount(receiveAddress, masterAddress);
+    const topContributor = await smartDonation.getTopContributor(receiveAddress);
 
-    expect(message).toEqual('test message');
-    expect(contribMessage).toEqual('take my money');
+    expect(message).toEqual('');
+    expect(contribMessage).toEqual('take my money.');
     expect(balance.toString()).toEqual('100');
+    expect(topContributor).toEqual(masterAddress);
     expect(contribAmount).toEqual(balance);
     expect(currBalance).toEqual(balance);
 

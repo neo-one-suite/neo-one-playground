@@ -1,9 +1,10 @@
-/* @hash b3d64e9c7cd341b717a1ff48d1e7bb32 */
+/* @hash ebfd60586f6c782c9f058efe076dcce8 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
   Event,
+  ForwardValue,
   GetOptions,
   Hash256String,
   InvocationTransaction,
@@ -43,18 +44,26 @@ export type SmartDonationEvent =
 
 export interface SmartDonationSmartContract extends SmartContract<SmartDonationReadSmartContract> {
   readonly approveReceiveTransfer: {
-    (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
-    >;
+    (
+      from: AddressString,
+      amount: BigNumber,
+      asset: AddressString,
+      to: AddressString,
+      message: string,
+      options?: TransactionOptions,
+    ): Promise<TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>>;
     readonly confirmed: {
       (
         from: AddressString,
         amount: BigNumber,
         asset: AddressString,
+        to: AddressString,
+        message: string,
         options?: TransactionOptions & GetOptions,
       ): Promise<InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
+  readonly forwardApproveReceiveTransferArgs: (to: AddressString, message: string) => [ForwardValue, ForwardValue];
   readonly collect: {
     (address: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
@@ -63,24 +72,6 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
       (address: AddressString, options?: TransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }
       >;
-    };
-  };
-  readonly contribute: {
-    (
-      from: AddressString,
-      to: AddressString,
-      amount: BigNumber,
-      messageIn?: string,
-      options?: TransactionOptions,
-    ): Promise<TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>>;
-    readonly confirmed: {
-      (
-        from: AddressString,
-        to: AddressString,
-        amount: BigNumber,
-        messageIn?: string,
-        options?: TransactionOptions & GetOptions,
-      ): Promise<InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
   readonly deploy: {
@@ -98,9 +89,11 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
   readonly getContributorMessage: (source: AddressString, contributor: AddressString) => Promise<string>;
   readonly getCurrentBalance: (address: AddressString) => Promise<BigNumber>;
   readonly getMessage: (address: AddressString) => Promise<string>;
+  readonly getTopContributor: (address: AddressString) => Promise<AddressString>;
+  readonly getTopContributorMessage: (address: AddressString) => Promise<string>;
   readonly onRevokeSendTransfer: {
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
+      TransactionResult<InvokeReceipt<undefined, SmartDonationEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
       (
@@ -108,7 +101,7 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
         amount: BigNumber,
         asset: AddressString,
         options?: TransactionOptions & GetOptions,
-      ): Promise<InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
+      ): Promise<InvokeReceipt<undefined, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
   readonly owner: () => Promise<AddressString>;
@@ -123,11 +116,11 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
     };
   };
   readonly setupContributions: {
-    (address: AddressString, message?: string, options?: TransactionOptions): Promise<
+    (address: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, SmartDonationEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
-      (address: AddressString, message?: string, options?: TransactionOptions & GetOptions): Promise<
+      (address: AddressString, options?: TransactionOptions & GetOptions): Promise<
         InvokeReceipt<undefined, SmartDonationEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
@@ -145,6 +138,16 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
       ): Promise<InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
+  readonly updateMessage: {
+    (address: AddressString, message: string, options?: TransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: {
+      (address: AddressString, message: string, options?: TransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
+  };
 }
 
 export interface SmartDonationReadSmartContract extends ReadSmartContract<SmartDonationEvent> {
@@ -153,5 +156,7 @@ export interface SmartDonationReadSmartContract extends ReadSmartContract<SmartD
   readonly getContributorMessage: (source: AddressString, contributor: AddressString) => Promise<string>;
   readonly getCurrentBalance: (address: AddressString) => Promise<BigNumber>;
   readonly getMessage: (address: AddressString) => Promise<string>;
+  readonly getTopContributor: (address: AddressString) => Promise<AddressString>;
+  readonly getTopContributorMessage: (address: AddressString) => Promise<string>;
   readonly owner: () => Promise<AddressString>;
 }

@@ -1,4 +1,4 @@
-/* @hash f6430d8c2c77f95651cde9c3eb04ecf5 */
+/* @hash e4b985377438e0b12efd94422d48c821 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -149,17 +149,31 @@ export const smartDonationABI: ABI = {
     {
       claim: false,
       constant: true,
-      name: 'getContributorMessage',
+      name: 'getTopContributor',
       parameters: [
         {
           forwardedValue: false,
-          name: 'source',
+          name: 'address',
           optional: false,
           type: 'Address',
         },
+      ],
+      receive: false,
+      returnType: {
+        forwardedValue: false,
+        optional: false,
+        type: 'Address',
+      },
+      send: false,
+    },
+    {
+      claim: false,
+      constant: true,
+      name: 'getTopContributorMessage',
+      parameters: [
         {
           forwardedValue: false,
-          name: 'contributor',
+          name: 'address',
           optional: false,
           type: 'Address',
         },
@@ -200,6 +214,32 @@ export const smartDonationABI: ABI = {
     },
     {
       claim: false,
+      constant: true,
+      name: 'getContributorMessage',
+      parameters: [
+        {
+          forwardedValue: false,
+          name: 'source',
+          optional: false,
+          type: 'Address',
+        },
+        {
+          forwardedValue: false,
+          name: 'contributor',
+          optional: false,
+          type: 'Address',
+        },
+      ],
+      receive: false,
+      returnType: {
+        forwardedValue: false,
+        optional: false,
+        type: 'String',
+      },
+      send: false,
+    },
+    {
+      claim: false,
       constant: false,
       name: 'approveReceiveTransfer',
       parameters: [
@@ -210,7 +250,7 @@ export const smartDonationABI: ABI = {
           type: 'Address',
         },
         {
-          decimals: 0,
+          decimals: 8,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -220,6 +260,18 @@ export const smartDonationABI: ABI = {
           name: 'asset',
           optional: false,
           type: 'Address',
+        },
+        {
+          forwardedValue: true,
+          name: 'to',
+          optional: false,
+          type: 'Address',
+        },
+        {
+          forwardedValue: true,
+          name: 'message',
+          optional: false,
+          type: 'String',
         },
       ],
       receive: false,
@@ -256,9 +308,8 @@ export const smartDonationABI: ABI = {
       ],
       receive: false,
       returnType: {
-        forwardedValue: false,
         optional: false,
-        type: 'Boolean',
+        type: 'Void',
       },
       send: false,
     },
@@ -273,55 +324,11 @@ export const smartDonationABI: ABI = {
           optional: false,
           type: 'Address',
         },
-        {
-          forwardedValue: false,
-          name: 'message',
-          optional: true,
-          type: 'String',
-        },
       ],
       receive: false,
       returnType: {
         optional: false,
         type: 'Void',
-      },
-      send: false,
-    },
-    {
-      claim: false,
-      constant: false,
-      name: 'contribute',
-      parameters: [
-        {
-          forwardedValue: false,
-          name: 'from',
-          optional: false,
-          type: 'Address',
-        },
-        {
-          forwardedValue: false,
-          name: 'to',
-          optional: false,
-          type: 'Address',
-        },
-        {
-          decimals: 8,
-          name: 'amount',
-          optional: false,
-          type: 'Integer',
-        },
-        {
-          forwardedValue: false,
-          name: 'messageIn',
-          optional: true,
-          type: 'String',
-        },
-      ],
-      receive: false,
-      returnType: {
-        forwardedValue: false,
-        optional: false,
-        type: 'Boolean',
       },
       send: false,
     },
@@ -335,6 +342,32 @@ export const smartDonationABI: ABI = {
           name: 'address',
           optional: false,
           type: 'Address',
+        },
+      ],
+      receive: false,
+      returnType: {
+        forwardedValue: false,
+        optional: false,
+        type: 'Boolean',
+      },
+      send: false,
+    },
+    {
+      claim: false,
+      constant: false,
+      name: 'updateMessage',
+      parameters: [
+        {
+          forwardedValue: false,
+          name: 'address',
+          optional: false,
+          type: 'Address',
+        },
+        {
+          forwardedValue: false,
+          name: 'message',
+          optional: false,
+          type: 'String',
         },
       ],
       receive: false,
