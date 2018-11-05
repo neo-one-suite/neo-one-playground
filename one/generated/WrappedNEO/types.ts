@@ -1,4 +1,4 @@
-/* @hash 1a04b663f2044957cf53a5c9df64dea7 */
+/* @hash 1688e1820e3a4f7e53bacc66086fb970 */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -6,6 +6,7 @@ import {
   Client,
   Event,
   GetOptions,
+  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
   InvokeReceiveTransactionOptions,
@@ -70,11 +71,11 @@ export interface WrappedNEOSmartContract<TClient extends Client = Client>
   readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
   readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
   readonly completeSend: {
-    (options?: InvokeSendUnsafeTransactionOptions): Promise<
+    (hash: Hash256String, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
-      (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
+      (hash: Hash256String, options?: TransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
       >;
     };

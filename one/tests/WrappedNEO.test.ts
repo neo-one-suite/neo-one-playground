@@ -78,20 +78,15 @@ describe('WrappedNEO', () => {
       expect(transferBalance.toString()).toEqual('20');
       expect(transferToBalance.toString()).toEqual('5');
 
-      const unwrapResult0 = await wrappedNeo.unwrapNEO(masterAccountID.address, {
-        sendFrom: [
-          {
-            asset: Hash256.NEO,
-            amount: new BigNumber(5),
-            to: masterAccountID.address,
-          },
-        ],
+      const unwrapReceipt0 = await wrappedNeo.unwrapNEO.confirmed({
+        asset: Hash256.NEO,
+        amount: new BigNumber(5),
+        to: masterAccountID.address,
       });
-      const unwrapReceipt0 = await unwrapResult0.confirmed();
+
       if (unwrapReceipt0.result.state === 'FAULT') {
         throw new Error(unwrapReceipt0.result.message);
       }
-
       expect(unwrapReceipt0.result.state).toEqual('HALT');
       expect(unwrapReceipt0.result.value).toEqual(true);
       expect(unwrapReceipt0.events).toHaveLength(1);
@@ -113,17 +108,16 @@ describe('WrappedNEO', () => {
       expect(unwrap0Balance.toString()).toEqual('15');
       expect(unwrap0ToBalance.toString()).toEqual('5');
 
-      const unwrapResult1 = await wrappedNeo.unwrapNEO(toWallet.account.id.address, {
-        sendFrom: [
-          {
-            asset: Hash256.NEO,
-            amount: new BigNumber(2),
-            to: toWallet.account.id.address,
-          },
-        ],
-        from: toWallet.account.id,
-      });
+      const unwrapResult1 = await wrappedNeo.unwrapNEO(
+        {
+          asset: Hash256.NEO,
+          amount: new BigNumber(2),
+          to: toWallet.account.id.address,
+        },
+        { from: toWallet.account.id },
+      );
       const unwrapReceipt1 = await unwrapResult1.confirmed();
+
       if (unwrapReceipt1.result.state === 'FAULT') {
         throw new Error(unwrapReceipt1.result.message);
       }

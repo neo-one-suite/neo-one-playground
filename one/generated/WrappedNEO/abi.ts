@@ -1,4 +1,4 @@
-/* @hash 41c758acc01d2b9c75e80a1afa2e84a2 */
+/* @hash b6451618c02f3321ae118f25c1c220c0 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -377,12 +377,12 @@ export const wrappedNeoABI: ABI = {
       sendUnsafe: true,
     },
     {
+      completeSend: true,
       name: 'completeSend',
       parameters: [],
       returnType: {
         type: 'Boolean',
       },
-      sendUnsafe: true,
     },
     {
       name: 'deploy',
