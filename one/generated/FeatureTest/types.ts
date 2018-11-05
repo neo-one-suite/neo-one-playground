@@ -1,14 +1,12 @@
-/* @hash 0ffee08044fe80064cbe155dcd2c461c */
+/* @hash a20d11acd7500636889aa584d2911e75 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
   SmartContract,
   TransactionOptions,
   TransactionResult,
@@ -16,7 +14,8 @@ import {
 
 export type FeatureTestEvent = never;
 
-export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadSmartContract> {
+export interface FeatureTestSmartContract<TClient extends Client = Client>
+  extends SmartContract<TClient, FeatureTestEvent> {
   readonly consoleLog: {
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>
@@ -38,16 +37,6 @@ export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadS
     };
   };
   readonly owner: () => Promise<AddressString>;
-  readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, FeatureTestEvent>, InvocationTransaction>
-    >;
-    readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, FeatureTestEvent> & { readonly transaction: InvocationTransaction }
-      >;
-    };
-  };
   readonly stackTrace: {
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, FeatureTestEvent>, InvocationTransaction>
@@ -68,8 +57,4 @@ export interface FeatureTestSmartContract extends SmartContract<FeatureTestReadS
       >;
     };
   };
-}
-
-export interface FeatureTestReadSmartContract extends ReadSmartContract<FeatureTestEvent> {
-  readonly owner: () => Promise<AddressString>;
 }

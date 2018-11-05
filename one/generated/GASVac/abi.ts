@@ -1,4 +1,4 @@
-/* @hash 1c87d9d3a9d25e07016fba47fb6ce2aa */
+/* @hash d242b3b70917dc68866ce19946655b48 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -24,19 +24,7 @@ export const gasVacABI: ABI = {
         type: 'Void',
       },
       send: false,
-    },
-    {
-      name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
-      returnType: {
-        type: 'Boolean',
-      },
-      send: true,
+      sendUnsafe: false,
     },
     {
       name: 'deploy',

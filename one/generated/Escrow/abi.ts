@@ -1,4 +1,4 @@
-/* @hash 2a66060ec4916821782a90ddce24e898 */
+/* @hash 70fa34673d5140adc42ea1e0337c6792 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -22,6 +22,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -45,6 +46,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -68,6 +70,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -97,10 +100,12 @@ export const escrowABI: ABI = {
       receive: false,
       returnType: {
         decimals: 8,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -115,6 +120,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -139,6 +145,7 @@ export const escrowABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -153,6 +160,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -170,6 +178,7 @@ export const escrowABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -190,6 +199,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: true,
           type: 'Integer',
@@ -202,6 +212,7 @@ export const escrowABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -222,6 +233,7 @@ export const escrowABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: true,
           type: 'Integer',
@@ -234,19 +246,7 @@ export const escrowABI: ABI = {
         type: 'Boolean',
       },
       send: false,
-    },
-    {
-      name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
-      returnType: {
-        type: 'Boolean',
-      },
-      send: true,
+      sendUnsafe: false,
     },
     {
       name: 'deploy',

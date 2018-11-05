@@ -1,4 +1,4 @@
-/* @hash 3a9f7d158c8e8884c6211adaa93f8009 */
+/* @hash d9e7e0401b3ee0aaaa6ce2630a2cf0d2 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -22,6 +22,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -45,6 +46,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -68,6 +70,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -102,6 +105,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -112,6 +116,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -132,6 +137,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -142,6 +148,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -152,6 +159,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 8,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -171,10 +179,12 @@ export const oneABI: ABI = {
       receive: false,
       returnType: {
         decimals: 8,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -197,10 +207,12 @@ export const oneABI: ABI = {
       receive: false,
       returnType: {
         decimals: 8,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -221,6 +233,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -240,6 +253,7 @@ export const oneABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -260,6 +274,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -272,6 +287,7 @@ export const oneABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -286,6 +302,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -304,6 +321,7 @@ export const oneABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -324,6 +342,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -336,6 +355,7 @@ export const oneABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -350,6 +370,7 @@ export const oneABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -367,6 +388,7 @@ export const oneABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       constant: true,
@@ -374,6 +396,7 @@ export const oneABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 8,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -390,19 +413,15 @@ export const oneABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
+      parameters: [],
       returnType: {
         type: 'Boolean',
       },
-      send: true,
+      sendUnsafe: true,
     },
     {
       name: 'deploy',
@@ -418,12 +437,14 @@ export const oneABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'icoStartTimeSeconds',
           optional: true,
           type: 'Integer',
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'icoDurationSeconds',
           optional: true,
           type: 'Integer',

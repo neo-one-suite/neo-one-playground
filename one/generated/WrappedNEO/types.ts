@@ -1,19 +1,19 @@
-/* @hash 0fc9a32274789c055eb07ed22935e42f */
+/* @hash 1a04b663f2044957cf53a5c9df64dea7 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   Event,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
   InvokeReceiveTransactionOptions,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
+  InvokeSendUnsafeTransactionOptions,
   SmartContract,
   TransactionOptions,
   TransactionResult,
+  Transfer,
 } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
 
@@ -42,7 +42,8 @@ export type WrappedNEOEvent =
   | WrappedNEOApproveSendTransferEvent
   | WrappedNEORevokeSendTransferEvent;
 
-export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSmartContract> {
+export interface WrappedNEOSmartContract<TClient extends Client = Client>
+  extends SmartContract<TClient, WrappedNEOEvent> {
   readonly approveReceiveTransfer: {
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
@@ -68,6 +69,16 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
   };
   readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
   readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
+  readonly completeSend: {
+    (options?: InvokeSendUnsafeTransactionOptions): Promise<
+      TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
+    >;
+    readonly confirmed: {
+      (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
+        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+      >;
+    };
+  };
   readonly decimals: () => Promise<BigNumber>;
   readonly deploy: {
     (options?: TransactionOptions): Promise<
@@ -94,11 +105,11 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
     };
   };
   readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
+    (options?: InvokeSendUnsafeTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+      (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
@@ -126,11 +137,11 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
     };
   };
   readonly unwrapNEO: {
-    (receiver: AddressString, options?: InvokeSendTransactionOptions): Promise<
+    (transfer: Transfer, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
-      (receiver: AddressString, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+      (transfer: Transfer, options?: TransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
@@ -145,13 +156,4 @@ export interface WrappedNEOSmartContract extends SmartContract<WrappedNEOReadSma
       >;
     };
   };
-}
-
-export interface WrappedNEOReadSmartContract extends ReadSmartContract<WrappedNEOEvent> {
-  readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
-  readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
-  readonly decimals: () => Promise<BigNumber>;
-  readonly name: () => Promise<string>;
-  readonly symbol: () => Promise<string>;
-  readonly totalSupply: () => Promise<BigNumber>;
 }

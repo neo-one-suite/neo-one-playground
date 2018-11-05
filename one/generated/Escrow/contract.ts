@@ -1,27 +1,20 @@
-/* @hash 56f0a8daadba0bbb2966e2d8cafc7df5 */
+/* @hash 2654c3b95c464875342b037ff433c5fe */
 // tslint:disable
 /* eslint-disable */
-import { Client, ReadClient, SmartContractDefinition } from '@neo-one/client';
+import { Client, SmartContractDefinition } from '@neo-one/client';
 import { escrowABI } from './abi';
-import { EscrowReadSmartContract, EscrowSmartContract } from './types';
+import { EscrowSmartContract } from './types';
 import { sourceMaps } from '../sourceMaps';
 
 const definition: SmartContractDefinition = {
   networks: {
     local: {
-      address: 'AT3XbFk4tr524RrKZgx83Tc4H67wnZmA9b',
+      address: 'AeL9vXfSbatsxbSowRyzbVDZunBhGYdrtP',
     },
   },
   abi: escrowABI,
   sourceMaps,
 };
 
-export const createEscrowSmartContract = (client: Client): EscrowSmartContract =>
-  client.smartContract<EscrowSmartContract>(definition);
-
-export const createEscrowReadSmartContract = (client: ReadClient): EscrowReadSmartContract =>
-  client.smartContract<EscrowReadSmartContract>({
-    address: definition.networks[client.dataProvider.network].address,
-    abi: definition.abi,
-    sourceMaps: definition.sourceMaps,
-  });
+export const createEscrowSmartContract = <TClient extends Client>(client: TClient): EscrowSmartContract<TClient> =>
+  client.smartContract<EscrowSmartContract<TClient>>(definition);

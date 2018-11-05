@@ -1,4 +1,4 @@
-/* @hash f68ec5c706b3643b63225890da94d979 */
+/* @hash 41c758acc01d2b9c75e80a1afa2e84a2 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -22,6 +22,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -45,6 +46,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -68,6 +70,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -102,6 +105,7 @@ export const wrappedNeoABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -112,6 +116,7 @@ export const wrappedNeoABI: ABI = {
       parameters: [],
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
@@ -131,10 +136,12 @@ export const wrappedNeoABI: ABI = {
       receive: false,
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -157,10 +164,12 @@ export const wrappedNeoABI: ABI = {
       receive: false,
       returnType: {
         decimals: 0,
+        forwardedValue: false,
         optional: false,
         type: 'Integer',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -181,6 +190,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -193,6 +203,7 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -213,6 +224,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -225,6 +237,7 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -239,6 +252,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -257,6 +271,7 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -277,6 +292,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -289,6 +305,7 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -303,6 +320,7 @@ export const wrappedNeoABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -320,6 +338,7 @@ export const wrappedNeoABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -333,19 +352,13 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
       constant: false,
       name: 'unwrapNEO',
-      parameters: [
-        {
-          forwardedValue: false,
-          name: 'receiver',
-          optional: false,
-          type: 'Address',
-        },
-      ],
+      parameters: [],
       receive: false,
       returnType: {
         forwardedValue: false,
@@ -353,19 +366,23 @@ export const wrappedNeoABI: ABI = {
         type: 'Boolean',
       },
       send: true,
+      sendUnsafe: false,
     },
     {
       name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
+      parameters: [],
       returnType: {
         type: 'Boolean',
       },
-      send: true,
+      sendUnsafe: true,
+    },
+    {
+      name: 'completeSend',
+      parameters: [],
+      returnType: {
+        type: 'Boolean',
+      },
+      sendUnsafe: true,
     },
     {
       name: 'deploy',

@@ -1,16 +1,15 @@
-/* @hash 36fc0e80c51c881e163d59dad4950478 */
+/* @hash 5e058556bbe231cee70c7075aeeb29bd */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   Event,
+  ForwardOptions,
   ForwardValue,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
   SmartContract,
   TransactionOptions,
   TransactionResult,
@@ -39,7 +38,7 @@ export interface EscrowRevokeSendTransferEvent
   extends Event<'revokeSendTransfer', EscrowRevokeSendTransferEventParameters> {}
 export type EscrowEvent = EscrowTransferEvent | EscrowApproveSendTransferEvent | EscrowRevokeSendTransferEvent;
 
-export interface EscrowSmartContract extends SmartContract<EscrowReadSmartContract> {
+export interface EscrowSmartContract<TClient extends Client = Client> extends SmartContract<TClient, EscrowEvent> {
   readonly approveReceiveTransfer: {
     (
       from: AddressString,
@@ -58,7 +57,7 @@ export interface EscrowSmartContract extends SmartContract<EscrowReadSmartContra
       ): Promise<InvokeReceipt<boolean, EscrowEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
-  readonly forwardApproveReceiveTransferArgs: (to: AddressString) => [ForwardValue];
+  readonly forwardApproveReceiveTransferArgs: (to: AddressString) => [ForwardOptions<EscrowEvent>, ForwardValue];
   readonly balanceOf: (from: AddressString, to: AddressString) => Promise<BigNumber>;
   readonly deploy: {
     (options?: TransactionOptions): Promise<
@@ -93,16 +92,6 @@ export interface EscrowSmartContract extends SmartContract<EscrowReadSmartContra
       >;
     };
   };
-  readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, EscrowEvent>, InvocationTransaction>
-    >;
-    readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, EscrowEvent> & { readonly transaction: InvocationTransaction }
-      >;
-    };
-  };
   readonly revokeONE: {
     (from: AddressString, to: AddressString, amount?: BigNumber, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, EscrowEvent>, InvocationTransaction>
@@ -113,8 +102,4 @@ export interface EscrowSmartContract extends SmartContract<EscrowReadSmartContra
       >;
     };
   };
-}
-
-export interface EscrowReadSmartContract extends ReadSmartContract<EscrowEvent> {
-  readonly balanceOf: (from: AddressString, to: AddressString) => Promise<BigNumber>;
 }

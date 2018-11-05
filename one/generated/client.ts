@@ -1,4 +1,4 @@
-/* @hash 379c56095494a1184c4629046c407a27 */
+/* @hash 67c0d7046ceed041ccee9dae9ac153ff */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -12,8 +12,10 @@ import {
   OneClient,
   NEOONEDataProviderOptions,
   UserAccountProvider,
+  UserAccountProviders,
 } from '@neo-one/client';
 import { projectID } from './projectID';
+import { LocalClient } from '@neo-one/react';
 
 export type DefaultUserAccountProviders = {
   readonly memory: LocalUserAccountProvider<LocalKeyStore, NEOONEProvider>;
@@ -29,11 +31,12 @@ const isLocalUserAccountProvider = (
   userAccountProvider: UserAccountProvider,
 ): userAccountProvider is LocalUserAccountProvider<any, any> => userAccountProvider instanceof LocalUserAccountProvider;
 
-export const createClient = <
-  TUserAccountProviders extends { readonly [K: string]: UserAccountProvider } = DefaultUserAccountProviders
->(
+export const createClient = <TUserAccountProviders extends UserAccountProviders<any> = DefaultUserAccountProviders>(
   getUserAccountProviders: (provider: NEOONEProvider) => TUserAccountProviders = getDefaultUserAccountProviders as any,
-): Client<TUserAccountProviders> => {
+): Client<
+  TUserAccountProviders extends UserAccountProviders<infer TUserAccountProvider> ? TUserAccountProvider : never,
+  TUserAccountProviders
+> => {
   const providers: Array<NEOONEOneDataProvider | NEOONEDataProviderOptions> = [];
   if (process.env.NODE_ENV !== 'production') {
     providers.push(new NEOONEOneDataProvider({ network: 'local', projectID, port: 40101 }));
@@ -119,6 +122,27 @@ export const createDeveloperClients = (): { [network: string]: DeveloperClient }
   local: new DeveloperClient(new NEOONEOneDataProvider({ network: 'local', projectID, port: 40101 })),
 });
 
-export const createOneClients = (): { [network: string]: OneClient } => ({
-  local: new OneClient(40101),
-});
+export const createLocalClients = (): { [network: string]: LocalClient } => {
+  const client = new OneClient(40101);
+  return {
+    local: {
+      getNEOTrackerURL: async () => {
+        const result = await client.request({
+          plugin: '@neo-one/server-plugin-project',
+          options: { type: 'neotracker', projectID },
+        });
+
+        return result.response;
+      },
+      reset: async () => {
+        await client.executeTaskList({
+          plugin: '@neo-one/server-plugin-project',
+          options: {
+            command: 'reset',
+            projectID,
+          },
+        });
+      },
+    },
+  };
+};

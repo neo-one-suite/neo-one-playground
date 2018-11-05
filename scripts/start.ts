@@ -85,12 +85,10 @@ const createWebpackConfig = (): webpack.Configuration => ({
       },
       {
         test: /\.svg$/,
-        include: [path.resolve(__dirname, '..', 'root')],
         loader: 'file-loader',
       },
       {
         test: /\.mp3$/,
-        include: [path.resolve(__dirname, '..', 'root')],
         loader: 'file-loader',
       },
       {
@@ -99,12 +97,10 @@ const createWebpackConfig = (): webpack.Configuration => ({
       },
       {
         test: /\.mp4$/,
-        include: [path.resolve(__dirname, '..', 'root')],
         loader: 'file-loader',
       },
       {
         test: /\.png$/,
-        include: [path.resolve(__dirname, '..', 'root')],
         loader: 'file-loader',
       },
       {

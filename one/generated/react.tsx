@@ -1,12 +1,12 @@
-/* @hash a63563bad0408c07b578dda4baee32f2 */
+/* @hash e5d67f145950a09971c753ee5ad9a81a */
 // tslint:disable
 /* eslint-disable */
-import { DeveloperTools as DeveloperToolsBase } from '@neo-one/react';
-import { Client, DeveloperClient, OneClient } from '@neo-one/client';
+import { DeveloperTools as DeveloperToolsBase, LocalClient } from '@neo-one/react';
+import { Client, DeveloperClient } from '@neo-one/client';
 import * as React from 'react';
 import { Contracts } from './types';
-import { createClient, createDeveloperClients, createOneClients } from './client';
-import { projectID } from './projectID';
+import { createClient, createDeveloperClients, createLocalClients } from './client';
+
 import { createOneSmartContract } from './One/contract';
 import { createFeatureTestSmartContract } from './FeatureTest/contract';
 import { createGASVacSmartContract } from './GASVac/contract';
@@ -18,8 +18,8 @@ export interface WithClients<TClient extends Client> {
   readonly developerClients: {
     readonly [network: string]: DeveloperClient;
   };
-  readonly oneClients: {
-    readonly [network: string]: OneClient;
+  readonly localClients: {
+    readonly [network: string]: LocalClient;
   };
 }
 export type ContractsWithClients<TClient extends Client> = Contracts & WithClients<TClient>;
@@ -31,19 +31,19 @@ export type ContractsProviderProps<TClient extends Client> = Partial<WithClients
 export const ContractsProvider = <TClient extends Client>({
   client: clientIn,
   developerClients: developerClientsIn,
-  oneClients: oneClientsIn,
+  localClients: localClientsIn,
   children,
 }: ContractsProviderProps<TClient>) => {
   const client = clientIn === undefined ? createClient() : clientIn;
   const developerClients = developerClientsIn === undefined ? createDeveloperClients() : developerClientsIn;
-  const oneClients = oneClientsIn === undefined ? createOneClients() : oneClientsIn;
+  const localClients = localClientsIn === undefined ? createLocalClients() : localClientsIn;
 
   return (
     <Context.Provider
       value={{
         client,
         developerClients,
-        oneClients,
+        localClients,
         one: createOneSmartContract(client),
         featureTest: createFeatureTestSmartContract(client),
         gasVac: createGASVacSmartContract(client),
@@ -65,13 +65,8 @@ export const WithContracts = <TClient extends Client>({ children }: WithContract
 
 export const DeveloperTools = () => (
   <WithContracts>
-    {({ client, developerClients, oneClients }) => (
-      <DeveloperToolsBase
-        client={client}
-        developerClients={developerClients}
-        oneClients={oneClients}
-        projectID={projectID}
-      />
+    {({ client, developerClients, localClients }) => (
+      <DeveloperToolsBase client={client} developerClients={developerClients} localClients={localClients} />
     )}
   </WithContracts>
 );

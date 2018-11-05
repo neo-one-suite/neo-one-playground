@@ -1,17 +1,17 @@
-/* @hash 4801e32db015bc5f62a838f07e290214 */
+/* @hash e939ef99a3783d53f4c65505c83d2b52 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   Event,
+  ForwardOptions,
   ForwardValue,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
   InvokeReceiveTransactionOptions,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
+  InvokeSendUnsafeTransactionOptions,
   SmartContract,
   TransactionOptions,
   TransactionResult,
@@ -39,7 +39,7 @@ export interface OneRevokeSendTransferEventParameters {
 export interface OneRevokeSendTransferEvent extends Event<'revokeSendTransfer', OneRevokeSendTransferEventParameters> {}
 export type OneEvent = OneTransferEvent | OneApproveSendTransferEvent | OneRevokeSendTransferEvent;
 
-export interface OneSmartContract extends SmartContract<OneReadSmartContract> {
+export interface OneSmartContract<TClient extends Client = Client> extends SmartContract<TClient, OneEvent> {
   readonly amountPerNEO: () => Promise<BigNumber>;
   readonly approveReceiveTransfer: {
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
@@ -111,11 +111,11 @@ export interface OneSmartContract extends SmartContract<OneReadSmartContract> {
   };
   readonly owner: () => Promise<AddressString>;
   readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
+    (options?: InvokeSendUnsafeTransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, OneEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
+      (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, OneEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
@@ -134,41 +134,55 @@ export interface OneSmartContract extends SmartContract<OneReadSmartContract> {
   readonly symbol: () => Promise<string>;
   readonly totalSupply: () => Promise<BigNumber>;
   readonly transfer: {
-    (
+    <TForwardOptions extends ForwardOptions<any>>(
+      from: AddressString,
+      to: AddressString,
+      amount: BigNumber,
+      forwardOptions?: TForwardOptions,
+      ...approveArgs: ForwardValue[]
+    ): Promise<
+      TransactionResult<
+        InvokeReceipt<boolean, TForwardOptions extends ForwardOptions<infer T> ? OneEvent | T : OneEvent>,
+        InvocationTransaction
+      >
+    >;
+    <TForwardOptions extends ForwardOptions<any>>(
       from: AddressString,
       to: AddressString,
       amount: BigNumber,
       options?: TransactionOptions,
+      forwardOptions?: TForwardOptions,
       ...approveArgs: ForwardValue[]
-    ): Promise<TransactionResult<InvokeReceipt<boolean, OneEvent>, InvocationTransaction>>;
-    (from: AddressString, to: AddressString, amount: BigNumber, ...approveArgs: ForwardValue[]): Promise<
-      TransactionResult<InvokeReceipt<boolean, OneEvent>, InvocationTransaction>
+    ): Promise<
+      TransactionResult<
+        InvokeReceipt<boolean, TForwardOptions extends ForwardOptions<infer T> ? OneEvent | T : OneEvent>,
+        InvocationTransaction
+      >
     >;
     readonly confirmed: {
-      (
+      <TForwardOptions extends ForwardOptions<any>>(
+        from: AddressString,
+        to: AddressString,
+        amount: BigNumber,
+        forwardOptions?: TForwardOptions,
+        ...approveArgs: ForwardValue[]
+      ): Promise<
+        InvokeReceipt<boolean, TForwardOptions extends ForwardOptions<infer T> ? OneEvent | T : OneEvent> & {
+          readonly transaction: InvocationTransaction;
+        }
+      >;
+      <TForwardOptions extends ForwardOptions<any>>(
         from: AddressString,
         to: AddressString,
         amount: BigNumber,
         options?: TransactionOptions & GetOptions,
+        forwardOptions?: TForwardOptions,
         ...approveArgs: ForwardValue[]
-      ): Promise<InvokeReceipt<boolean, OneEvent> & { readonly transaction: InvocationTransaction }>;
-      (from: AddressString, to: AddressString, amount: BigNumber, ...approveArgs: ForwardValue[]): Promise<
-        InvokeReceipt<boolean, OneEvent> & { readonly transaction: InvocationTransaction }
+      ): Promise<
+        InvokeReceipt<boolean, TForwardOptions extends ForwardOptions<infer T> ? OneEvent | T : OneEvent> & {
+          readonly transaction: InvocationTransaction;
+        }
       >;
     };
   };
-}
-
-export interface OneReadSmartContract extends ReadSmartContract<OneEvent> {
-  readonly amountPerNEO: () => Promise<BigNumber>;
-  readonly approvedTransfer: (from: AddressString, to: AddressString) => Promise<BigNumber>;
-  readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
-  readonly decimals: () => Promise<BigNumber>;
-  readonly icoDurationSeconds: () => Promise<BigNumber>;
-  readonly icoStartTimeSeconds: () => Promise<BigNumber>;
-  readonly name: () => Promise<string>;
-  readonly owner: () => Promise<AddressString>;
-  readonly remaining: () => Promise<BigNumber>;
-  readonly symbol: () => Promise<string>;
-  readonly totalSupply: () => Promise<BigNumber>;
 }

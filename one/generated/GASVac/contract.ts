@@ -1,27 +1,20 @@
-/* @hash a9a08a43d22973ed2292ce1ee3a70fd1 */
+/* @hash 28e51ab2f1581bdb4118925a85aa99fa */
 // tslint:disable
 /* eslint-disable */
-import { Client, ReadClient, SmartContractDefinition } from '@neo-one/client';
+import { Client, SmartContractDefinition } from '@neo-one/client';
 import { gasVacABI } from './abi';
-import { GASVacReadSmartContract, GASVacSmartContract } from './types';
+import { GASVacSmartContract } from './types';
 import { sourceMaps } from '../sourceMaps';
 
 const definition: SmartContractDefinition = {
   networks: {
     local: {
-      address: 'AKWZATBE6zH7eC1uocNkaaPQMPqPWEGuG8',
+      address: 'AWCNJ3LeiQmN4oamRtp1wWrSuvd5bmp4cY',
     },
   },
   abi: gasVacABI,
   sourceMaps,
 };
 
-export const createGASVacSmartContract = (client: Client): GASVacSmartContract =>
-  client.smartContract<GASVacSmartContract>(definition);
-
-export const createGASVacReadSmartContract = (client: ReadClient): GASVacReadSmartContract =>
-  client.smartContract<GASVacReadSmartContract>({
-    address: definition.networks[client.dataProvider.network].address,
-    abi: definition.abi,
-    sourceMaps: definition.sourceMaps,
-  });
+export const createGASVacSmartContract = <TClient extends Client>(client: TClient): GASVacSmartContract<TClient> =>
+  client.smartContract<GASVacSmartContract<TClient>>(definition);

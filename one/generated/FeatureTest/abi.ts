@@ -1,4 +1,4 @@
-/* @hash 65fca8d085bab0078f9c79fce6a606de */
+/* @hash ce234bfc6136a7cac6aab3c288ca746c */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -27,6 +27,7 @@ export const featureTestABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -39,6 +40,7 @@ export const featureTestABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -51,19 +53,7 @@ export const featureTestABI: ABI = {
         type: 'Void',
       },
       send: false,
-    },
-    {
-      name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
-      returnType: {
-        type: 'Boolean',
-      },
-      send: true,
+      sendUnsafe: false,
     },
     {
       name: 'deploy',

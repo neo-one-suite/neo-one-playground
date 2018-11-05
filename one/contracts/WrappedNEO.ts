@@ -198,37 +198,8 @@ export class WrappedNEO extends SmartContract {
   }
 
   @send
-  public unwrapNEO(receiver: Address): boolean {
-    const transaction = Blockchain.currentTransaction;
-    const { outputs } = transaction;
-    if (outputs.length === 0) {
-      return false;
-    }
-
-    let amount = 0;
-    // tslint:disable-next-line no-loop-statement
-    for (const reference of transaction.references) {
-      // Don't allow transactions that send anything but NEO from the contract.
-      if (!reference.address.equals(this.address) || !reference.asset.equals(Hash256.NEO)) {
-        return false;
-      }
-
-      amount += reference.value / FACTOR;
-    }
-
-    // tslint:disable-next-line no-loop-statement
-    for (const output of transaction.outputs) {
-      // Only allow outputs to the specified receiver and the change to this address
-      if (!output.address.equals(receiver) && !output.address.equals(this.address)) {
-        return false;
-      }
-
-      if (output.address.equals(this.address)) {
-        amount -= output.value / FACTOR;
-      }
-    }
-
-    if (amount === 0) {
+  public unwrapNEO(receiver: Address, asset: Hash256, amount: Fixed<8>): boolean {
+    if (!asset.equals(Hash256.NEO)) {
       return false;
     }
 

@@ -1,14 +1,12 @@
-/* @hash c43c004d5278597278dedc93ff75b222 */
+/* @hash 0a2177676fc900ee1b80978359afb811 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
   SmartContract,
   TransactionOptions,
   TransactionResult,
@@ -16,23 +14,13 @@ import {
 
 export type GASVacEvent = never;
 
-export interface GASVacSmartContract extends SmartContract<GASVacReadSmartContract> {
+export interface GASVacSmartContract<TClient extends Client = Client> extends SmartContract<TClient, GASVacEvent> {
   readonly deploy: {
     (options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, GASVacEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
       (options?: TransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, GASVacEvent> & { readonly transaction: InvocationTransaction }
-      >;
-    };
-  };
-  readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, GASVacEvent>, InvocationTransaction>
-    >;
-    readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
         InvokeReceipt<boolean, GASVacEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
@@ -48,5 +36,3 @@ export interface GASVacSmartContract extends SmartContract<GASVacReadSmartContra
     };
   };
 }
-
-export interface GASVacReadSmartContract extends ReadSmartContract<GASVacEvent> {}
