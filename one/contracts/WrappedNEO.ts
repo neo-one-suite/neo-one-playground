@@ -10,6 +10,7 @@ import {
   receive,
   send,
   SmartContract,
+  Transfer,
 } from '@neo-one/smart-contract';
 
 const notifyTransfer = createEventNotifier<Address | undefined, Address | undefined, Fixed<0>>(
@@ -198,19 +199,20 @@ export class WrappedNEO extends SmartContract {
   }
 
   @send
-  public unwrapNEO(receiver: Address, asset: Hash256, amount: Fixed<8>): boolean {
-    if (!asset.equals(Hash256.NEO)) {
+  public unwrapNEO(transfer: Transfer): boolean {
+    if (!transfer.asset.equals(Hash256.NEO)) {
       return false;
     }
+    const amount = transfer.amount / FACTOR;
+    const balance = this.balanceOf(transfer.to);
 
-    const balance = this.balanceOf(receiver);
     if (balance < amount) {
       return false;
     }
 
-    this.balances.set(receiver, balance - amount);
+    this.balances.set(transfer.to, balance - amount);
     this.mutableSupply -= amount;
-    notifyTransfer(receiver, undefined, amount);
+    notifyTransfer(transfer.to, undefined, amount);
 
     return true;
   }

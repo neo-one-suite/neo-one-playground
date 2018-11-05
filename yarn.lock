@@ -891,7 +891,7 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@neo-one/cli@1.0.0-preview.4":
+"@neo-one/cli@^1.0.0-preview.4":
   version "1.0.0-preview.4"
   resolved "https://registry.yarnpkg.com/@neo-one/cli/-/cli-1.0.0-preview.4.tgz#0edb968fc66cd0314086dbec75c32f090fc15fe2"
   integrity sha512-+ZgxWWwFxUUG96zXiT805Z6VejH0lopFoXFo0Oi/14kU0KoBbJRXDlp+WORj9URHktwPKZ7Gc+jLX0f071+kkA==
@@ -1031,7 +1031,7 @@
     source-map "^0.7.3"
     tslib "^1.9.3"
 
-"@neo-one/client@1.0.0-preview.3":
+"@neo-one/client@^1.0.0-preview.3":
   version "1.0.0-preview.3"
   resolved "https://registry.yarnpkg.com/@neo-one/client/-/client-1.0.0-preview.3.tgz#179c6306b69607baea32ed492b9a978af8ac2569"
   integrity sha512-HtVfMKLDX6gKvmvx9Xny0wDzvf+ASEU2EakKVkNEZJHEo17q/MJiPLDQKwXebdcYqOlCG2NnapARVSshCczMwA==
@@ -1668,7 +1668,7 @@
     change-case "^3.0.2"
     tslib "^1.9.3"
 
-"@neo-one/smart-contract-test@1.0.0-preview.3", "@neo-one/smart-contract-test@^1.0.0-preview.3":
+"@neo-one/smart-contract-test@^1.0.0-preview.3":
   version "1.0.0-preview.3"
   resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-test/-/smart-contract-test-1.0.0-preview.3.tgz#6f313d8ff602b411b92134d648b17547db08fc05"
   integrity sha512-0ZRXOcntKG84EOb0vJqezThfV6DFt/lNJOEtOrbgLB83kw9Hzfq1yTzPkJ1kyfXJcBANBo6u2cR23ek5opxYqg==
@@ -1689,7 +1689,7 @@
     rxjs "^6.3.3"
     tslib "^1.9.3"
 
-"@neo-one/smart-contract-typescript-plugin@1.0.0-preview.3":
+"@neo-one/smart-contract-typescript-plugin@^1.0.0-preview.3":
   version "1.0.0-preview.3"
   resolved "https://registry.yarnpkg.com/@neo-one/smart-contract-typescript-plugin/-/smart-contract-typescript-plugin-1.0.0-preview.3.tgz#222adc0792c1ce9f3ef4fa25a3a354fabb664ad4"
   integrity sha512-8/slz3XSb4aGFoeaN2LkSJ9wF9KMR6FXdlQDHcGqSU9baigIJJ9zHp9OW7XY645QETESkhV3OPwN8PNo9h+Ufg==
@@ -1699,7 +1699,7 @@
     "@neo-one/types" "^1.0.0-preview.3"
     typescript "3.2.0-dev.20181103"
 
-"@neo-one/smart-contract@1.0.0-preview.2", "@neo-one/smart-contract@^1.0.0-preview.2":
+"@neo-one/smart-contract@^1.0.0-preview.2":
   version "1.0.0-preview.2"
   resolved "https://registry.yarnpkg.com/@neo-one/smart-contract/-/smart-contract-1.0.0-preview.2.tgz#a7afef40e02b708d1ff547d8523348e49d17f3ea"
   integrity sha512-SSSXBNxCOGxLS0Rt4gVS3aeEYPZLsJQbifpXNmjgPYwZvFLJbkzpBmEOsZS9ZAI7EXqx8wE9RH1q2bhWlfi1mg==
@@ -13559,20 +13559,20 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript-styled-plugin@0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.11.0.tgz#5d6045fb0c86ac8b6085341497eabe0321110da8"
-  integrity sha512-niTuUKY5JJd1JS1YCFFd7ahWXW8kymJHBjlkFu9iIU1M43ClIaidAHPEy7rihLTjxM9q1bIG6hr0USt1r8wAEg==
+typescript-styled-plugin@0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/typescript-styled-plugin/-/typescript-styled-plugin-0.12.0.tgz#ea441d773c1648727dbdb1e961a6a59d8f53c1a3"
+  integrity sha512-dqetvWmgwkfeUNyWlGlolnAw/A65bj+9I33MFQcy7a6JslZ71Zhvp0HMLmLYgF24qk5J8/UIGcYYUh7lJZIpLQ==
   dependencies:
-    typescript-template-language-service-decorator "^1.7.1"
-    vscode-css-languageservice "^3.0.10"
+    typescript-template-language-service-decorator "^2.0.0"
+    vscode-css-languageservice "^3.0.11"
     vscode-emmet-helper "1.2.11"
     vscode-languageserver-types "^3.13.0"
 
-typescript-template-language-service-decorator@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-1.7.1.tgz#60f825b6b2bab725c9a73eaff65cb598e81a1bc8"
-  integrity sha512-Gk0WBNe73T87lpiSj37Xmwzvt5zkKaHT1chY5+v2KP4uhpHktqIcV1hMpxmzAong38EIEhGZWeKtxjxGmTMbqg==
+typescript-template-language-service-decorator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.0.0.tgz#7433fdc464f07034d951dea9a5e76fab6e558f57"
+  integrity sha512-wbrje6G8t+h/xBRP+gyAXYpR0+U7the2YnfsF59SKz//gdLnpL+cSFhIuW61I07XXDyU68yMBFqUzm0Hg1Xpcg==
 
 typescript@3.2.0-dev.20181103:
   version "3.2.0-dev.20181103"
@@ -13902,13 +13902,13 @@ vorpal@^1.12.0:
     strip-ansi "^3.0.0"
     wrap-ansi "^2.0.0"
 
-vscode-css-languageservice@^3.0.10:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-3.0.10.tgz#71ece7e0d19227e9f21bcd5d5d928f817a7d701e"
-  integrity sha512-ZZ+Tb6LfdWQ4Ka4qGTv7QZLfgxtszyEYDX8WEZ2QN4a1xvhhBIMhCT7EDrseFN5pJ7Or0FilXRSwvmPoLNsl5w==
+vscode-css-languageservice@^3.0.11:
+  version "3.0.12"
+  resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-3.0.12.tgz#fb4aac5ae3c5b761b1db1d7224b78ff824284dc3"
+  integrity sha512-+FLQ9LcukIhnxaGTjDOqb3Nb1hesz9BLXf5yeoZxUsuK7joADPLPdxLwlZugFcMAvgmtnaFIGnzkQhGOVqf5yw==
   dependencies:
-    vscode-languageserver-types "^3.12.0"
-    vscode-nls "^3.2.5"
+    vscode-languageserver-types "^3.13.0"
+    vscode-nls "^4.0.0"
 
 vscode-emmet-helper@1.2.11:
   version "1.2.11"
@@ -13919,15 +13919,15 @@ vscode-emmet-helper@1.2.11:
     jsonc-parser "^1.0.0"
     vscode-languageserver-types "^3.6.0-next.1"
 
-vscode-languageserver-types@^3.12.0, vscode-languageserver-types@^3.13.0, vscode-languageserver-types@^3.6.0-next.1:
+vscode-languageserver-types@^3.13.0, vscode-languageserver-types@^3.6.0-next.1:
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.13.0.tgz#b704b024cef059f7b326611c99b9c8753c0a18b4"
   integrity sha512-BnJIxS+5+8UWiNKCP7W3g9FlE7fErFw0ofP5BXJe7c2tl0VeWh+nNHFbwAS2vmVC4a5kYxHBjRy0UeOtziemVA==
 
-vscode-nls@^3.2.5:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-3.2.5.tgz#25520c1955108036dec607c85e00a522f247f1a4"
-  integrity sha512-ITtoh3V4AkWXMmp3TB97vsMaHRgHhsSFPsUdzlueSL+dRZbSNTZeOmdQv60kjCV306ghPxhDeoNUEm3+EZMuyw==
+vscode-nls@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/vscode-nls/-/vscode-nls-4.0.0.tgz#4001c8a6caba5cedb23a9c5ce1090395c0e44002"
+  integrity sha512-qCfdzcH+0LgQnBpZA53bA32kzp9rpq/f66Som577ObeuDlFIrtbEJ+A/+CCxjIh4G8dpJYNCKIsxpRAHIfsbNw==
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
