@@ -1,11 +1,5 @@
 import { UserAccount } from '@neo-one/client';
-import {
-  FromStream,
-  getWalletSelectorOptions$,
-  makeWalletSelectorValueOption,
-  WalletSelectorBase,
-  WalletSelectorOptionType,
-} from '@neo-one/react';
+import { FromStream } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Grid, styled } from 'reakit';
@@ -13,7 +7,13 @@ import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
-import { Logo } from '../../elements/Logo';
+import {
+  getWalletSelectorOptions$,
+  Logo,
+  makeWalletSelectorValueOption,
+  WalletSelectorBase,
+  WalletSelectorOptionType,
+} from '../../elements';
 import { ComponentProps } from '../../types';
 import { ReceiveONEBox, RevokeONEBox, SendONEBox } from './ActionComponents';
 
@@ -57,6 +57,7 @@ const StyledLogo = styled(Logo)`
 interface Props extends ComponentProps<typeof StyledGrid> {
   readonly toWallet: UserAccount | undefined;
   readonly setToWallet: (wallet: WalletSelectorOptionType | undefined) => void;
+  readonly addError: (error: Error) => void;
 }
 
 const template = `
@@ -67,38 +68,54 @@ const template = `
   / 1fr 1fr 1fr 1fr 1fr 1fr
 `;
 
-export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
+export function EscrowApp({ toWallet, setToWallet, addError, ...props }: Props) {
   return (
     <WithContracts>
       {({ client, one, escrow }) => (
         <FromStream
-          props$={concat(
-            of(undefined),
-            combineLatest(
-              client.currentAccount$,
-              getWalletSelectorOptions$(() => undefined, client, of([])),
-              client.block$,
-            ).pipe(
-              switchMap(async ([account, options]) => {
-                const [balance, fromBalance, toBalance] = await Promise.all([
-                  account === undefined || toWallet === undefined
-                    ? Promise.resolve(new BigNumber('0'))
-                    : escrow.balanceOf(account.id.address, toWallet.id.address),
-                  account === undefined ? Promise.resolve(new BigNumber('0')) : one.balanceOf(account.id.address),
-                  toWallet === undefined ? Promise.resolve(new BigNumber('0')) : one.balanceOf(toWallet.id.address),
-                ]);
+          props={[toWallet]}
+          createStream={() =>
+            concat(
+              of(undefined),
+              combineLatest(
+                client.currentUserAccount$,
+                getWalletSelectorOptions$(
+                  addError,
+                  client,
+                  client.userAccounts$,
+                  client.block$,
+                  of([
+                    {
+                      network: client.getCurrentNetwork(),
+                      address: one.definition.networks[client.getCurrentNetwork()].address,
+                      symbol: 'ONE',
+                      decimals: 8,
+                    },
+                  ]),
+                ),
+                client.block$,
+              ).pipe(
+                switchMap(async ([account, options]) => {
+                  const [balance, fromBalance, toBalance] = await Promise.all([
+                    account === undefined || toWallet === undefined
+                      ? Promise.resolve(new BigNumber('0'))
+                      : escrow.balanceOf(account.id.address, toWallet.id.address),
+                    account === undefined ? Promise.resolve(new BigNumber('0')) : one.balanceOf(account.id.address),
+                    toWallet === undefined ? Promise.resolve(new BigNumber('0')) : one.balanceOf(toWallet.id.address),
+                  ]);
 
-                return {
-                  options,
-                  fromBalance,
-                  toBalance,
-                  balance,
-                  fromAddress: account === undefined ? '' : account.id.address,
-                  toAddress: toWallet === undefined ? '' : toWallet.id.address,
-                };
-              }),
-            ),
-          )}
+                  return {
+                    options,
+                    fromBalance,
+                    toBalance,
+                    balance,
+                    fromAddress: account === undefined ? '' : account.id.address,
+                    toAddress: toWallet === undefined ? '' : toWallet.id.address,
+                  };
+                }),
+              ),
+            )
+          }
         >
           {(value) => (
             <StyledGrid {...props} template={template}>
@@ -140,8 +157,8 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
                   data-test="escrow-wallet-selector"
                   value={toWallet === undefined ? undefined : makeWalletSelectorValueOption({ userAccount: toWallet })}
                   options={value === undefined ? [] : value.options}
-                  onChange={(option) => {
-                    if (option != undefined && !Array.isArray(option)) {
+                  onChange={(option: WalletSelectorOptionType | undefined) => {
+                    if (option !== undefined && !Array.isArray(option)) {
                       setToWallet(option);
                     }
                   }}

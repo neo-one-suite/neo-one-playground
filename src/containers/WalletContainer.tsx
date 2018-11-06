@@ -1,8 +1,8 @@
 import { UserAccount } from '@neo-one/client';
-import { WalletSelectorOptionType } from '@neo-one/react';
 import { ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
+import { WalletSelectorOptionType } from '../elements';
 
 interface State {
   readonly toWallet: UserAccount | undefined;

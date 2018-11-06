@@ -1,7 +1,9 @@
 import { Flex, styled } from 'reakit';
 import { prop, switchProp } from 'styled-tools';
 
-export const SectionContentWrapper = styled(Flex)`
+export type BackgroundColors = 'dark' | 'light' | 'darkLight' | 'gray5';
+
+export const SectionContentWrapper = styled(Flex)<{ readonly bg: BackgroundColors }>`
   /* stylelint-disable-next-line */
   background-color: ${switchProp('bg', {
     dark: prop('theme.black'),

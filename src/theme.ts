@@ -1,4 +1,4 @@
-import { theme as oneTheme } from '@neo-one/react';
+import { theme as oneTheme } from '@neo-one/react-common';
 import { css } from 'reakit';
 
 // tslint:disable-next-line no-unused-expression

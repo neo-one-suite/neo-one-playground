@@ -5,7 +5,7 @@ import { Background, ContentWrapper, Display2 } from '../../elements';
 
 const Header = styled(Display2)`
   color: ${prop('theme.gray0')};
-`
+`;
 
 const FlexBackground = Flex.as(Background);
 const StyledBackground = styled(FlexBackground)`

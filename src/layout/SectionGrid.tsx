@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { Grid, styled } from 'reakit';
 import { prop, switchProp } from 'styled-tools';
-import { Headline, SectionContentWrapper, Subheading } from '../elements';
+import { BackgroundColors, Headline, SectionContentWrapper, Subheading } from '../elements';
 import { ComponentProps } from '../types';
 
-type Background = 'dark' | 'light' | 'darkLight' | 'gray5';
 interface Props {
-  readonly bg: Background;
+  readonly bg: BackgroundColors;
   readonly title: string;
   readonly children: React.ReactNode;
 }
 
-const StyledHeading = styled(Headline)<{ readonly bg: Background }>`
+const StyledHeading = styled(Headline)<{ readonly bg: BackgroundColors }>`
   ${prop('theme.fonts.axiformaMedium')};
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
@@ -24,7 +23,7 @@ const StyledHeading = styled(Headline)<{ readonly bg: Background }>`
 `;
 
 const GridItem = Grid.Item.as(Subheading).as('div');
-const StyledItem = styled(GridItem)`
+const StyledItem = styled(GridItem)<{ readonly bg: BackgroundColors }>`
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
     gray5: prop('theme.gray1'),

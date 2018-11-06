@@ -32,7 +32,7 @@ interface Effects {
 
 const makeEffects = (client: Client, one: OneSmartContract): EffectMap<State, Effects> => ({
   send: () => ({ state: { amount }, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
-    const from = client.getCurrentAccount();
+    const from = client.getCurrentUserAccount();
     if (amount === undefined || from === undefined) {
       return;
     }

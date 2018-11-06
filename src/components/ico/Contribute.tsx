@@ -1,5 +1,6 @@
 // tslint:disable no-null-keyword no-any
-import { Button, FromStream } from '@neo-one/react';
+import { FromStream } from '@neo-one/react';
+import { Button } from '@neo-one/react-common';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, Input, styled } from 'reakit';
@@ -18,6 +19,8 @@ const StyledFlex = styled(Flex)`
 const StyledInput = styled(Input)`
   margin-right: 8px;
   width: 400px;
+  background-color: white;
+  padding: 8px;
 `;
 
 const StyledBody2 = styled(Body2)`
@@ -33,7 +36,7 @@ const Wrapper = styled(Box)`
 export const Contribute = (props: ComponentProps<typeof Flex>) => (
   <WithContracts>
     {({ one }) => (
-      <FromStream props$={concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}>
+      <FromStream createStream={() => concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}>
         {(amountPerNEO) => (
           <ICOContainer>
             {({ text, amount, loading, onChangeAmount, send }) => (

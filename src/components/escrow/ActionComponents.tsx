@@ -1,6 +1,6 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
-import { Button } from '@neo-one/react';
+import { Button } from '@neo-one/react-common';
 import * as React from 'react';
 import { Box, Flex, Group, Input, styled } from 'reakit';
 import { EscrowContainer } from '../../containers';
@@ -14,6 +14,11 @@ const StyledButton = styled(Button)`
   width: 72px;
 `;
 
+const StyledInput = styled(Input)`
+  background-color: white;
+  padding: 8px;
+`;
+
 interface Props extends ComponentProps<typeof Flex> {
   readonly toWallet: UserAccount | undefined;
 }
@@ -23,7 +28,7 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
-          <Input
+          <StyledInput
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
@@ -43,7 +48,7 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
-          <Input
+          <StyledInput
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
@@ -67,7 +72,7 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
-          <Input
+          <StyledInput
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"

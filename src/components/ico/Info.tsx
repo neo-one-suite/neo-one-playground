@@ -37,22 +37,24 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
 
   return (
     <FromStream
-      props$={concat(of(0), timer(0, TIMER)).pipe(
-        map((inc) => {
-          const currentNow = nowMS + Math.floor(inc * TIMER);
+      createStream={() =>
+        concat(of(0), timer(0, TIMER)).pipe(
+          map((inc) => {
+            const currentNow = nowMS + Math.floor(inc * TIMER);
 
-          const countdown = startTimeMS > currentNow;
-          const complete = endTimeMS < currentNow;
-          const value = countdown
-            ? formatDistanceStrict(new Date(startTimeMS), currentNow)
-            : complete
-              ? undefined
-              : formatDistanceStrict(currentNow, new Date(endTimeMS));
+            const countdown = startTimeMS > currentNow;
+            const complete = endTimeMS < currentNow;
+            const value = countdown
+              ? formatDistanceStrict(new Date(startTimeMS), currentNow)
+              : complete
+                ? undefined
+                : formatDistanceStrict(currentNow, new Date(endTimeMS));
 
-          return { countdown, value };
-        }),
-        distinctUntilChanged<{ countdown: boolean; value: string | undefined }>((a, b) => _.isEqual(a, b)),
-      )}
+            return { countdown, value };
+          }),
+          distinctUntilChanged<{ countdown: boolean; value: string | undefined }>((a, b) => _.isEqual(a, b)),
+        )
+      }
     >
       {({ countdown, value }) => (
         <>
@@ -81,39 +83,41 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
     <WithContracts>
       {({ client, one }) => (
         <FromStream
-          props$={concat(
-            of(undefined),
-            combineLatest(client.block$, client.currentAccount$, client.currentNetwork$).pipe(
-              switchMap(async ([{ block }, account, network]) => {
-                const [
-                  startTimeSeconds,
-                  durationSeconds,
-                  amountPerNEO,
-                  totalSupply,
-                  remaining,
-                  balance,
-                ] = await Promise.all([
-                  one.icoStartTimeSeconds(),
-                  one.icoDurationSeconds(),
-                  one.amountPerNEO(),
-                  one.totalSupply(),
-                  one.remaining(),
-                  account === undefined ? Promise.resolve(new BigNumber(0)) : one.balanceOf(account.id.address),
-                ]);
+          createStream={() =>
+            concat(
+              of(undefined),
+              combineLatest(client.block$, client.currentUserAccount$, client.currentNetwork$).pipe(
+                switchMap(async ([{ block }, account, network]) => {
+                  const [
+                    startTimeSeconds,
+                    durationSeconds,
+                    amountPerNEO,
+                    totalSupply,
+                    remaining,
+                    balance,
+                  ] = await Promise.all([
+                    one.icoStartTimeSeconds(),
+                    one.icoDurationSeconds(),
+                    one.amountPerNEO(),
+                    one.totalSupply(),
+                    one.remaining(),
+                    account === undefined ? Promise.resolve(new BigNumber(0)) : one.balanceOf(account.id.address),
+                  ]);
 
-                return {
-                  startTimeMS: startTimeSeconds.toNumber() * 1000,
-                  durationMS: durationSeconds.toNumber() * 1000,
-                  amountPerNEO,
-                  totalSupply,
-                  remaining,
-                  nowMS: block.time * 1000,
-                  balance,
-                  address: one.definition.networks[network].address,
-                };
-              }),
-            ),
-          )}
+                  return {
+                    startTimeMS: startTimeSeconds.toNumber() * 1000,
+                    durationMS: durationSeconds.toNumber() * 1000,
+                    amountPerNEO,
+                    totalSupply,
+                    remaining,
+                    nowMS: block.time * 1000,
+                    balance,
+                    address: one.definition.networks[network].address,
+                  };
+                }),
+              ),
+            )
+          }
         >
           {(value) => (
             <StyledGrid columns="160px 1fr" autoRows="auto" gap="0" {...props}>

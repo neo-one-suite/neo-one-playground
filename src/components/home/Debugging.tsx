@@ -1,4 +1,4 @@
-import { Button } from '@neo-one/react';
+import { Button } from '@neo-one/react-common';
 import * as React from 'react';
 import { Grid } from 'reakit';
 import { WithContracts } from '../../../one/generated';

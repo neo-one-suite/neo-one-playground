@@ -24,10 +24,6 @@ const StyledToolbar = styled(Toolbar)`
   padding: 0 16px;
   ${prop('theme.maxWidth')};
 
-  ${/* sc-sel */ Toolbar.Focusable} {
-    outline: none;
-  }
-
   @media (max-width: 768px) {
     padding: 0 8px;
   }
@@ -65,33 +61,44 @@ const NavigationLink = styled(RouterLink)`
   }
 `;
 
+const StyledToolbarLink = styled(Toolbar.Focusable.as(Link))`
+  outline: none;
+`;
+
+const StyledToolbarNavLink = styled(Toolbar.Focusable.as(NavigationLink))`
+  outline: none;
+`;
+
+const StyledToolbarLogoLink = styled(Toolbar.Focusable.as(LogoLink))`
+  outline: none;
+`;
+
 export const Header = (props: ComponentProps<typeof Wrapper>) => (
   <Wrapper {...props}>
     <StyledToolbar>
       <Toolbar.Content>
-        <Toolbar.Focusable data-test="header-logo" as={LogoLink} to="/">
+        <StyledToolbarLogoLink data-test="header-logo" to="/">
           <Logo />
-        </Toolbar.Focusable>
-        <Toolbar.Focusable data-test="header-ico" as={NavigationLink} to="/ico">
+        </StyledToolbarLogoLink>
+        <StyledToolbarNavLink data-test="header-ico" to="/ico">
           ICO
-        </Toolbar.Focusable>
-        <Toolbar.Focusable data-test="header-gasvac" as={NavigationLink} to="/gasvac">
+        </StyledToolbarNavLink>
+        <StyledToolbarNavLink data-test="header-gasvac" to="/gasvac">
           GASVac
-        </Toolbar.Focusable>
-        <Toolbar.Focusable data-test="header-escrow" as={NavigationLink} to="/escrow">
+        </StyledToolbarNavLink>
+        <StyledToolbarNavLink data-test="header-escrow" to="/escrow">
           Escrow
-        </Toolbar.Focusable>
+        </StyledToolbarNavLink>
       </Toolbar.Content>
       <Toolbar.Content align="end">
-        <Toolbar.Focusable
+        <StyledToolbarLink
           data-test="header-github"
-          as={Link}
           href="https://github.com/neo-one-suite/neo-one-playground"
           target="_blank"
         >
           GitHub
           <MdOpenInNew />
-        </Toolbar.Focusable>
+        </StyledToolbarLink>
       </Toolbar.Content>
     </StyledToolbar>
   </Wrapper>

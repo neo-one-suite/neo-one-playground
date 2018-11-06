@@ -6,3 +6,4 @@ export * from './Link';
 export * from './Logo';
 export * from './SectionContentWrapper';
 export * from './TryItOut';
+export * from './wallet';

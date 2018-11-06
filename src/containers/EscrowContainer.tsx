@@ -1,10 +1,10 @@
 import { Client, UserAccount } from '@neo-one/client';
-import { WithAddError } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import { ActionMap, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
 import { EscrowSmartContract, OneSmartContract, WithContracts } from '../../one/generated';
+import { WithAddError } from '../elements';
 
 interface Actions {
   readonly onChangeSendAmount: (sendText: string) => void;
@@ -59,7 +59,7 @@ const makeEffects = (
 ): EffectMap<State, Effects> => ({
   send: () => ({ state: { sendAmount }, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
     const network = client.getCurrentNetwork();
-    const from = client.getCurrentAccount();
+    const from = client.getCurrentUserAccount();
     if (sendAmount === undefined) {
       return;
     }
@@ -114,7 +114,7 @@ const makeEffects = (
     state: State;
     setState: (state: Partial<State>) => void;
   }) => {
-    const from = client.getCurrentAccount();
+    const from = client.getCurrentUserAccount();
 
     if (from === undefined) {
       addError(new Error('Unable to complete transfer. No "From Account" selected.'));
@@ -169,7 +169,7 @@ const makeEffects = (
     state: State;
     setState: (state: Partial<State>) => void;
   }) => {
-    const from = client.getCurrentAccount();
+    const from = client.getCurrentUserAccount();
 
     if (from === undefined) {
       addError(new Error('Unable to complete transfer. No "From Account" selected.'));

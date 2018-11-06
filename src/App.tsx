@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider, ThemeProvider } from 'reakit';
-import { ContractsProvider, DeveloperTools } from '../one/generated';
+import { ContractsProvider } from '../one/generated';
 import { ScrollToTop } from './components';
 import { CoreLayout } from './layout';
 import { Escrow, GASVac, Home, ICO } from './pages';
@@ -26,7 +26,6 @@ export const App = hot(module)(() => (
             </Switch>
           </ScrollToTop>
         </BrowserRouter>
-        <DeveloperTools />
       </Provider>
     </ContractsProvider>
   </ThemeProvider>
