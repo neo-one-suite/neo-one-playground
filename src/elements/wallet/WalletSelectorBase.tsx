@@ -1,57 +1,36 @@
 // tslint:disable no-any
-import { Account, Client, Hash256, nep5, UserAccount } from '@neo-one/client';
+import { Account, Client, Hash256, UserAccount } from '@neo-one/client';
 import { utils } from '@neo-one/utils';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 // tslint:disable-next-line no-submodule-imports
 import { FormatOptionLabelMeta } from 'react-select/lib/Select';
 import { Grid, styled } from 'reakit';
-import { combineLatest, concat, Observable, of, ReplaySubject } from 'rxjs';
+import { combineLatest, concat, of, ReplaySubject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, multicast, refCount, switchMap, take } from 'rxjs/operators';
 import { Select } from './Select';
-import { Token } from './types';
 
 export const makeOption = async ({
-  client,
   userAccount,
   account,
-  tokens,
 }: {
   readonly client: Client;
   readonly userAccount: UserAccount;
   readonly account: Account;
-  readonly tokens: ReadonlyArray<Token>;
 }) => {
-  const [assetBalances, tokenBalances] = await Promise.all([
-    Promise.all(
-      Object.entries(account.balances).map<Promise<[string, BigNumber] | undefined>>(async ([assetHash, value]) => {
-        if (assetHash === Hash256.NEO) {
-          return ['NEO', value];
-        }
+  const assetBalances = await Promise.all(
+    Object.entries(account.balances).map<Promise<[string, BigNumber] | undefined>>(async ([assetHash, value]) => {
+      if (assetHash === Hash256.NEO) {
+        return ['NEO', value];
+      }
 
-        if (assetHash === Hash256.GAS) {
-          return ['GAS', value];
-        }
+      if (assetHash === Hash256.GAS) {
+        return ['GAS', value];
+      }
 
-        return undefined;
-      }),
-    ),
-    Promise.all(
-      tokens
-        .filter((token) => token.network === userAccount.id.network)
-        .map<Promise<[string, BigNumber]>>(async (token) => {
-          const smartContract = nep5.createNEP5SmartContract(
-            client,
-            { [token.network]: { address: token.address } },
-            token.decimals,
-          );
-
-          const balance = await smartContract.balanceOf(userAccount.id.address, { network: token.network });
-
-          return [token.symbol, balance];
-        }),
-    ),
-  ]);
+      return undefined;
+    }),
+  );
 
   return {
     value: `${userAccount.id.network}:${userAccount.id.address}`,
@@ -60,32 +39,7 @@ export const makeOption = async ({
     id: userAccount.id,
     userAccount,
     // tslint:disable-next-line no-array-mutation
-    balances: assetBalances
-      .filter(utils.notNull)
-      .concat(tokenBalances)
-      .sort(([nameA], [nameB]) => {
-        if (nameA.localeCompare(nameB) === 0) {
-          return 0;
-        }
-
-        if (nameA === 'NEO') {
-          return -1;
-        }
-
-        if (nameB === 'NEO') {
-          return 1;
-        }
-
-        if (nameA === 'GAS') {
-          return -1;
-        }
-
-        if (nameB === 'GAS') {
-          return 1;
-        }
-
-        return nameA.localeCompare(nameB);
-      }),
+    balances: assetBalances.filter(utils.notNull),
   };
 };
 
@@ -102,26 +56,23 @@ export type WalletSelectorOptionType =
   | ReturnType<typeof makeWalletSelectorValueOption>;
 
 export const getWalletSelectorOptions$ = (
-  addError: (error: Error) => void,
   client: Client,
   userAccounts$: Client['userAccounts$'],
   block$: Client['block$'],
-  tokens$: Observable<ReadonlyArray<Token>>,
 ) =>
   concat(
     userAccounts$.pipe(
       take(1),
       map((userAccounts) => userAccounts.map((userAccount) => makeWalletSelectorValueOption({ userAccount }))),
     ),
-    combineLatest(userAccounts$.pipe(distinctUntilChanged()), tokens$, block$).pipe(
-      switchMap(async ([userAccounts, tokens]) =>
+    combineLatest(userAccounts$.pipe(distinctUntilChanged()), block$).pipe(
+      switchMap(async ([userAccounts]) =>
         Promise.all(
           userAccounts.map(async (userAccount) => {
             const account = await client.getAccount(userAccount.id);
 
             return makeOption({
               client,
-              tokens,
               userAccount,
               account,
             });
@@ -130,11 +81,7 @@ export const getWalletSelectorOptions$ = (
       ),
       multicast(() => new ReplaySubject(1)),
       refCount(),
-      catchError((error: Error) => {
-        addError(error);
-
-        return of([]);
-      }),
+      catchError((_error: Error) => of([])),
     ),
   );
 

@@ -57,7 +57,6 @@ const StyledLogo = styled(Logo)`
 interface Props extends ComponentProps<typeof StyledGrid> {
   readonly toWallet: UserAccount | undefined;
   readonly setToWallet: (wallet: WalletSelectorOptionType | undefined) => void;
-  readonly addError: (error: Error) => void;
 }
 
 const template = `
@@ -68,7 +67,7 @@ const template = `
   / 1fr 1fr 1fr 1fr 1fr 1fr
 `;
 
-export function EscrowApp({ toWallet, setToWallet, addError, ...props }: Props) {
+export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
   return (
     <WithContracts>
       {({ client, one, escrow }) => (
@@ -79,20 +78,7 @@ export function EscrowApp({ toWallet, setToWallet, addError, ...props }: Props) 
               of(undefined),
               combineLatest(
                 client.currentUserAccount$,
-                getWalletSelectorOptions$(
-                  addError,
-                  client,
-                  client.userAccounts$,
-                  client.block$,
-                  of([
-                    {
-                      network: client.getCurrentNetwork(),
-                      address: one.definition.networks[client.getCurrentNetwork()].address,
-                      symbol: 'ONE',
-                      decimals: 8,
-                    },
-                  ]),
-                ),
+                getWalletSelectorOptions$(client, client.userAccounts$, client.block$),
                 client.block$,
               ).pipe(
                 switchMap(async ([account, options]) => {

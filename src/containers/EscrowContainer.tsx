@@ -4,7 +4,6 @@ import { ActionMap, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
 import { EscrowSmartContract, OneSmartContract, WithContracts } from '../../one/generated';
-import { WithAddError } from '../elements';
 
 interface Actions {
   readonly onChangeSendAmount: (sendText: string) => void;
@@ -55,22 +54,12 @@ const makeEffects = (
   escrow: EscrowSmartContract,
   one: OneSmartContract,
   toWallet: UserAccount | undefined,
-  addError: (error: Error) => void,
 ): EffectMap<State, Effects> => ({
   send: () => ({ state: { sendAmount }, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
     const network = client.getCurrentNetwork();
     const from = client.getCurrentUserAccount();
-    if (sendAmount === undefined) {
-      return;
-    }
-    if (from === undefined) {
-      addError(new Error('Unable to complete transfer. No "From Account" selected.'));
 
-      return;
-    }
-    if (toWallet === undefined) {
-      addError(new Error('Unable to complete transfer. No "To Account" selected.'));
-
+    if (sendAmount === undefined || from === undefined || toWallet === undefined) {
       return;
     }
 
@@ -84,9 +73,8 @@ const makeEffects = (
       }
     };
 
-    const onError = (error: Error) => {
+    const onError = (_error: Error) => {
       onComplete(false);
-      addError(error);
     };
 
     one.transfer
@@ -116,14 +104,7 @@ const makeEffects = (
   }) => {
     const from = client.getCurrentUserAccount();
 
-    if (from === undefined) {
-      addError(new Error('Unable to complete transfer. No "From Account" selected.'));
-
-      return;
-    }
-    if (toWallet === undefined) {
-      addError(new Error('Unable to complete transfer. No "To Account" selected.'));
-
+    if (from === undefined || toWallet === undefined) {
       return;
     }
 
@@ -137,9 +118,8 @@ const makeEffects = (
       }
     };
 
-    const onError = (error: Error) => {
+    const onError = (_error: Error) => {
       onComplete(false);
-      addError(error);
     };
 
     return escrow
@@ -171,14 +151,7 @@ const makeEffects = (
   }) => {
     const from = client.getCurrentUserAccount();
 
-    if (from === undefined) {
-      addError(new Error('Unable to complete transfer. No "From Account" selected.'));
-
-      return;
-    }
-    if (toWallet === undefined) {
-      addError(new Error('Unable to complete transfer. No "To Account" selected.'));
-
+    if (from === undefined || toWallet === undefined) {
       return;
     }
 
@@ -192,9 +165,8 @@ const makeEffects = (
       }
     };
 
-    const onError = (error: Error) => {
+    const onError = (_error: Error) => {
       onComplete(false);
-      addError(error);
     };
 
     return escrow
@@ -237,27 +209,23 @@ interface Props extends ContainerProps<State, Actions, {}, Effects> {
 
 export const EscrowContainer = (props: Props) => (
   <WithContracts>
-    {({ client, escrow, one }) => (
-      <WithAddError>
-        {(addError) => {
-          const effects = makeEffects(client, escrow, one, props.toWallet, addError);
+    {({ client, escrow, one }) => {
+      const effects = makeEffects(client, escrow, one, props.toWallet);
 
-          return (
-            <Container
-              {...props}
-              initialState={{
-                sendText: '',
-                receiveText: '',
-                sendLoading: false,
-                receiveLoading: false,
-                revokeLoading: false,
-              }}
-              actions={actions}
-              effects={effects}
-            />
-          );
-        }}
-      </WithAddError>
-    )}
+      return (
+        <Container
+          {...props}
+          initialState={{
+            sendText: '',
+            receiveText: '',
+            sendLoading: false,
+            receiveLoading: false,
+            revokeLoading: false,
+          }}
+          actions={actions}
+          effects={effects}
+        />
+      );
+    }}
   </WithContracts>
 );

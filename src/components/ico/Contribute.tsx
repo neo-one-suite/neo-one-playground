@@ -1,9 +1,9 @@
 // tslint:disable no-null-keyword no-any
 import { FromStream } from '@neo-one/react';
-import { Button } from '@neo-one/react-common';
+import { Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Input, styled } from 'reakit';
+import { Box, Flex, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
@@ -16,11 +16,9 @@ const StyledFlex = styled(Flex)`
   padding: 8px 0;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(TextInput)`
   margin-right: 8px;
   width: 400px;
-  background-color: white;
-  padding: 8px;
 `;
 
 const StyledBody2 = styled(Body2)`

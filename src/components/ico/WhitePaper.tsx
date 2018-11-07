@@ -1,4 +1,4 @@
-import { Button } from '@neo-one/react-common';
+import { Button } from '@neo-one/react-core';
 import * as React from 'react';
 import { Flex } from 'reakit';
 import { Subheading } from '../../elements';
