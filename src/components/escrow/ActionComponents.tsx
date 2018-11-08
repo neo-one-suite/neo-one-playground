@@ -1,6 +1,7 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
 import { Button, TextInput } from '@neo-one/react-core';
+import { BigNumber } from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, Group, styled } from 'reakit';
 import { prop } from 'styled-tools';
@@ -22,6 +23,7 @@ const StyledButton = styled(Button)`
 
 interface Props extends ComponentProps<typeof Flex> {
   readonly toWallet: UserAccount | undefined;
+  readonly balance: BigNumber;
 }
 
 export const SendONEBox = (props: Props) => (
@@ -37,7 +39,12 @@ export const SendONEBox = (props: Props) => (
           />
           <StyledButton
             data-test="send-one-button"
-            disabled={sendAmount === undefined || sendLoading || props.toWallet === undefined}
+            disabled={
+              sendAmount === undefined ||
+              sendAmount.toNumber() > props.balance.toNumber() ||
+              sendLoading ||
+              props.toWallet === undefined
+            }
             onClick={send}
           >
             Send
@@ -61,7 +68,12 @@ export const ReceiveONEBox = (props: Props) => (
           />
           <StyledButton
             data-test="receive-one-button"
-            disabled={receiveAmount === undefined || receiveLoading || props.toWallet === undefined}
+            disabled={
+              receiveAmount === undefined ||
+              receiveAmount.toNumber() > props.balance.toNumber() ||
+              receiveLoading ||
+              props.toWallet === undefined
+            }
             onClick={receive}
           >
             Receive
@@ -85,7 +97,12 @@ export const RevokeONEBox = (props: Props) => (
           />
           <StyledButton
             data-test="revoke-one-button"
-            disabled={revokeAmount === undefined || revokeLoading || props.toWallet === undefined}
+            disabled={
+              revokeAmount === undefined ||
+              revokeAmount.toNumber() > props.balance.toNumber() ||
+              revokeLoading ||
+              props.toWallet === undefined
+            }
             onClick={revoke}
           >
             Revoke

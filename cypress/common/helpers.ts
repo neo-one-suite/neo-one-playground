@@ -1,21 +1,35 @@
-export const ONE_ADDRESS = 'AaUzsqma2iQ3M1SCNwRFsj4dgRcUVzanSw';
+export const ONE_ADDRESS = 'AQWbfhkXSStBh2CAwWwx8neLm9MvNc7k27';
 
 export const initializeOne = () => {
   cy.visit('/ico');
 
   // Clear local storage
-  cy.get('[data-test=neo-one-toolbar-toggle-button]').click();
-  cy.get('[data-test=neo-one-settings-button]').click();
-  cy.get('[data-test=neo-one-reset-local-state-button]').click();
-  cy.get('[data-test=neo-one-settings-dialog-close-button]').click();
-  cy.get('[data-test=neo-one-balance-selector-selector]').should('have.text', 'NEO');
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+    cy.wrap(iframe.find('[data-test="neo-one-toolbar-toggle-button"]')[0]).click({ force: true });
+    cy.wrap(iframe.find('[data-test="neo-one-settings-button"]')[0]).click({ force: true });
+  });
+  cy.wait(250);
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-reset-local-state-button"]')[0]).click({ force: true });
+    cy.wrap(iframe.find('[data-test="neo-one-settings-dialog-close-button"]')[0]).click({ force: true });
+    cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).should('have.text', 'NEO');
+  });
 
   // Check initial state
   cy.get('[data-test=info-address]').should('have.text', 'ONE Address:');
   cy.get('[data-test=info-address-value]').should('have.text', ONE_ADDRESS);
-  cy.get('[data-test=neo-one-reset-button]').click();
-  cy.get('[data-test=neo-one-reset-button]').should('have.attr', 'disabled');
-  cy.get('[data-test=neo-one-reset-button]', { timeout: 10000 }).should('not.have.attr', 'disabled');
+
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).click({ force: true });
+    cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).should('have.attr', 'disabled');
+    cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).should('not.have.attr', 'disabled');
+  });
+
   cy.get('[data-test=info-countdown]').should('have.text', 'Countdown:');
   cy.get('[data-test=info-countdown-value]').then(($element) => {
     const text = $element.text();
@@ -34,33 +48,55 @@ export const initializeOne = () => {
 };
 
 export const fastForward = (offset: number, exists = false) => {
-  cy.get('[data-test=neo-one-block-time-button]').click();
-  cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]').then(($input) => {
-    const value = $input.val();
-    cy.task('addSeconds', { value, offset }).then(
-      // tslint:disable-next-line no-any
-      ({ formatted, time }: any) => {
-        cy.get('[data-test=neo-one-block-time-dialog-date-time-picker-input]')
-          .clear()
-          .type(formatted as string);
-        if (exists) {
-          cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
-            cy.get('[data-test=neo-one-block-time-dialog-button]').click();
-            cy.get('[data-test=neo-one-block-time-last-time-value]').should('not.have.text', $value.text());
-            cy.get('[data-test=neo-one-block-time-last-time-value]').then(($currentValue) => {
-              const lastTimeValue = new Date($currentValue.text()).valueOf();
-              expect(lastTimeValue).to.be.gte(time);
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+    cy.wrap(iframe.find('[data-test="neo-one-block-time-button"]')[0]).click({ force: true });
+    cy.wait(250);
+  });
+
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+    cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-date-time-picker-input"]')[0]).then(($input) => {
+      const value = $input.val();
+
+      return cy.task('addSeconds', { value, offset }).then(
+        // tslint:disable-next-line no-any
+        ({ formatted, time }: any) => {
+          cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-date-time-picker-input"]')[0])
+            .clear()
+            .type(formatted as string);
+
+          cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
+
+          if (exists) {
+            cy.wrap(iframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).then(($value) => {
+              cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
+              cy.wrap(iframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).should(
+                'not.have.text',
+                $value.text(),
+              );
+
+              cy.wrap(iframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).then(($currentValue) => {
+                const lastTimeValue = new Date($currentValue.text()).valueOf();
+                expect(lastTimeValue).to.be.gte(time);
+              });
             });
-          });
-        } else {
-          cy.get('[data-test=neo-one-block-time-dialog-button]').click();
-          cy.get('[data-test=neo-one-block-time-last-time-value]').then(($value) => {
-            const lastTimeValue = new Date($value.text()).valueOf();
-            expect(lastTimeValue).to.be.gte(time);
-          });
-        }
-      },
-    );
+          } else {
+            cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
+            cy.wait(1000);
+
+            cy.get('iframe').then(($reIframe) => {
+              const reIframe = $reIframe.contents();
+
+              cy.wrap(reIframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).then(($value) => {
+                const lastTimeValue = new Date($value.text()).valueOf();
+                expect(lastTimeValue).to.be.gte(time);
+              });
+            });
+          }
+        },
+      );
+    });
   });
 };
 
@@ -76,12 +112,74 @@ export const contribute = () => {
   });
   cy.get('[data-test=contribute-input]').type('10');
   cy.get('[data-test=contribute-button]').click();
-  cy.get('[data-test=neo-one-transaction-toast-title]').should('have.text', 'Transaction Confirmed');
-  cy.get('[data-test=neo-one-transaction-toast-message]').should('have.text', 'View on NEO Tracker');
-  cy.get('[data-test=neo-one-toast-close-button]').click();
+  checkTransactionToast('View on NEO Tracker');
   cy.get('[data-test=info-neo-contributed-value]').should('have.text', '10');
   cy.get('[data-test=info-remaining-value]').should('have.text', '9,999,000,000');
   cy.get('[data-test=info-balance-value]').should('have.text', '1,000,000');
-  cy.get('[data-test=neo-one-balance-selector-value]').should('have.text', '98,888,854');
-  cy.get('[data-test=neo-one-balance-selector-selector]').should('have.text', 'NEO');
+
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-balance-selector-value"]')[0]).should('have.text', '98,888,854');
+    cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).should('have.text', 'NEO');
+  });
+};
+
+export const checkErrorToast = (message?: string) => {
+  cy.wait(500);
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-toast-heading"]')[0]).should(
+      'have.text',
+      'Error. See console for more info.',
+    );
+    if (message !== undefined) {
+      cy.wrap(iframe.find('[data-test="neo-one-error-toast-message"]')[0]).should('have.text', message);
+    }
+    cy.wrap(iframe.find('[data-test="neo-one-toast-close-button"]')[0]).click({ force: true });
+  });
+};
+
+export const checkTransactionToast = (message?: string) => {
+  cy.wait(1000);
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-toast-heading"]')[0]).should('have.text', 'Transaction Confirmed');
+    if (message !== undefined) {
+      cy.wrap(iframe.find('[data-test="neo-one-transaction-toast-message"]')[0]).should('have.text', message);
+    }
+    cy.wrap(iframe.find('[data-test="neo-one-toast-close-button"]')[0]).click({ force: true });
+  });
+};
+
+export const selectWallet = ({
+  prevWallet = 'master',
+  newWallet,
+}: {
+  readonly prevWallet?: string;
+  readonly newWallet: string;
+}) => {
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-value"]')[0]).should('have.text', prevWallet);
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-value"]')[0]).click({ force: true });
+  });
+
+  cy.get('iframe').then(($iframe) => {
+    const iframe = $iframe.contents();
+
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-selector-selector"]')[0]).should('have.text', prevWallet);
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-selector-selector"] .react-select__input > input')[0]).type(
+      `${newWallet}{enter}`,
+      {
+        force: true,
+      },
+    );
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-selector-selector"]')[0]).contains(newWallet);
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-dialog-close-button"]')[0]).click({ force: true });
+    cy.wrap(iframe.find('[data-test="neo-one-wallet-value"]')[0]).should('have.text', newWallet);
+  });
 };

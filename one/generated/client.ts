@@ -1,4 +1,4 @@
-/* @hash d25de67e44929400cc815e2d66c8bbd4 */
+/* @hash 1c6bf153be40afad8fd7f277f94dbd9f */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -22,7 +22,7 @@ export type DefaultUserAccountProviders = {
 };
 const getDefaultUserAccountProviders = (provider: NEOONEProvider): DefaultUserAccountProviders => ({
   memory: new LocalUserAccountProvider({
-    keystore: new LocalKeyStore({ store: new LocalMemoryStore() }),
+    keystore: new LocalKeyStore(new LocalMemoryStore()),
     provider,
   }),
 });

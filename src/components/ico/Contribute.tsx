@@ -34,7 +34,10 @@ const Wrapper = styled(Box)`
 export const Contribute = (props: ComponentProps<typeof Flex>) => (
   <WithContracts>
     {({ one }) => (
-      <FromStream createStream={() => concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}>
+      <FromStream
+        props={[one]}
+        createStream={() => concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}
+      >
         {(amountPerNEO) => (
           <ICOContainer>
             {({ text, amount, loading, onChangeAmount, send }) => (
@@ -46,7 +49,7 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
                     placeholder="Send NEO"
                     onChange={(event: React.SyntheticEvent<any>) => onChangeAmount(event.currentTarget.value)}
                   />
-                  <StyledBody2 data-test="contibute-amount">
+                  <StyledBody2 data-test="contribute-amount">
                     = {amount === undefined ? '0' : `${amountPerNEO.times(amount).toFormat()}`} ONE
                   </StyledBody2>
                 </StyledFlex>

@@ -72,7 +72,7 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
     <WithContracts>
       {({ client, one, escrow }) => (
         <FromStream
-          props={[toWallet]}
+          props={[toWallet, client, one, escrow, setToWallet]}
           createStream={() =>
             concat(
               of(undefined),
@@ -133,7 +133,7 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
                 {value === undefined ? '' : value.toBalance.toFormat()}
               </Cell>
               <InputCell area="send">
-                <SendONEBox toWallet={toWallet} />
+                <SendONEBox toWallet={toWallet} balance={value === undefined ? new BigNumber(0) : value.fromBalance} />
               </InputCell>
               <DoubleCell area="logo">
                 <StyledLogo />
@@ -151,10 +151,10 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
                 />
               </Cell>
               <InputCell area="revoke">
-                <RevokeONEBox toWallet={toWallet} />
+                <RevokeONEBox toWallet={toWallet} balance={value === undefined ? new BigNumber(0) : value.balance} />
               </InputCell>
               <InputCell area="receive">
-                <ReceiveONEBox toWallet={toWallet} />
+                <ReceiveONEBox toWallet={toWallet} balance={value === undefined ? new BigNumber(0) : value.balance} />
               </InputCell>
             </StyledGrid>
           )}

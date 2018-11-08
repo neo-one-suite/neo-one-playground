@@ -37,6 +37,7 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
 
   return (
     <FromStream
+      props={[nowMS, startTimeMS, durationMS, endTimeMS]}
       createStream={() =>
         concat(of(0), timer(0, TIMER)).pipe(
           map((inc) => {
@@ -83,6 +84,7 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
     <WithContracts>
       {({ client, one }) => (
         <FromStream
+          props={[client, one]}
           createStream={() =>
             concat(
               of(undefined),
