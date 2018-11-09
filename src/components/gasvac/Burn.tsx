@@ -1,4 +1,4 @@
-import { Button } from '@neo-one/react';
+import { Button } from '@neo-one/react-core';
 import * as React from 'react';
 import { Flex, Grid, styled } from 'reakit';
 import { WithContracts } from '../../../one/generated';
@@ -10,24 +10,28 @@ const StyledGrid = styled(Grid)`
   padding: 8px 0;
 `;
 
+const StyledFlex = styled(Flex)`
+  justify-content: flex-end;
+`;
+
 export function Burn(props: ComponentProps<typeof StyledGrid>) {
   return (
     <WithContracts>
       {({ client, gasVac }) => (
-        <Flex justifyContext="flex-end">
+        <StyledFlex>
           <StyledGrid columns="200px 1fr" autoRows="auto" gap="0" {...props}>
             <Grid.Item>
               {
                 <ContentWrapper justifyContent="center">
                   <Button
-                    onClick={() => {
+                    onClick={async () => {
                       const audio = new Audio(vacuum);
-                      const from = client.getCurrentAccount();
+                      const from = client.getCurrentUserAccount();
                       if (from === undefined) {
                         return;
                       }
-                      audio.play();
-                      gasVac.vacuum.confirmed(from.id.address);
+                      await audio.play();
+                      await gasVac.vacuum.confirmed(from.id.address);
                     }}
                   >
                     Burn Gas
@@ -36,7 +40,7 @@ export function Burn(props: ComponentProps<typeof StyledGrid>) {
               }
             </Grid.Item>
           </StyledGrid>
-        </Flex>
+        </StyledFlex>
       )}
     </WithContracts>
   );

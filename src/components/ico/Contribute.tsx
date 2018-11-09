@@ -1,8 +1,9 @@
 // tslint:disable no-null-keyword no-any
-import { Button, FromStream } from '@neo-one/react';
+import { FromStream } from '@neo-one/react';
+import { Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Input, styled } from 'reakit';
+import { Box, Flex, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
@@ -15,7 +16,7 @@ const StyledFlex = styled(Flex)`
   padding: 8px 0;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(TextInput)`
   margin-right: 8px;
   width: 400px;
 `;
@@ -33,7 +34,10 @@ const Wrapper = styled(Box)`
 export const Contribute = (props: ComponentProps<typeof Flex>) => (
   <WithContracts>
     {({ one }) => (
-      <FromStream props$={concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}>
+      <FromStream
+        props={[one]}
+        createStream={() => concat(of(new BigNumber(0)), defer(async () => one.amountPerNEO()))}
+      >
         {(amountPerNEO) => (
           <ICOContainer>
             {({ text, amount, loading, onChangeAmount, send }) => (
@@ -45,7 +49,7 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
                     placeholder="Send NEO"
                     onChange={(event: React.SyntheticEvent<any>) => onChangeAmount(event.currentTarget.value)}
                   />
-                  <StyledBody2 data-test="contibute-amount">
+                  <StyledBody2 data-test="contribute-amount">
                     = {amount === undefined ? '0' : `${amountPerNEO.times(amount).toFormat()}`} ONE
                   </StyledBody2>
                 </StyledFlex>

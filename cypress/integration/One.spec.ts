@@ -1,4 +1,4 @@
-import { contribute, fastForward, initializeOne, ONE_ADDRESS } from '../common';
+import { checkErrorToast, contribute, fastForward, initializeOne, ONE_ADDRESS, selectWallet } from '../common';
 
 describe('One', () => {
   it('participation', () => {
@@ -6,13 +6,11 @@ describe('One', () => {
 
     // Failed contribute
     cy.get('[data-test=contribute-input]').type('10');
-    cy.get('[data-test=contibute-amount]').should('have.text', '= 1,000,000 ONE');
+    cy.get('[data-test=contribute-amount]').should('have.text', '= 1,000,000 ONE');
     cy.get('[data-test=contribute-button]').click();
     cy.get('[data-test=contribute-input]').should('have.value', '10');
-    cy.get('[data-test=contibute-amount]').should('have.text', '= 1,000,000 ONE');
-    cy.get('[data-test=neo-one-error-toast-title]').should('have.text', 'Error. See console for more info.');
-    cy.get('[data-test=neo-one-error-toast-message]').should('have.text', 'Verification did not succeed.');
-    cy.get('[data-test=neo-one-toast-close-button]').click();
+    cy.get('[data-test=contribute-amount]').should('have.text', '= 1,000,000 ONE');
+    checkErrorToast('Verification did not succeed.');
     cy.get('[data-test=contribute-input]').clear();
 
     // Fast forward and contribute
@@ -20,59 +18,70 @@ describe('One', () => {
     contribute();
 
     // Add ONE to settings
-    cy.get('[data-test=neo-one-settings-button]').click();
-    cy.get('[data-test=neo-one-add-token-input]').type(ONE_ADDRESS);
-    cy.get('[data-test=neo-one-add-token-button]').click();
-    cy.get('[data-test=neo-one-settings-dialog-close-button]').click();
-    cy.get('[data-test=neo-one-balance-selector-selector]').should('have.text', 'ONE');
-    cy.get('[data-test=neo-one-balance-selector-value]').should('have.text', '1,000,000');
+    cy.get('iframe').then(($iframe) => {
+      const iframe = $iframe.contents();
+
+      cy.wrap(iframe.find('[data-test="neo-one-settings-button"]')[0]).click({ force: true });
+    });
+
+    cy.get('iframe').then(($iframe) => {
+      const iframe = $iframe.contents();
+
+      cy.wrap(iframe.find('[data-test="neo-one-add-token-input"]')[0]).type(ONE_ADDRESS);
+      cy.wrap(iframe.find('[data-test="neo-one-add-token-button"]')[0]).click({ force: true });
+      cy.wrap(iframe.find('[data-test="neo-one-settings-dialog-close-button"]')[0]).click({ force: true });
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).should('have.text', 'ONE');
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-value"]')[0]).should('have.text', '1,000,000');
+    });
 
     // Switch to empty wallet
-    cy.get('[data-test=neo-one-wallet-value]').should('have.text', 'master');
-    cy.get('[data-test=neo-one-wallet-value]').click();
-    cy.get('[data-test=neo-one-wallet-selector-selector]').should('have.text', 'master');
-    cy.get('[data-test=neo-one-wallet-selector-selector] .react-select__input > input').type('alfa{enter}', {
-      force: true,
+    selectWallet({ newWallet: 'alfa' });
+
+    // Check empty wallet
+    cy.get('iframe').then(($iframe) => {
+      const iframe = $iframe.contents();
+
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"] .react-select__input > input')[0]).type(
+        'ONE{enter}',
+        {
+          force: true,
+        },
+      );
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).contains('ONE');
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-value"]')[0]).should('have.text', '0');
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"] .react-select__input > input')[0]).type(
+        'NEO{enter}',
+        {
+          force: true,
+        },
+      );
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).contains('NEO');
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-value"]')[0]).should('have.text', '0');
     });
-    cy.get('[data-test=neo-one-wallet-selector-selector]').contains('alfa');
-    cy.get('[data-test=neo-one-wallet-dialog-close-button]').click();
-    cy.get('[data-test=neo-one-wallet-value]').should('have.text', 'alfa');
-    cy.get('[data-test=neo-one-balance-selector-selector]').should('have.text', 'ONE');
-    cy.get('[data-test=neo-one-balance-selector-value]').should('have.text', '0');
-    cy.get('[data-test=neo-one-balance-selector-selector] .react-select__input > input').type('NEO{enter}', {
-      force: true,
-    });
-    cy.get('[data-test=neo-one-balance-selector-selector]').contains('NEO');
-    cy.get('[data-test=neo-one-balance-selector-value]').should('have.text', '0');
 
     // Contribute from empty wallet
     cy.get('[data-test=contribute-input]').type('5');
-    cy.get('[data-test=contibute-amount]').should('have.text', '= 500,000 ONE');
+    cy.get('[data-test=contribute-amount]').should('have.text', '= 500,000 ONE');
     cy.get('[data-test=contribute-button]').click();
-    cy.get('[data-test=neo-one-error-toast-title]').should('have.text', 'Error. See console for more info.');
-    cy.get('[data-test=neo-one-error-toast-message]').should('have.text', 'Found 0 funds, required: 5.');
-    cy.get('[data-test=neo-one-toast-close-button]').click();
+    checkErrorToast('Found 0 funds, required: 5.');
 
     // Switch back to master wallet
-    cy.get('[data-test=neo-one-wallet-value]').click();
-    cy.get('[data-test=neo-one-wallet-selector-selector] .react-select__input > input').type('master{enter}', {
-      force: true,
-    });
-    cy.get('[data-test=neo-one-wallet-selector-selector]').contains('master');
-    cy.get('[data-test=neo-one-wallet-dialog-close-button]').click();
-    cy.get('[data-test=neo-one-wallet-value]').should('have.text', 'master');
+    selectWallet({ prevWallet: 'alfa', newWallet: 'master' });
 
     // Fast forward past end
     fastForward(24 * 60 * 60, true);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
     cy.get('[data-test=info-countdown-value]').should('have.text', 'Ended');
     cy.get('[data-test=contribute-button]').click();
-    cy.get('[data-test=neo-one-error-toast-title]').should('have.text', 'Error. See console for more info.');
-    cy.get('[data-test=neo-one-error-toast-message]').should('have.text', 'Verification did not succeed.');
-    cy.get('[data-test=neo-one-toast-close-button]').click();
+
+    checkErrorToast('Verification did not succeed.');
 
     // Close toolbar. We did it!
-    cy.get('[data-test=neo-one-toolbar-toggle-button]').click();
-    cy.get('[data-test=neo-one-settings-button]').should('not.be.visible');
+    cy.get('iframe').then(($iframe) => {
+      const iframe = $iframe.contents();
+
+      cy.wrap(iframe.find('[data-test="neo-one-toolbar-toggle-button"]')).click({ force: true });
+      cy.wrap(iframe.find('[data-test="neo-one-settings-button"]')).should('not.be.visible');
+    });
   });
 });

@@ -1,8 +1,10 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
-import { Button } from '@neo-one/react';
+import { Button, TextInput } from '@neo-one/react-core';
+import { BigNumber } from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Group, Input, styled } from 'reakit';
+import { Box, Flex, Group, styled } from 'reakit';
+import { prop } from 'styled-tools';
 import { EscrowContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
@@ -12,10 +14,16 @@ const Wrapper = styled(Box)`
 
 const StyledButton = styled(Button)`
   width: 72px;
+
+  &:disabled {
+    background-color: ${prop('theme.gray3')};
+    color: ${prop('theme.gray2')};
+  }
 `;
 
 interface Props extends ComponentProps<typeof Flex> {
   readonly toWallet: UserAccount | undefined;
+  readonly balance: BigNumber;
 }
 
 export const SendONEBox = (props: Props) => (
@@ -23,13 +31,22 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
-          <Input
+          <TextInput
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeSendAmount(event.currentTarget.value)}
           />
-          <StyledButton data-test="send-one-button" disabled={sendAmount === undefined || sendLoading} onClick={send}>
+          <StyledButton
+            data-test="send-one-button"
+            disabled={
+              sendAmount === undefined ||
+              sendAmount.toNumber() > props.balance.toNumber() ||
+              sendLoading ||
+              props.toWallet === undefined
+            }
+            onClick={send}
+          >
             Send
           </StyledButton>
         </Group>
@@ -43,7 +60,7 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
-          <Input
+          <TextInput
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
@@ -51,7 +68,12 @@ export const ReceiveONEBox = (props: Props) => (
           />
           <StyledButton
             data-test="receive-one-button"
-            disabled={receiveAmount === undefined || receiveLoading}
+            disabled={
+              receiveAmount === undefined ||
+              receiveAmount.toNumber() > props.balance.toNumber() ||
+              receiveLoading ||
+              props.toWallet === undefined
+            }
             onClick={receive}
           >
             Receive
@@ -67,7 +89,7 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
-          <Input
+          <TextInput
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"
@@ -75,7 +97,12 @@ export const RevokeONEBox = (props: Props) => (
           />
           <StyledButton
             data-test="revoke-one-button"
-            disabled={revokeAmount === undefined || revokeLoading}
+            disabled={
+              revokeAmount === undefined ||
+              revokeAmount.toNumber() > props.balance.toNumber() ||
+              revokeLoading ||
+              props.toWallet === undefined
+            }
             onClick={revoke}
           >
             Revoke
