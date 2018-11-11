@@ -17,7 +17,7 @@ const StyledSection = styled(SectionGrid)`
 `;
 
 export const Viewer = (props: Partial<ComponentProps<typeof SectionGrid>>) => (
-  <StyledSection title="Contribute" {...props}>
+  <StyledSection bg="light" title="Contribute" {...props}>
     <SectionContentWrapper bg="darkLight">
       <WalletContainer>
         {({ toWallet, setToWallet }) => (

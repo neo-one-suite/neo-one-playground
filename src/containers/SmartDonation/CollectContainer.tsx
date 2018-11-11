@@ -1,5 +1,4 @@
 import { Client } from '@neo-one/client';
-import { WithAddError } from '@neo-one/react';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { SmartDonationSmartContract, WithContracts } from '../../../one/generated';
@@ -16,16 +15,10 @@ interface State {
   readonly collectLoading: boolean;
 }
 
-const makeEffects = (
-  client: Client,
-  smartDonation: SmartDonationSmartContract,
-  addError: (error: Error) => void,
-): EffectMap<State, Effects> => ({
+const makeEffects = (client: Client, smartDonation: SmartDonationSmartContract): EffectMap<State, Effects> => ({
   collect: () => ({ state: {}, setState }: { state: State; setState: (state: Partial<State>) => void }) => {
-    const account = client.getCurrentAccount();
+    const account = client.getCurrentUserAccount();
     if (account === undefined) {
-      addError(new Error('No account selected.'));
-
       return;
     }
 
@@ -35,9 +28,8 @@ const makeEffects = (
       setState({ collectLoading: false });
     };
 
-    const onError = (error: Error) => {
+    const onError = (_error: Error) => {
       onComplete();
-      addError(error);
     };
 
     smartDonation.collect
@@ -56,23 +48,19 @@ interface Props extends ContainerProps<State, Actions, {}, Effects> {}
 
 export const CollectContainer = (props: Props) => (
   <WithContracts>
-    {({ client, smartDonation }) => (
-      <WithAddError>
-        {(addError) => {
-          const effects = makeEffects(client, smartDonation, addError);
+    {({ client, smartDonation }) => {
+      const effects = makeEffects(client, smartDonation);
 
-          return (
-            <Container
-              {...props}
-              initialState={{
-                collectLoading: false,
-              }}
-              actions={actions}
-              effects={effects}
-            />
-          );
-        }}
-      </WithAddError>
-    )}
+      return (
+        <Container
+          {...props}
+          initialState={{
+            collectLoading: false,
+          }}
+          actions={actions}
+          effects={effects}
+        />
+      );
+    }}
   </WithContracts>
 );

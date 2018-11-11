@@ -1,16 +1,15 @@
-/* @hash ebfd60586f6c782c9f058efe076dcce8 */
+/* @hash 3e65a76a12b30dee9a60081425c62905 */
 // tslint:disable
 /* eslint-disable */
 import {
   AddressString,
+  Client,
   Event,
+  ForwardOptions,
   ForwardValue,
   GetOptions,
-  Hash256String,
   InvocationTransaction,
   InvokeReceipt,
-  InvokeSendTransactionOptions,
-  ReadSmartContract,
   SmartContract,
   TransactionOptions,
   TransactionResult,
@@ -42,7 +41,8 @@ export type SmartDonationEvent =
   | SmartDonationApproveSendTransferEvent
   | SmartDonationRevokeSendTransferEvent;
 
-export interface SmartDonationSmartContract extends SmartContract<SmartDonationReadSmartContract> {
+export interface SmartDonationSmartContract<TClient extends Client = Client>
+  extends SmartContract<TClient, SmartDonationEvent> {
   readonly approveReceiveTransfer: {
     (
       from: AddressString,
@@ -63,7 +63,10 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
       ): Promise<InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }>;
     };
   };
-  readonly forwardApproveReceiveTransferArgs: (to: AddressString, message: string) => [ForwardValue, ForwardValue];
+  readonly forwardApproveReceiveTransferArgs: (
+    to: AddressString,
+    message: string,
+  ) => [ForwardOptions<SmartDonationEvent>, ForwardValue, ForwardValue];
   readonly collect: {
     (address: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
@@ -84,12 +87,21 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
       >;
     };
   };
-  readonly getBalance: (address: AddressString) => Promise<BigNumber>;
-  readonly getContributorAmount: (source: AddressString, contributor: AddressString) => Promise<BigNumber>;
-  readonly getContributorMessage: (source: AddressString, contributor: AddressString) => Promise<string>;
-  readonly getCurrentBalance: (address: AddressString) => Promise<BigNumber>;
-  readonly getMessage: (address: AddressString) => Promise<string>;
-  readonly getTopContributor: (address: AddressString) => Promise<AddressString>;
+  readonly getContributionInfo: (
+    source: AddressString,
+    contributor: AddressString,
+  ) => Promise<{
+    readonly amount: BigNumber;
+    readonly message: string;
+  }>;
+  readonly getDonationInfo: (
+    source: AddressString,
+  ) => Promise<{
+    readonly message: string;
+    readonly balance: BigNumber;
+    readonly currentBalance: BigNumber;
+    readonly topContributor: AddressString;
+  }>;
   readonly getTopContributorMessage: (address: AddressString) => Promise<string>;
   readonly onRevokeSendTransfer: {
     (from: AddressString, amount: BigNumber, asset: AddressString, options?: TransactionOptions): Promise<
@@ -105,16 +117,6 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
     };
   };
   readonly owner: () => Promise<AddressString>;
-  readonly refundAssets: {
-    (transactionHash: Hash256String, options?: InvokeSendTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, SmartDonationEvent>, InvocationTransaction>
-    >;
-    readonly confirmed: {
-      (transactionHash: Hash256String, options?: InvokeSendTransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, SmartDonationEvent> & { readonly transaction: InvocationTransaction }
-      >;
-    };
-  };
   readonly setupContributions: {
     (address: AddressString, options?: TransactionOptions): Promise<
       TransactionResult<InvokeReceipt<undefined, SmartDonationEvent>, InvocationTransaction>
@@ -148,15 +150,4 @@ export interface SmartDonationSmartContract extends SmartContract<SmartDonationR
       >;
     };
   };
-}
-
-export interface SmartDonationReadSmartContract extends ReadSmartContract<SmartDonationEvent> {
-  readonly getBalance: (address: AddressString) => Promise<BigNumber>;
-  readonly getContributorAmount: (source: AddressString, contributor: AddressString) => Promise<BigNumber>;
-  readonly getContributorMessage: (source: AddressString, contributor: AddressString) => Promise<string>;
-  readonly getCurrentBalance: (address: AddressString) => Promise<BigNumber>;
-  readonly getMessage: (address: AddressString) => Promise<string>;
-  readonly getTopContributor: (address: AddressString) => Promise<AddressString>;
-  readonly getTopContributorMessage: (address: AddressString) => Promise<string>;
-  readonly owner: () => Promise<AddressString>;
 }

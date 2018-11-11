@@ -16,7 +16,7 @@ const StyledSection = styled(SectionGrid)`
 `;
 
 export const Manager = (props: Partial<ComponentProps<typeof SectionGrid>>) => (
-  <StyledSection title="Manage" {...props}>
+  <StyledSection title="Manage" bg="light" {...props}>
     <SectionContentWrapper bg="darkLight">
       <Wrapper>
         <SmartDonationManager />

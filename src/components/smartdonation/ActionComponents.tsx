@@ -1,9 +1,9 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
-import { Button } from '@neo-one/react';
+import { Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Grid, Input, styled } from 'reakit';
+import { Box, Flex, Grid, styled } from 'reakit';
 import { prop } from 'styled-tools';
 import { CollectContainer, ContributeContainer, MessageContainer, SetupContainer } from '../../containers';
 import { ComponentProps } from '../../types';
@@ -14,6 +14,11 @@ const Wrapper = styled(Box)`
 
 const StyledButton = styled(Button)`
   width: 100px;
+
+  &:disabled {
+    background-color: ${prop('theme.gray3')};
+    color: ${prop('theme.gray2')};
+  }
 `;
 
 const Cell = styled(Grid.Item)`
@@ -21,8 +26,10 @@ const Cell = styled(Grid.Item)`
   width: 100%;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(TextInput)`
   background-color: ${prop('theme.primaryDark')};
+  width: 90%;
+  height: 50px;
 `;
 
 const StyledGrid = styled(Grid)`
@@ -110,7 +117,7 @@ export const ContributeBox = (props: WalletProps) => (
         <Cell area="minput">
           <StyledInput
             as="textarea"
-            data-test="message-input"
+            data-test="contribute-message-input"
             value={message}
             placeholder="Send a message!"
             onChange={(event: React.SyntheticEvent<any>) => onChangeMessage(event.currentTarget.value)}

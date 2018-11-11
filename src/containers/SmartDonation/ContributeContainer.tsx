@@ -1,5 +1,4 @@
 import { Client, UserAccount } from '@neo-one/client';
-import { WithAddError } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
@@ -59,7 +58,6 @@ const makeEffects = (
   one: OneSmartContract,
   smartDonation: SmartDonationSmartContract,
   toWallet: UserAccount | undefined,
-  addError: (error: Error) => void,
 ): EffectMap<State, Effects> => ({
   contribute: () => ({
     state: { amount, message },
@@ -69,15 +67,8 @@ const makeEffects = (
     setState: (state: Partial<State>) => void;
   }) => {
     const network = client.getCurrentNetwork();
-    const account = client.getCurrentAccount();
-    if (account === undefined) {
-      addError(new Error('Unable to complete transfer. No wallet selected.'));
-
-      return;
-    }
-    if (toWallet === undefined) {
-      addError(new Error('Unable to complete transfer. No address selected to contribute to.'));
-
+    const account = client.getCurrentUserAccount();
+    if (account === undefined || toWallet === undefined) {
       return;
     }
 
@@ -91,9 +82,8 @@ const makeEffects = (
       }
     };
 
-    const onError = (error: Error) => {
+    const onError = (_error: Error) => {
       onComplete(false);
-      addError(error);
     };
 
     if (amount === undefined) {
@@ -143,25 +133,21 @@ interface Props extends ContainerProps<State, Actions, {}, Effects> {
 
 export const ContributeContainer = (props: Props) => (
   <WithContracts>
-    {({ client, one, smartDonation }) => (
-      <WithAddError>
-        {(addError) => {
-          const effects = makeEffects(client, one, smartDonation, props.toWallet, addError);
+    {({ client, one, smartDonation }) => {
+      const effects = makeEffects(client, one, smartDonation, props.toWallet);
 
-          return (
-            <Container
-              {...props}
-              initialState={{
-                contributeLoading: false,
-                message: '',
-                amountText: '',
-              }}
-              actions={actions}
-              effects={effects}
-            />
-          );
-        }}
-      </WithAddError>
-    )}
+      return (
+        <Container
+          {...props}
+          initialState={{
+            contributeLoading: false,
+            message: '',
+            amountText: '',
+          }}
+          actions={actions}
+          effects={effects}
+        />
+      );
+    }}
   </WithContracts>
 );

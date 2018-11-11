@@ -37,10 +37,14 @@ const HeaderCell = styled(Cell)`
   font-weight: bold;
 `;
 
+const CenteredHeader = styled(HeaderCell)`
+  text-align: center;
+`;
+
 const accountTemplate = `
   "aheader address" auto
-  "gheader balance" auto
-  "cheader current" auto
+  "gheader total" auto
+  "cheader available" auto
 `;
 
 const infoTemplate = `
@@ -73,52 +77,60 @@ export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledG
     <WithContracts>
       {({ client, smartDonation }) => (
         <FromStream
-          props$={concat(
-            of(undefined),
-            combineLatest(client.currentAccount$, client.block$).pipe(
-              switchMap(async ([account, options]) => {
-                if (account === undefined) {
+          createStream={() =>
+            concat(
+              of(undefined),
+              combineLatest(client.currentUserAccount$, client.block$).pipe(
+                switchMap(async ([account, options]) => {
+                  if (account === undefined) {
+                    return {
+                      account,
+                      options,
+                      message: '',
+                      totalBalance: new BigNumber('-1'),
+                      balance: new BigNumber('-1'),
+                    };
+                  }
+
+                  const {
+                    message,
+                    balance: totalBalance,
+                    currentBalance: balance,
+                  } = await smartDonation.getDonationInfo(account.id.address);
+
                   return {
                     account,
                     options,
-                    message: '',
-                    totalBalance: new BigNumber('-1'),
-                    balance: new BigNumber('-1'),
+                    message,
+                    totalBalance,
+                    balance,
                   };
-                }
-
-                const [message, totalBalance, balance] = await Promise.all([
-                  smartDonation.getMessage(account.id.address),
-                  smartDonation.getBalance(account.id.address),
-                  smartDonation.getCurrentBalance(account.id.address),
-                ]);
-
-                return {
-                  account,
-                  options,
-                  message,
-                  totalBalance,
-                  balance,
-                };
-              }),
-            ),
-          )}
+                }),
+              ),
+            )
+          }
         >
           {(value) => (
             <Wrapper {...props} template={template}>
-              <Cell area="header">
+              <Cell area="header" data-test="manager-header">
                 <StyledGrid {...props}>
-                  <HeaderCell>Smart Donation Manager</HeaderCell>
+                  <CenteredHeader>Smart Donation Manager</CenteredHeader>
                 </StyledGrid>
               </Cell>
               <Cell area="subheader">
                 <StyledGrid {...props} template={subTemplate}>
-                  <HeaderCell area="aheader">Current Address</HeaderCell>
-                  <HeaderCell area="mheader">Current Message</HeaderCell>
-                  <Cell area="address">
+                  <HeaderCell area="aheader" data-test="manager-address-header">
+                    Current Address
+                  </HeaderCell>
+                  <HeaderCell area="mheader" data-test="manager-message-header">
+                    Current Message
+                  </HeaderCell>
+                  <Cell area="address" data-test="manager-address-value">
                     {value === undefined || value.account === undefined ? '' : value.account.id.address}
                   </Cell>
-                  <Cell area="message">{value === undefined ? '' : value.message}</Cell>
+                  <Cell area="message" data-test="manager-message-value">
+                    {value === undefined ? '' : value.message}
+                  </Cell>
                 </StyledGrid>
               </Cell>
               <Cell area="footer">
@@ -127,21 +139,21 @@ export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledG
                     <StyledGrid {...props} template={infoTemplate}>
                       <Cell area="info">
                         <StyledGrid {...props} template={accountTemplate}>
-                          <HeaderCell area="aheader">Selected Account:</HeaderCell>
-                          <HeaderCell area="gheader">Total Contributions:</HeaderCell>
-                          <HeaderCell area="cheader">Available Balance:</HeaderCell>
-                          <Cell area="address">
-                            {value === undefined || value.account === undefined ? '' : value.account.name}
-                          </Cell>
-                          <Cell area="balance">
+                          <HeaderCell area="gheader" data-test="manager-total-header">
+                            Total Contributions:
+                          </HeaderCell>
+                          <HeaderCell area="cheader" data-test="manager-available-header">
+                            Available Balance:
+                          </HeaderCell>
+                          <Cell area="total" data-test="manager-total-value">
                             {value === undefined || value.totalBalance.lte(0) ? '' : value.totalBalance.toFormat()}
                           </Cell>
-                          <Cell area="current">
+                          <Cell area="available" data-test="manager-available-value">
                             {value === undefined || value.totalBalance.lte(0) ? '' : value.balance.toFormat()}
                           </Cell>
                         </StyledGrid>
                       </Cell>
-                      <Cell area="button">
+                      <Cell area="button" data-test="manager-setup-button">
                         {value === undefined || value.totalBalance.lt(0) ? (
                           <SetupAddressBox disabled={value === undefined} />
                         ) : (
@@ -150,8 +162,8 @@ export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledG
                       </Cell>
                     </StyledGrid>
                   </Cell>
-                  <Cell area="update">
-                    <MessageBox disabled={value === undefined} />
+                  <Cell area="update" data-test="manager-update-button">
+                    <MessageBox disabled={value === undefined || value.message === 'Address is not set up'} />
                   </Cell>
                 </StyledGrid>
               </Cell>

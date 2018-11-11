@@ -1,12 +1,6 @@
 // tslint:disable no-any
 import { UserAccount } from '@neo-one/client';
-import {
-  FromStream,
-  getWalletSelectorOptions$,
-  makeWalletSelectorValueOption,
-  WalletSelectorBase,
-  WalletSelectorOptionType,
-} from '@neo-one/react';
+import { FromStream } from '@neo-one/react';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Grid, Heading, Popover, styled } from 'reakit';
@@ -14,6 +8,12 @@ import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
+import {
+  getWalletSelectorOptions$,
+  makeWalletSelectorValueOption,
+  WalletSelectorBase,
+  WalletSelectorOptionType,
+} from '../../elements';
 import { ComponentProps } from '../../types';
 import { ContributeBox } from './ActionComponents';
 
@@ -108,51 +108,49 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
     <WithContracts>
       {({ client, smartDonation, one }) => (
         <FromStream
-          props$={concat(
-            of(undefined),
-            combineLatest(
-              client.currentAccount$,
-              getWalletSelectorOptions$(() => undefined, client, of([])),
-              client.block$,
-            ).pipe(
-              switchMap(async ([account, options]) => {
-                const [
-                  sourceMessage,
-                  sourceContributions,
-                  topContribution,
-                  walletBalance,
-                  walletMessage,
-                  walletContributions,
-                ] = await Promise.all([
-                  source === undefined ? Promise.resolve('') : smartDonation.getMessage(source.id.address),
-                  source === undefined
-                    ? Promise.resolve(new BigNumber('-1'))
-                    : smartDonation.getBalance(source.id.address),
-                  source === undefined
-                    ? Promise.resolve('')
-                    : smartDonation.getTopContributorMessage(source.id.address),
-                  account === undefined ? Promise.resolve(new BigNumber('-1')) : one.balanceOf(account.id.address),
-                  account === undefined || source === undefined
-                    ? Promise.resolve('')
-                    : smartDonation.getContributorMessage(source.id.address, account.id.address),
-                  account === undefined || source === undefined
-                    ? Promise.resolve(new BigNumber('-1'))
-                    : smartDonation.getContributorAmount(source.id.address, account.id.address),
-                ]);
+          props={[client, one, smartDonation, setToWallet]}
+          createStream={() =>
+            concat(
+              of(undefined),
+              combineLatest(
+                client.currentUserAccount$,
+                getWalletSelectorOptions$(client, client.userAccounts$, client.block$),
+                client.block$,
+              ).pipe(
+                switchMap(async ([account, options]) => {
+                  const [donationInfo, topContribution, walletBalance, contributionInfo] = await Promise.all([
+                    source === undefined
+                      ? Promise.resolve({
+                          message: '',
+                          balance: new BigNumber('-1'),
+                          currentBalance: new BigNumber('-1'),
+                          topContributor: '',
+                        })
+                      : smartDonation.getDonationInfo(source.id.address),
+                    source === undefined
+                      ? Promise.resolve('')
+                      : smartDonation.getTopContributorMessage(source.id.address),
+                    account === undefined ? Promise.resolve(new BigNumber('-1')) : one.balanceOf(account.id.address),
+                    account === undefined || source === undefined
+                      ? Promise.resolve({
+                          amount: new BigNumber('-1'),
+                          message: '',
+                        })
+                      : smartDonation.getContributionInfo(source.id.address, account.id.address),
+                  ]);
 
-                return {
-                  account,
-                  sourceMessage,
-                  sourceContributions,
-                  topContribution,
-                  walletBalance,
-                  walletMessage,
-                  walletContributions,
-                  options,
-                };
-              }),
-            ),
-          )}
+                  return {
+                    account,
+                    donationInfo,
+                    topContribution,
+                    walletBalance,
+                    contributionInfo,
+                    options,
+                  };
+                }),
+              ),
+            )
+          }
         >
           {(value) => (
             <Wrapper {...props} template={template}>
@@ -162,10 +160,18 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
                     <Popover.Container>
                       {(popover: any) => (
                         <>
-                          <Heading as={Popover.Toggle} {...popover}>
+                          <Heading as={Popover.Toggle} data-test="viewer-header" {...popover}>
                             Smart Donation Viewer
                           </Heading>
-                          <Popover placement="top" fade slide expand hideOnClickOutside {...popover}>
+                          <Popover
+                            placement="top"
+                            data-test="viewer-header-popover"
+                            fade
+                            slide
+                            expand
+                            hideOnClickOutside
+                            {...popover}
+                          >
                             <Popover.Arrow />
                             Select an account to view info and donate!
                           </Popover>
@@ -175,10 +181,10 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
                   </HeaderCell>
                   <DoubleCell area="selector">
                     <WalletSelector
-                      data-test="escrow-wallet-selector"
+                      data-test="viewer-wallet-selector"
                       value={source === undefined ? undefined : makeWalletSelectorValueOption({ userAccount: source })}
                       options={value === undefined ? [] : value.options}
-                      onChange={(option) => {
+                      onChange={(option: any) => {
                         if (option != undefined && !Array.isArray(option)) {
                           setToWallet(option);
                         }
@@ -189,42 +195,74 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
               </Cell>
               <Cell area="info">
                 <StyledGrid {...props} template={infoTemplate}>
-                  <HeaderCell area="header">Donation Address</HeaderCell>
-                  <HeaderCell area="mheader">Global Message</HeaderCell>
-                  <HeaderCell area="bheader">Total Contributions</HeaderCell>
-                  <HeaderCell area="cheader">Top Contributor Message</HeaderCell>
-                  <Cell area="address">{source === undefined ? '' : source.id.address}</Cell>
-                  <Cell area="message">{value === undefined ? '' : value.sourceMessage}</Cell>
-                  <Cell area="balance">
-                    {value === undefined || value.sourceContributions.lt(0) ? '' : value.sourceContributions.toFormat()}
+                  <HeaderCell area="header" data-test="viewer-address-header">
+                    Donation Address
+                  </HeaderCell>
+                  <HeaderCell area="mheader" data-test="viewer-message-header">
+                    Global Message
+                  </HeaderCell>
+                  <HeaderCell area="bheader" data-test="viewer-contributions-header">
+                    Total Contributions
+                  </HeaderCell>
+                  <HeaderCell area="cheader" data-test="viewer-top-header">
+                    Top Contributor Message
+                  </HeaderCell>
+                  <Cell area="address" data-test="viewer-address-value">
+                    {source === undefined ? '' : source.id.address}
                   </Cell>
-                  <Cell area="contrib">{value === undefined ? '' : value.topContribution}</Cell>
+                  <Cell area="message" data-test="viewer-message-value">
+                    {value === undefined ? '' : value.donationInfo.message}
+                  </Cell>
+                  <Cell area="balance" data-test="viewer-contributions-value">
+                    {value === undefined || value.donationInfo.balance.lt(0)
+                      ? ''
+                      : value.donationInfo.balance.toFormat()}
+                  </Cell>
+                  <Cell area="contrib" data-test="viewer-top-value">
+                    {value === undefined ? '' : value.topContribution}
+                  </Cell>
                 </StyledGrid>
               </Cell>
               <Cell area="contribute">
                 <StyledGrid {...props} template={contributeTemplate}>
                   <Cell area="account">
                     <AccountGrid {...props} template={accountTemplate}>
-                      <HeaderCell area="aheader">Selected Account</HeaderCell>
-                      <HeaderCell area="cheader">Amount Contributed:</HeaderCell>
-                      <HeaderCell area="mheader">Contribution Message:</HeaderCell>
-                      <Cell area="bheader">Available ONE:</Cell>
-                      <Cell area="account">
+                      <HeaderCell area="aheader" data-test="viewer-selected-header">
+                        Selected Account
+                      </HeaderCell>
+                      <HeaderCell area="cheader" data-test="viewer-amount-header">
+                        Amount Contributed:
+                      </HeaderCell>
+                      <HeaderCell area="mheader" data-test="viewer-contributor-message-header">
+                        Contribution Message:
+                      </HeaderCell>
+                      <HeaderCell area="bheader" data-test="viewer-one-header">
+                        Available ONE:
+                      </HeaderCell>
+                      <Cell area="account" data-test="viewer-selected-value">
                         {value === undefined || value.account === undefined ? '' : value.account.name}
                       </Cell>
-                      <Cell area="contrib">
-                        {value === undefined || value.walletContributions.lt(0)
+                      <Cell area="contrib" data-test="viewer-amount-value">
+                        {value === undefined || value.contributionInfo.amount.lt(0)
                           ? ''
-                          : value.walletContributions.toFormat()}
+                          : value.contributionInfo.amount.toFormat()}
                       </Cell>
-                      <Cell area="message">{value === undefined ? '' : value.walletMessage}</Cell>
-                      <Cell area="balance">{value === undefined ? '' : value.walletBalance.toFormat()}</Cell>
+                      <Cell area="message" data-test="viewer-contributor-message-value">
+                        {value === undefined ? '' : value.contributionInfo.message}
+                      </Cell>
+                      <Cell area="balance" data-test="viewer-one-value">
+                        {value === undefined ? '' : value.walletBalance.toFormat()}
+                      </Cell>
                     </AccountGrid>
                   </Cell>
                   <Cell area="donate">
                     <ContributeBox
                       toWallet={source}
-                      disabled={value === undefined ? true : value.walletBalance.lte(0)}
+                      disabled={
+                        value === undefined
+                          ? true
+                          : value.walletBalance.lte(0) || value.contributionInfo.message === 'Address is not set up'
+                      }
                     />
                   </Cell>
                 </StyledGrid>

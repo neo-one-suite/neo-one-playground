@@ -1,4 +1,4 @@
-/* @hash e4b985377438e0b12efd94422d48c821 */
+/* @hash 0df202488ce7924fa4affca34281a14b */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -22,6 +22,7 @@ export const smartDonationABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -45,6 +46,7 @@ export const smartDonationABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -68,6 +70,7 @@ export const smartDonationABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -89,11 +92,11 @@ export const smartDonationABI: ABI = {
     {
       claim: false,
       constant: true,
-      name: 'getMessage',
+      name: 'getDonationInfo',
       parameters: [
         {
           forwardedValue: false,
-          name: 'address',
+          name: 'source',
           optional: false,
           type: 'Address',
         },
@@ -102,58 +105,49 @@ export const smartDonationABI: ABI = {
       returnType: {
         forwardedValue: false,
         optional: false,
-        type: 'String',
+        properties: {
+          balance: {
+            decimals: 8,
+            forwardedValue: false,
+            optional: false,
+            type: 'Integer',
+          },
+          currentBalance: {
+            decimals: 8,
+            forwardedValue: false,
+            optional: false,
+            type: 'Integer',
+          },
+          message: {
+            forwardedValue: false,
+            optional: false,
+            type: 'String',
+          },
+          topContributor: {
+            forwardedValue: false,
+            optional: false,
+            type: 'Address',
+          },
+        },
+        type: 'Object',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
       constant: true,
-      name: 'getBalance',
+      name: 'getContributionInfo',
       parameters: [
         {
           forwardedValue: false,
-          name: 'address',
+          name: 'source',
           optional: false,
           type: 'Address',
         },
-      ],
-      receive: false,
-      returnType: {
-        decimals: 8,
-        optional: false,
-        type: 'Integer',
-      },
-      send: false,
-    },
-    {
-      claim: false,
-      constant: true,
-      name: 'getCurrentBalance',
-      parameters: [
         {
           forwardedValue: false,
-          name: 'address',
-          optional: false,
-          type: 'Address',
-        },
-      ],
-      receive: false,
-      returnType: {
-        decimals: 8,
-        optional: false,
-        type: 'Integer',
-      },
-      send: false,
-    },
-    {
-      claim: false,
-      constant: true,
-      name: 'getTopContributor',
-      parameters: [
-        {
-          forwardedValue: false,
-          name: 'address',
+          name: 'contributor',
           optional: false,
           type: 'Address',
         },
@@ -162,9 +156,23 @@ export const smartDonationABI: ABI = {
       returnType: {
         forwardedValue: false,
         optional: false,
-        type: 'Address',
+        properties: {
+          amount: {
+            decimals: 8,
+            forwardedValue: false,
+            optional: false,
+            type: 'Integer',
+          },
+          message: {
+            forwardedValue: false,
+            optional: false,
+            type: 'String',
+          },
+        },
+        type: 'Object',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -185,58 +193,7 @@ export const smartDonationABI: ABI = {
         type: 'String',
       },
       send: false,
-    },
-    {
-      claim: false,
-      constant: true,
-      name: 'getContributorAmount',
-      parameters: [
-        {
-          forwardedValue: false,
-          name: 'source',
-          optional: false,
-          type: 'Address',
-        },
-        {
-          forwardedValue: false,
-          name: 'contributor',
-          optional: false,
-          type: 'Address',
-        },
-      ],
-      receive: false,
-      returnType: {
-        decimals: 8,
-        optional: false,
-        type: 'Integer',
-      },
-      send: false,
-    },
-    {
-      claim: false,
-      constant: true,
-      name: 'getContributorMessage',
-      parameters: [
-        {
-          forwardedValue: false,
-          name: 'source',
-          optional: false,
-          type: 'Address',
-        },
-        {
-          forwardedValue: false,
-          name: 'contributor',
-          optional: false,
-          type: 'Address',
-        },
-      ],
-      receive: false,
-      returnType: {
-        forwardedValue: false,
-        optional: false,
-        type: 'String',
-      },
-      send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -251,6 +208,7 @@ export const smartDonationABI: ABI = {
         },
         {
           decimals: 8,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -281,6 +239,7 @@ export const smartDonationABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -295,6 +254,7 @@ export const smartDonationABI: ABI = {
         },
         {
           decimals: 0,
+          forwardedValue: false,
           name: 'amount',
           optional: false,
           type: 'Integer',
@@ -312,6 +272,7 @@ export const smartDonationABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -331,6 +292,7 @@ export const smartDonationABI: ABI = {
         type: 'Void',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -351,6 +313,7 @@ export const smartDonationABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -377,6 +340,7 @@ export const smartDonationABI: ABI = {
         type: 'Boolean',
       },
       send: false,
+      sendUnsafe: false,
     },
     {
       claim: false,
@@ -409,19 +373,7 @@ export const smartDonationABI: ABI = {
         type: 'Boolean',
       },
       send: false,
-    },
-    {
-      name: 'refundAssets',
-      parameters: [
-        {
-          name: 'transactionHash',
-          type: 'Hash256',
-        },
-      ],
-      returnType: {
-        type: 'Boolean',
-      },
-      send: true,
+      sendUnsafe: false,
     },
     {
       name: 'deploy',

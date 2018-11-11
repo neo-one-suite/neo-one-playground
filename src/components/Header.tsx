@@ -89,6 +89,9 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
         <StyledToolbarNavLink data-test="header-escrow" to="/escrow">
           Escrow
         </StyledToolbarNavLink>
+        <StyledToolbarNavLink data-test="header-smart-donation" to="/smart-donation">
+          Smart Donation
+        </StyledToolbarNavLink>
       </Toolbar.Content>
       <Toolbar.Content align="end">
         <StyledToolbarLink
