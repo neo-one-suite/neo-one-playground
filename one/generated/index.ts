@@ -1,4 +1,4 @@
-/* @hash ec9eb2bc88223219577504430eab5236 */
+/* @hash ab4be1a9686b3cd5605c4661ce2d150c */
 // tslint:disable
 /* eslint-disable */
 export * from './types';
@@ -19,3 +19,6 @@ export * from './WrappedNEO/abi';
 export * from './Escrow/contract';
 export * from './Escrow/types';
 export * from './Escrow/abi';
+export * from './SmartDonation/contract';
+export * from './SmartDonation/types';
+export * from './SmartDonation/abi';

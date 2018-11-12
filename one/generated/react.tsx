@@ -1,4 +1,4 @@
-/* @hash 173d73ccc8b90df476721624c5cc9da1 */
+/* @hash bccbb91a3b993ede3ce7051045ed8f63 */
 // tslint:disable
 /* eslint-disable */
 import { Client, DeveloperClient, DeveloperTools, LocalClient } from '@neo-one/client';
@@ -11,6 +11,7 @@ import { createFeatureTestSmartContract } from './FeatureTest/contract';
 import { createGASVacSmartContract } from './GASVac/contract';
 import { createWrappedNEOSmartContract } from './WrappedNEO/contract';
 import { createEscrowSmartContract } from './Escrow/contract';
+import { createSmartDonationSmartContract } from './SmartDonation/contract';
 
 export interface WithClients<TClient extends Client> {
   readonly client: TClient;
@@ -49,6 +50,7 @@ export const ContractsProvider = <TClient extends Client>({
         gasVac: createGASVacSmartContract(client),
         wrappedNeo: createWrappedNEOSmartContract(client),
         escrow: createEscrowSmartContract(client),
+        smartDonation: createSmartDonationSmartContract(client),
       }}
     >
       {children}
