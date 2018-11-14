@@ -1,3 +1,4 @@
+// tslint:disable no-any
 import React from 'react';
 import { MdOpenInNew } from 'react-icons/md';
 import { NavLink as RouterLink } from 'react-router-dom';
@@ -29,7 +30,7 @@ const StyledToolbar = styled(Toolbar)`
   }
 `;
 
-const LogoLink = styled(RouterLink)`
+const LogoLink = styled(RouterLink as any)`
   display: block;
   width: 100px;
   margin-right: 36px;
@@ -41,7 +42,7 @@ const LogoLink = styled(RouterLink)`
   }
 `;
 
-const NavigationLink = styled(RouterLink)`
+const NavigationLink = styled(RouterLink as any)`
   display: flex;
   align-items: center;
   font-size: 20px;

@@ -14,14 +14,30 @@ export const App = hot(module)(() => (
   <ThemeProvider theme={theme}>
     <ContractsProvider>
       <Provider initialState={{ transfer: { text: '', asset: Hash256.NEO, loading: false } }}>
+        {/*
+        // @ts-ignore */}
         <BrowserRouter>
+          {/*
+          // @ts-ignore */}
           <ScrollToTop>
+            {/*
+            // @ts-ignore */}
             <Switch>
               <CoreLayout>
+                {/*
+                // @ts-ignore */}
                 <Route exact path="/" component={Home} />
+                {/*
+                // @ts-ignore */}
                 <Route exact path="/ico" component={ICO} />
+                {/*
+                // @ts-ignore */}
                 <Route exact path="/gasvac" component={GASVac} />
+                {/*
+                // @ts-ignore */}
                 <Route exact path="/escrow" component={Escrow} />
+                {/*
+                // @ts-ignore */}
                 <Route exact path="/smart-donation" component={SmartDonation} />
               </CoreLayout>
             </Switch>

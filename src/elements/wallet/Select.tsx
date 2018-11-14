@@ -6,7 +6,7 @@ import { styled } from 'reakit';
 import { prop } from 'styled-tools';
 
 // tslint:disable-next-line:no-any
-const StyledSelect: any = styled(SelectBase)`
+const StyledSelect: any = styled(SelectBase as any)`
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: ${prop('theme.gray0')};
   outline: none;

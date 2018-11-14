@@ -9,7 +9,7 @@ describe('One', () => {
     await withContracts(async ({ client, developerClient, one, masterAccountID, networkName }) => {
       await developerClient.fastForwardOffset(60 * 60);
 
-      const toWallet = await client.providers.memory.keystore.addAccount({
+      const toWallet = await client.providers.memory.keystore.addUserAccount({
         network: networkName,
         privateKey: createPrivateKey(),
       });
@@ -33,7 +33,7 @@ describe('One', () => {
         one.icoDurationSeconds(),
         one.totalSupply(),
         one.remaining(),
-        one.balanceOf(toWallet.account.id.address),
+        one.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(name).toEqual('One');
       expect(symbol).toEqual('ONE');
@@ -73,7 +73,7 @@ describe('One', () => {
         one.totalSupply(),
         one.remaining(),
         one.balanceOf(masterAccountID.address),
-        one.balanceOf(toWallet.account.id.address),
+        one.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(totalSupply.toString()).toEqual('1000000');
       expect(remaining.toString()).toEqual(new BigNumber(9_999_000_000).toString());
@@ -82,7 +82,7 @@ describe('One', () => {
 
       const receipt = await one.transfer.confirmed(
         masterAccountID.address,
-        toWallet.account.id.address,
+        toWallet.userAccount.id.address,
         new BigNumber('25'),
       );
       if (receipt.result.state === 'FAULT') {
@@ -92,7 +92,7 @@ describe('One', () => {
       const [totalSupplyAfter, balanceAfter, toBalanceAfter] = await Promise.all([
         one.totalSupply(),
         one.balanceOf(masterAccountID.address),
-        one.balanceOf(toWallet.account.id.address),
+        one.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(totalSupplyAfter.toString()).toEqual('1000000');
       expect(balanceAfter.toString()).toEqual('999975');

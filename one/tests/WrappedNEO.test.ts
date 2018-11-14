@@ -7,7 +7,7 @@ jest.setTimeout(30000);
 describe('WrappedNEO', () => {
   test('wrap + transfer + unwrap', async () => {
     await withContracts(async ({ client, wrappedNeo, masterAccountID, networkName }) => {
-      const toWallet = await client.providers.memory.keystore.addAccount({
+      const toWallet = await client.providers.memory.keystore.addUserAccount({
         network: networkName,
         privateKey: createPrivateKey(),
       });
@@ -17,7 +17,7 @@ describe('WrappedNEO', () => {
         wrappedNeo.symbol(),
         wrappedNeo.decimals(),
         wrappedNeo.totalSupply(),
-        wrappedNeo.balanceOf(toWallet.account.id.address),
+        wrappedNeo.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(name).toEqual('Wrapped NEO');
       expect(symbol).toEqual('WNEO');
@@ -53,7 +53,7 @@ describe('WrappedNEO', () => {
       const [totalSupply, balance, toBalance] = await Promise.all([
         wrappedNeo.totalSupply(),
         wrappedNeo.balanceOf(masterAccountID.address),
-        wrappedNeo.balanceOf(toWallet.account.id.address),
+        wrappedNeo.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(totalSupply.toString()).toEqual('25');
       expect(balance.toString()).toEqual('25');
@@ -61,7 +61,7 @@ describe('WrappedNEO', () => {
 
       const transferResult = await wrappedNeo.transfer(
         masterAccountID.address,
-        toWallet.account.id.address,
+        toWallet.userAccount.id.address,
         new BigNumber('5'),
       );
       const transferReceipt = await transferResult.confirmed();
@@ -72,7 +72,7 @@ describe('WrappedNEO', () => {
       const [transferTotalSupply, transferBalance, transferToBalance] = await Promise.all([
         wrappedNeo.totalSupply(),
         wrappedNeo.balanceOf(masterAccountID.address),
-        wrappedNeo.balanceOf(toWallet.account.id.address),
+        wrappedNeo.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(transferTotalSupply.toString()).toEqual('25');
       expect(transferBalance.toString()).toEqual('20');
@@ -102,7 +102,7 @@ describe('WrappedNEO', () => {
       const [unwrap0TotalSupply, unwrap0Balance, unwrap0ToBalance] = await Promise.all([
         wrappedNeo.totalSupply(),
         wrappedNeo.balanceOf(masterAccountID.address),
-        wrappedNeo.balanceOf(toWallet.account.id.address),
+        wrappedNeo.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(unwrap0TotalSupply.toString()).toEqual('20');
       expect(unwrap0Balance.toString()).toEqual('15');
@@ -112,9 +112,9 @@ describe('WrappedNEO', () => {
         {
           asset: Hash256.NEO,
           amount: new BigNumber(2),
-          to: toWallet.account.id.address,
+          to: toWallet.userAccount.id.address,
         },
-        { from: toWallet.account.id },
+        { from: toWallet.userAccount.id },
       );
       const unwrapReceipt1 = await unwrapResult1.confirmed();
 
@@ -130,14 +130,14 @@ describe('WrappedNEO', () => {
       if (unwrapEvent1.name !== 'transfer') {
         throw new Error('For TS');
       }
-      expect(unwrapEvent1.parameters.from).toEqual(toWallet.account.id.address);
+      expect(unwrapEvent1.parameters.from).toEqual(toWallet.userAccount.id.address);
       expect(unwrapEvent1.parameters.to).toBeUndefined();
       expect(unwrapEvent1.parameters.amount.toString()).toEqual('2');
 
       const [unwrap1TotalSupply, unwrap1Balance, unwrap1ToBalance] = await Promise.all([
         wrappedNeo.totalSupply(),
         wrappedNeo.balanceOf(masterAccountID.address),
-        wrappedNeo.balanceOf(toWallet.account.id.address),
+        wrappedNeo.balanceOf(toWallet.userAccount.id.address),
       ]);
       expect(unwrap1TotalSupply.toString()).toEqual('18');
       expect(unwrap1Balance.toString()).toEqual('15');

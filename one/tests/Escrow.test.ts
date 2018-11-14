@@ -9,13 +9,13 @@ describe('Escrow', () => {
     await withContracts(async ({ client, developerClient, escrow, one, masterAccountID, networkName }) => {
       await developerClient.fastForwardOffset(60 * 60);
 
-      const toWallet = await client.providers.memory.keystore.addAccount({
+      const toWallet = await client.providers.memory.keystore.addUserAccount({
         network: networkName,
         privateKey: createPrivateKey(),
       });
 
       const masterAddress = masterAccountID.address;
-      const toAddress = toWallet.account.id.address;
+      const toAddress = toWallet.userAccount.id.address;
       const contractAddress = escrow.definition.networks[networkName].address;
       let balance: BigNumber;
 
@@ -62,7 +62,7 @@ describe('Escrow', () => {
 
       // Withdraw 25 ONE from the contract to the sender and confirm the balance is updated correctly
       const receiveReceipt = await escrow.receiveONE.confirmed(masterAddress, toAddress, new BigNumber('25'), {
-        from: toWallet.account.id,
+        from: toWallet.userAccount.id,
       });
       if (receiveReceipt.result.state === 'FAULT') {
         throw new Error(receiveReceipt.result.message);
@@ -82,7 +82,7 @@ describe('Escrow', () => {
 
       // Attempt to receive more ONE from the contract than is available
       const receiveFailureReceipt = await escrow.receiveONE.confirmed(masterAddress, toAddress, new BigNumber('100'), {
-        from: toWallet.account.id,
+        from: toWallet.userAccount.id,
       });
       if (receiveFailureReceipt.result.state === 'FAULT') {
         throw new Error(receiveFailureReceipt.result.state);
@@ -91,7 +91,7 @@ describe('Escrow', () => {
 
       // Receive remaining ONE available
       const receiveRemainingReceipt = await escrow.receiveONE.confirmed(masterAddress, toAddress, undefined, {
-        from: toWallet.account.id,
+        from: toWallet.userAccount.id,
       });
       if (receiveRemainingReceipt.result.state === 'FAULT') {
         throw new Error(receiveRemainingReceipt.result.message);
