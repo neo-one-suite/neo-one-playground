@@ -19,7 +19,8 @@ const StyledHeading = styled(Headline)`
 `;
 
 const GridSubheading = Grid.as(Subheading);
-const Content = styled(GridSubheading)`
+// tslint:disable-next-line no-any
+const Content = styled(GridSubheading as any)`
   color: ${prop('theme.black')};
   display: grid;
   margin: 0;

@@ -4,7 +4,8 @@ import { prop } from 'styled-tools';
 import { Background, ContentWrapper, Display2, Headline } from '../../elements';
 
 const FlexBackground = Flex.as(Background);
-const StyledBackground = styled(FlexBackground)`
+// tslint:disable-next-line no-any
+const StyledBackground = styled(FlexBackground as any)`
   color: ${prop('theme.gray0')};
   justify-content: center;
   height: 240px;

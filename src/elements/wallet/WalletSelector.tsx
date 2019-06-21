@@ -1,12 +1,12 @@
 // tslint:disable no-null-keyword no-any
 import { createPrivateKey, LocalKeyStore } from '@neo-one/client';
 import { FromStream } from '@neo-one/react';
-import { Button } from '@neo-one/react-core';
 import * as React from 'react';
 import { Grid, styled } from 'reakit';
 import { combineLatest, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { WithContracts } from '../../../one/generated';
+import { PatchedButton } from '../../components';
 import { getWalletSelectorOptions$, makeWalletSelectorValueOption, WalletSelectorBase } from './WalletSelectorBase';
 
 const WalletSelectorWrapper = styled(Grid)`
@@ -75,9 +75,9 @@ export function WalletSelector(props: any) {
             const newWalletButton =
               // tslint:disable-next-line no-null-keyword
               newWalletOnClick === undefined ? null : (
-                <Button data-test="neo-one-wallet-selector-new-button" onClick={newWalletOnClick}>
+                <PatchedButton data-test="neo-one-wallet-selector-new-button" onClick={newWalletOnClick}>
                   New Wallet
-                </Button>
+                </PatchedButton>
               );
 
             return (
@@ -89,7 +89,7 @@ export function WalletSelector(props: any) {
                     value={value}
                     options={options}
                     onChange={(option: any) => {
-                      if (option != undefined && !Array.isArray(option)) {
+                      if (option !== undefined && !Array.isArray(option)) {
                         client.selectUserAccount(option.id).catch();
                       }
                     }}

@@ -1,10 +1,10 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
-import { Button, TextInput } from '@neo-one/react-core';
 import { BigNumber } from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, Group, styled } from 'reakit';
 import { prop } from 'styled-tools';
+import { PatchedButton, PatchedTextInput } from '../../components';
 import { EscrowContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
@@ -12,7 +12,7 @@ const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(PatchedButton)`
   width: 72px;
 
   &:disabled {
@@ -31,7 +31,7 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
-          <TextInput
+          <PatchedTextInput
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
@@ -60,7 +60,7 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
-          <TextInput
+          <PatchedTextInput
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
@@ -89,7 +89,7 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
-          <TextInput
+          <PatchedTextInput
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"

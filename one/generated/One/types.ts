@@ -1,4 +1,4 @@
-/* @hash e939ef99a3783d53f4c65505c83d2b52 */
+/* @hash 6b79c9a51ae66d0b2e1fa494f82ed125 */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -112,11 +112,11 @@ export interface OneSmartContract<TClient extends Client = Client> extends Smart
   readonly owner: () => Promise<AddressString>;
   readonly refundAssets: {
     (options?: InvokeSendUnsafeTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, OneEvent>, InvocationTransaction>
+      TransactionResult<InvokeReceipt<undefined, OneEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
       (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, OneEvent> & { readonly transaction: InvocationTransaction }
+        InvokeReceipt<undefined, OneEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
   };

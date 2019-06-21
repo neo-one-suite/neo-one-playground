@@ -1,3 +1,5 @@
+import 'cypress-plugin-retries';
+
 if (Cypress.env('coverageDir')) {
   afterEach(function() {
     cy.window().then((win) => {

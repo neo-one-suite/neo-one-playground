@@ -1,10 +1,10 @@
 // tslint:disable no-null-keyword no-any
 import { UserAccount } from '@neo-one/client';
-import { Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, Grid, styled } from 'reakit';
 import { prop } from 'styled-tools';
+import { PatchedButton, PatchedDarkTextInput } from '../../components';
 import { CollectContainer, ContributeContainer, MessageContainer, SetupContainer } from '../../containers';
 import { ComponentProps } from '../../types';
 
@@ -12,7 +12,7 @@ const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(PatchedButton)`
   width: 100px;
 
   &:disabled {
@@ -26,10 +26,8 @@ const Cell = styled(Grid.Item)`
   width: 100%;
 `;
 
-const StyledInput = styled(TextInput)`
-  background-color: ${prop('theme.primaryDark')};
+const StyledInput = styled(PatchedDarkTextInput)`
   width: 90%;
-  height: 50px;
 `;
 
 const StyledGrid = styled(Grid)`

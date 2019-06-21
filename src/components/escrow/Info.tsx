@@ -8,13 +8,15 @@ const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const ListHeader = styled(Box.as('li'))`
+// tslint:disable-next-line no-any
+const ListHeader = styled(Box.as('li') as any)`
   font-weight: bold;
   font-size: 18pt;
   margin-top: 25px;
 `;
 
-const ListItem = styled(Box.as('li'))`
+// tslint:disable-next-line no-any
+const ListItem = styled(Box.as('li') as any)`
   list-style-type: disc;
   margin-left: 25px;
   font-size: 10pt;

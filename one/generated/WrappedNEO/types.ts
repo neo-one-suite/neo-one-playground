@@ -1,4 +1,4 @@
-/* @hash 1688e1820e3a4f7e53bacc66086fb970 */
+/* @hash db2e8f7a8cc6c20d15c3b24d8a686c96 */
 // tslint:disable
 /* eslint-disable */
 import {
@@ -72,11 +72,11 @@ export interface WrappedNEOSmartContract<TClient extends Client = Client>
   readonly balanceOf: (address: AddressString) => Promise<BigNumber>;
   readonly completeSend: {
     (hash: Hash256String, options?: TransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
+      TransactionResult<InvokeReceipt<undefined, WrappedNEOEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
       (hash: Hash256String, options?: TransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+        InvokeReceipt<undefined, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
   };
@@ -107,11 +107,11 @@ export interface WrappedNEOSmartContract<TClient extends Client = Client>
   };
   readonly refundAssets: {
     (options?: InvokeSendUnsafeTransactionOptions): Promise<
-      TransactionResult<InvokeReceipt<boolean, WrappedNEOEvent>, InvocationTransaction>
+      TransactionResult<InvokeReceipt<undefined, WrappedNEOEvent>, InvocationTransaction>
     >;
     readonly confirmed: {
       (options?: InvokeSendUnsafeTransactionOptions & GetOptions): Promise<
-        InvokeReceipt<boolean, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
+        InvokeReceipt<undefined, WrappedNEOEvent> & { readonly transaction: InvocationTransaction }
       >;
     };
   };

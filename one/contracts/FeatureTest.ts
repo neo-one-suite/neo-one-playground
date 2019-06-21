@@ -12,7 +12,7 @@ export class FeatureTest extends SmartContract {
   public constructor(public readonly owner: Address = Deploy.senderAddress) {
     super();
     if (!Address.isCaller(owner)) {
-      throw new Error('Sender was not the owner.');
+      throw new Error(`Sender was not the owner. Received: ${owner}`);
     }
   }
 

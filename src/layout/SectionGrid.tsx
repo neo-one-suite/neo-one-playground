@@ -23,7 +23,8 @@ const StyledHeading = styled(Headline)<{ readonly bg: BackgroundColors }>`
 `;
 
 const GridItem = Grid.Item.as(Subheading).as('div');
-const StyledItem = styled(GridItem)<{ readonly bg: BackgroundColors }>`
+// tslint:disable-next-line no-any
+const StyledItem = styled(GridItem as any)<{ readonly bg: BackgroundColors }>`
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
     gray5: prop('theme.gray1'),

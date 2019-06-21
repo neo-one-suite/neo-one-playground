@@ -2,16 +2,26 @@
 import execa from 'execa';
 import isRunning from 'is-running';
 import * as path from 'path';
+import { timer } from 'rxjs';
 import yargs from 'yargs';
 
-yargs.describe('report', 'Write out test reports.').default('report', false);
-yargs.describe('coverage', 'Write coverage to .nyc_output.').default('coverage', false);
-yargs.describe('neo-one-coverage', 'Write coverage to .nyc_output for neo-one.').default('neo-one-coverage', false);
+const argv = yargs
+  .boolean('report')
+  .describe('report', 'Write out test reports.')
+  .default('report', false)
+  .boolean('neo-one-coverage')
+  .describe('neo-one-coverage', 'Write coverage to .nyc_output.')
+  .default('neo-one-coverage', false)
+  .boolean('coverage')
+  .describe('coverage', 'Write coverage to .nyc_output.')
+  .default('coverage', false).argv;
 
 const runCypress = async ({ report, coverage }: { readonly report: boolean; readonly coverage: boolean }) => {
   // tslint:disable-next-line no-unused
   const { NODE_OPTIONS, TS_NODE_PROJECT, ...newEnv } = process.env;
-  let command = ['cypress', 'run', '--spec', 'cypress/integration/**/*'];
+  const cypressRetries = '5';
+  const finalEnv = { ...newEnv, CYPRESS_RETRIES: cypressRetries };
+  let command = ['cypress', 'run', '--browser', 'chrome', '--spec', 'cypress/integration/**/*'];
   if (report) {
     command = command.concat([
       '--reporter',
@@ -24,15 +34,21 @@ const runCypress = async ({ report, coverage }: { readonly report: boolean; read
     command = command.concat(['--env', `coverageDir=${path.resolve(process.cwd(), '.nyc_output')}`]);
   }
 
-  console.log(`$ yarn ${command.join(' ')}`);
+  console.log(`$ CYPRESS_RETRIES=${cypressRetries} yarn ${command.join(' ')}`);
   const proc = execa('yarn', command, {
-    env: newEnv,
+    env: finalEnv,
     extendEnv: false,
     cwd: path.resolve(__dirname, '..'),
   });
 
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stdout !== null) {
+    proc.stdout.pipe(process.stdout);
+  }
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stderr !== null) {
+    proc.stderr.pipe(process.stderr);
+  }
 
   await proc;
 };
@@ -66,8 +82,7 @@ const killProcess = async (proc: execa.ExecaChildProcess) => {
 
       throw error;
     }
-    // eslint-disable-next-line
-    await new Promise<void>((resolve) => setTimeout(resolve, 1000));
+    await timer(1000).toPromise();
     alive = isRunning(pid);
     if (!alive) {
       return;
@@ -132,13 +147,19 @@ const neoOne = async (coverage: boolean): Promise<void> => {
     const stdoutListener = (res: string) => {
       stdout += res;
     };
-    proc.stdout.on('data', stdoutListener);
+    // tslint:disable-next-line strict-comparisons
+    if (proc.stdout !== null) {
+      proc.stdout.on('data', stdoutListener);
+    }
 
     let stderr = '';
     const stderrListener = (res: string) => {
       stderr += res;
     };
-    proc.stderr.on('data', stderrListener);
+    // tslint:disable-next-line strict-comparisons
+    if (proc.stderr !== null) {
+      proc.stderr.on('data', stderrListener);
+    }
 
     let exited = false;
     const exitListener = () => {
@@ -161,8 +182,14 @@ const neoOne = async (coverage: boolean): Promise<void> => {
       tries -= 1;
     }
 
-    proc.stdout.removeListener('data', stdoutListener);
-    proc.stdout.removeListener('data', stderrListener);
+    // tslint:disable-next-line strict-comparisons
+    if (proc.stdout !== null) {
+      proc.stdout.removeListener('data', stdoutListener);
+    }
+    // tslint:disable-next-line strict-comparisons
+    if (proc.stdout !== null) {
+      proc.stdout.removeListener('data', stderrListener);
+    }
     proc.removeListener('exit', exitListener);
 
     if (!ready) {
@@ -188,7 +215,7 @@ const run = async ({
   await neoOne(neoOneCoverage);
   const proc = execa(
     'node',
-    ['-r', 'ts-node/register/transpile-only', path.resolve(__dirname, 'start.ts'), '--ci'].concat(
+    ['-r', 'ts-node/register/transpile-only', path.resolve(__dirname, 'start.ts'), '--ci', '--cypress'].concat(
       coverage ? ['--coverage'] : [],
     ),
     {
@@ -199,19 +226,31 @@ const run = async ({
   );
   mutableCleanup.push(createKillProcess(proc));
 
-  proc.stdout.pipe(process.stdout);
-  proc.stderr.pipe(process.stderr);
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stdout !== null) {
+    proc.stdout.pipe(process.stdout);
+  }
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stderr !== null) {
+    proc.stderr.pipe(process.stderr);
+  }
 
   // Wait for server to startup
-  await new Promise<void>((resolve) => setTimeout(resolve, 60000));
+  await timer(90000).toPromise();
 
-  proc.stdout.unpipe(process.stdout);
-  proc.stderr.unpipe(process.stderr);
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stdout !== null) {
+    proc.stdout.unpipe(process.stdout);
+  }
+  // tslint:disable-next-line strict-comparisons
+  if (proc.stderr !== null) {
+    proc.stderr.unpipe(process.stderr);
+  }
 
   await runCypress({ report, coverage });
 };
 
-run({ report: yargs.argv.report, coverage: yargs.argv.coverage, neoOneCoverage: yargs.argv['neo-one-coverage'] })
+run({ report: argv.report, coverage: argv.coverage, neoOneCoverage: argv['neo-one-coverage'] })
   .then(() => shutdown(0))
   .catch((error) => {
     console.error(error);

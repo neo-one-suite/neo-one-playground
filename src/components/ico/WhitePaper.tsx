@@ -1,6 +1,6 @@
-import { Button } from '@neo-one/react-core';
 import * as React from 'react';
 import { Flex } from 'reakit';
+import { PatchedButton } from '../../components';
 import { Subheading } from '../../elements';
 import { SectionGrid } from '../../layout';
 import { ComponentProps } from '../../types';
@@ -12,7 +12,7 @@ export const WhitePaper = (props: Partial<ComponentProps<typeof SectionGrid>>) =
         Our full arsenal of technologies will change the world. Support us and we'll do awesome things. Check out the
         whitepaper for more information.
       </Subheading>
-      <Button data-test="whitepaper-button">Whitepaper</Button>
+      <PatchedButton data-test="whitepaper-button">Whitepaper</PatchedButton>
     </Flex>
   </SectionGrid>
 );
