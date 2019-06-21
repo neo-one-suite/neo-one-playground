@@ -72,22 +72,18 @@ describe('Escrow', () => {
       expect(balance.toString()).toEqual('60');
 
       // Attempt to revoke more ONE from the contract than is available
-      const revokeFailureReceipt = await escrow.revokeONE.confirmed(masterAddress, toAddress, new BigNumber('100'), {
-        from: masterAccountID,
-      });
-      if (revokeFailureReceipt.result.state === 'FAULT') {
-        throw new Error(revokeFailureReceipt.result.state);
-      }
-      expect(revokeFailureReceipt.result.value).toEqual(false);
+      await expect(
+        escrow.revokeONE.confirmed(masterAddress, toAddress, new BigNumber('100'), {
+          from: masterAccountID,
+        }),
+      ).rejects.toThrow();
 
       // Attempt to receive more ONE from the contract than is available
-      const receiveFailureReceipt = await escrow.receiveONE.confirmed(masterAddress, toAddress, new BigNumber('100'), {
-        from: toWallet.userAccount.id,
-      });
-      if (receiveFailureReceipt.result.state === 'FAULT') {
-        throw new Error(receiveFailureReceipt.result.state);
-      }
-      expect(receiveFailureReceipt.result.value).toEqual(false);
+      await expect(
+        escrow.receiveONE.confirmed(masterAddress, toAddress, new BigNumber('100'), {
+          from: toWallet.userAccount.id,
+        }),
+      ).rejects.toThrow();
 
       // Receive remaining ONE available
       const receiveRemainingReceipt = await escrow.receiveONE.confirmed(masterAddress, toAddress, undefined, {

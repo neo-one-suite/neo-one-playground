@@ -79,20 +79,22 @@ export class WrappedNEO extends SmartContract {
 
     const fromBalance = this.balanceOf(from);
     if (fromBalance < amount) {
-      return false;
+      throw new Error(
+        `Amount cannot be greater than from address balance. Amount: ${amount}. From balance: ${fromBalance}`,
+      );
     }
 
     const approved = this.approvedTransfer(from, to);
     const reduceApproved = approved >= amount;
     if (!reduceApproved && !Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     const contract = Contract.for(to);
     if (contract !== undefined && !Address.isCaller(to)) {
       const smartContract = SmartContract.for<TokenPayableContract>(to);
       if (!smartContract.approveReceiveTransfer(from, amount, this.address)) {
-        return false;
+        throw new Error('Transfer receive was not approved');
       }
     }
 
@@ -114,7 +116,7 @@ export class WrappedNEO extends SmartContract {
     }
 
     if (!Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     this.approvedTransfers.set([from, to], this.approvedTransfer(from, to) + amount);
@@ -133,12 +135,12 @@ export class WrappedNEO extends SmartContract {
     }
 
     if (!Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     const approved = this.approvedTransfer(from, to);
     if (approved < amount) {
-      return false;
+      throw new Error(`Amount must be greater than the approved amount. Amount: ${amount}. Approved: ${approved}`);
     }
 
     this.approvedTransfers.set([from, to], approved - amount);
@@ -163,8 +165,7 @@ export class WrappedNEO extends SmartContract {
     const transaction = Blockchain.currentTransaction;
     const { references } = transaction;
     if (references.length === 0) {
-      // Nothing to refund
-      return false;
+      throw new Error('Nothing to refund');
     }
 
     // We're only going to credit one address, so just pick the first one from the references.
@@ -180,7 +181,7 @@ export class WrappedNEO extends SmartContract {
       if (output.address.equals(this.address)) {
         // Don't allow transactions that send anything but NEO to the contract.
         if (!output.asset.equals(Hash256.NEO)) {
-          return false;
+          throw new Error('Expecting only NEO to be sent to the contact');
         }
 
         amount += output.value / FACTOR;
@@ -188,7 +189,7 @@ export class WrappedNEO extends SmartContract {
     }
 
     if (amount === 0) {
-      return false;
+      throw new Error('No NEO sent to the contract');
     }
 
     this.balances.set(sender, this.balanceOf(sender) + amount);
@@ -201,13 +202,13 @@ export class WrappedNEO extends SmartContract {
   @send
   public unwrapNEO(transfer: Transfer): boolean {
     if (!transfer.asset.equals(Hash256.NEO)) {
-      return false;
+      throw new Error('Expected transfer asset to be NEO');
     }
     const amount = transfer.amount / FACTOR;
     const balance = this.balanceOf(transfer.to);
 
     if (balance < amount) {
-      return false;
+      throw new Error(`Transfer amount must be greater than to balance. Amount: ${amount}. Balance: ${balance}`);
     }
 
     this.balances.set(transfer.to, balance - amount);

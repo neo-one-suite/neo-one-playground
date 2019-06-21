@@ -112,11 +112,11 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
           createStream={() =>
             concat(
               of(undefined),
-              combineLatest(
+              combineLatest([
                 client.currentUserAccount$,
                 getWalletSelectorOptions$(client, client.userAccounts$, client.block$),
                 client.block$,
-              ).pipe(
+              ]).pipe(
                 switchMap(async ([account, options]) => {
                   const [donationInfo, topContribution, walletBalance, contributionInfo] = await Promise.all([
                     source === undefined

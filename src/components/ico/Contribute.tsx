@@ -1,12 +1,12 @@
 // tslint:disable no-null-keyword no-any
 import { FromStream } from '@neo-one/react';
-import { Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 import { Box, Flex, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
 import { WithContracts } from '../../../one/generated';
+import { PatchedButton, PatchedTextInput } from '../../components';
 import { ICOContainer } from '../../containers';
 import { Body2 } from '../../elements';
 import { ComponentProps } from '../../types';
@@ -16,14 +16,14 @@ const StyledFlex = styled(Flex)`
   padding: 8px 0;
 `;
 
-const StyledInput = styled(TextInput)`
-  margin-right: 8px;
+const StyledInput = styled(PatchedTextInput)`
   width: 400px;
 `;
 
 const StyledBody2 = styled(Body2)`
   ${prop('theme.fonts.axiformaBold')};
   margin-right: 8px;
+  margin-left: 8px;
   white-space: nowrap;
 `;
 
@@ -54,9 +54,13 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
                   </StyledBody2>
                 </StyledFlex>
                 <Flex justifyContent="flex-end">
-                  <Button data-test="contribute-button" disabled={amount === undefined || loading} onClick={send}>
+                  <PatchedButton
+                    data-test="contribute-button"
+                    disabled={amount === undefined || loading}
+                    onClick={send}
+                  >
                     Send
-                  </Button>
+                  </PatchedButton>
                 </Flex>
               </Wrapper>
             )}

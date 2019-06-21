@@ -67,7 +67,7 @@ export class One extends SmartContract {
   ) {
     super();
     if (!Address.isCaller(owner)) {
-      throw new Error('Sender was not the owner.');
+      throw new Error(`Sender was not the owner. Received: ${owner}`);
     }
   }
 
@@ -93,25 +93,25 @@ export class One extends SmartContract {
   // tslint:disable-next-line readonly-array
   public transfer(from: Address, to: Address, amount: Fixed<8>, ...approveArgs: ForwardValue[]): boolean {
     if (amount < 0) {
-      throw new Error(`Amount must be greater than 0: ${amount}`);
+      throw new Error(`Amount must be greater than 0: Received: ${amount}`);
     }
 
     const fromBalance = this.balanceOf(from);
     if (fromBalance < amount) {
-      return false;
+      throw new Error('Cannot send amount greater than current address balance');
     }
 
     const approved = this.approvedTransfer(from, to);
     const reduceApproved = approved >= amount && Address.isCaller(to);
     if (!reduceApproved && !Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     const contract = Contract.for(to);
     if (contract !== undefined && !Address.isCaller(to)) {
       const smartContract = SmartContract.for<TokenPayableContract>(to);
       if (!smartContract.approveReceiveTransfer(from, amount, this.address, ...approveArgs)) {
-        return false;
+        throw new Error('Transfer receive was not approved');
       }
     }
 
@@ -133,7 +133,7 @@ export class One extends SmartContract {
     }
 
     if (!Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     this.approvedTransfers.set([from, to], this.approvedTransfer(from, to) + amount);
@@ -152,12 +152,12 @@ export class One extends SmartContract {
     }
 
     if (!Address.isCaller(from)) {
-      return false;
+      throw new Error(`Expected caller to be owner. Received: ${from}`);
     }
 
     const approved = this.approvedTransfer(from, to);
     if (approved < amount) {
-      return false;
+      throw new Error(`Amount must be greater than the approved amount. Amount: ${amount}. Approved: ${approved}`);
     }
 
     this.approvedTransfers.set([from, to], approved - amount);
@@ -184,13 +184,16 @@ export class One extends SmartContract {
 
   @receive
   public mintTokens(): boolean {
-    if (!this.hasStarted() || this.hasEnded()) {
-      return false;
+    if (!this.hasStarted()) {
+      throw new Error(`ICO hasn\'t started yet.`);
+    }
+    if (this.hasEnded()) {
+      throw new Error(`ICO has ended.`);
     }
 
     const { references } = Blockchain.currentTransaction;
     if (references.length === 0) {
-      return false;
+      throw new Error('Blockchain reference failed');
     }
     const sender = references[0].address;
 
@@ -199,7 +202,7 @@ export class One extends SmartContract {
     for (const output of Blockchain.currentTransaction.outputs) {
       if (output.address.equals(this.address)) {
         if (!output.asset.equals(Hash256.NEO)) {
-          return false;
+          throw new Error('Expecting only NEO to be sent to the contact');
         }
 
         amount += output.value * this.amountPerNEO;
@@ -207,7 +210,7 @@ export class One extends SmartContract {
     }
 
     if (amount > this.remaining) {
-      return false;
+      throw new Error(`Amount is greater than remaining tokens. Amount: ${amount}. Remaining: ${this.remaining}`);
     }
 
     this.mutableRemaining -= amount;

@@ -29,7 +29,7 @@ export class Escrow extends SmartContract {
 
   public approveReceiveTransfer(from: Address, amount: Fixed<8>, asset: Address, to: ForwardedValue<Address>): boolean {
     if (!Address.isCaller(asset)) {
-      return false;
+      throw new Error(`Expected caller to be the owner. Received: ${asset}`);
     }
 
     this.balances.set([from, to], this.balanceOf(from, to) + amount);
@@ -51,7 +51,7 @@ export class Escrow extends SmartContract {
 
   private resolveEscrow(from: Address, to: Address, amount: Fixed<8> | undefined, claimAddress: Address): boolean {
     if (!Address.isCaller(claimAddress)) {
-      return false;
+      throw new Error(`Expected caller to be the owner. received: ${claimAddress}`);
     }
 
     const balance = this.balanceOf(from, to);
@@ -60,7 +60,7 @@ export class Escrow extends SmartContract {
       receiveRevokeAmount = balance;
     } else {
       if (balance < amount) {
-        return false;
+        throw new Error(`Cannot send funds greater than current balance. Amount: ${amount}. Balance: ${balance}`);
       }
       receiveRevokeAmount = amount;
     }
@@ -71,6 +71,6 @@ export class Escrow extends SmartContract {
       return true;
     }
 
-    return false;
+    throw new Error('Escrow transfer failed');
   }
 }

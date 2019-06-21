@@ -1,4 +1,4 @@
-/* @hash b6451618c02f3321ae118f25c1c220c0 */
+/* @hash d61ad79d92b3b21b36d551bf9eb331e2 */
 // tslint:disable
 /* eslint-disable */
 import { ABI } from '@neo-one/client';
@@ -372,7 +372,7 @@ export const wrappedNeoABI: ABI = {
       name: 'refundAssets',
       parameters: [],
       returnType: {
-        type: 'Boolean',
+        type: 'Void',
       },
       sendUnsafe: true,
     },
@@ -381,7 +381,7 @@ export const wrappedNeoABI: ABI = {
       name: 'completeSend',
       parameters: [],
       returnType: {
-        type: 'Boolean',
+        type: 'Void',
       },
     },
     {

@@ -38,7 +38,13 @@ module.exports = (on) => {
   on('task', {
     addSeconds: ({ value, offset }) => {
       const dateFormat = 'yyyy/MM/dd hh:mm:ss a';
-      const date = parse(value, dateFormat, new Date());
+      let date;
+      if (isNaN(parse(value, dateFormat, new Date()))) {
+        date = new Date();
+        date.setMilliseconds(0);
+      } else {
+        date = parse(value, dateFormat, new Date());
+      }
       const dateOffset = addSeconds(date, offset);
       const formatted = format(dateOffset, dateFormat);
       return {

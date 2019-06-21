@@ -1,16 +1,16 @@
 aliases:
   - &restore-yarn-cache-8
     keys:
-      - v2-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - v3-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
       # Fallback in case checksum fails
-      - v2-yarn-8-{{ .Branch }}-
+      - v3-yarn-8-{{ .Branch }}-
 
   - &save-yarn-cache-8
     paths:
       - node_modules
       - ~/.cache/yarn
       - ~/.cache/Cypress
-    key: v2-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    key: v3-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
   - &yarn
     |
@@ -55,6 +55,9 @@ aliases:
       - run: *yarn
       - save-cache: *save-yarn-cache-8
       - run:
+          name: Add .nyc_output Directory
+          command: mkdir .nyc_output
+      - run:
           name: Test
           command: yarn test:cypress --coverage
       - run:
@@ -73,7 +76,11 @@ aliases:
 
 node8: &node8
   docker:
-    - image: neotracker/neo-one-circleci-node:8.9.0-1
+    - image: neotracker/neo-one-circleci-node:8.16.0-4
+
+chrome: &chrome69
+  docker:
+    - image: cypress/browsers:chrome69
 
 version: 2
 jobs:
@@ -81,7 +88,7 @@ jobs:
     <<: *node8
     <<: *test8
   cypress8:
-    <<: *node8
+    <<: *chrome69
     <<: *cypress8
 
   lint:

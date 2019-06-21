@@ -1,17 +1,15 @@
 // @ts-ignore
-import history from 'connect-history-api-fallback';
-// @ts-ignore
-import convert from 'koa-connect';
-// @ts-ignore
 import MiniHtmlWebpackPlugin from 'mini-html-webpack-plugin';
 import * as path from 'path';
 import webpack from 'webpack';
-// @ts-ignore
-import serve from 'webpack-serve';
+import WebpackDevServer from 'webpack-dev-server';
 import yargs from 'yargs';
 
-yargs.describe('ci', 'Running as part of continuous integration.').default('ci', false);
-yargs.describe('coverage', 'Instrument code for coverage.').default('coverage', false);
+const argv = yargs
+  .describe('ci', 'Running as part of continuous integration.')
+  .default('ci', false)
+  .describe('coverage', 'Instrument code for coverage.')
+  .default('coverage', false).argv;
 
 const createWebpackConfig = (): webpack.Configuration => ({
   mode: 'development',
@@ -73,11 +71,7 @@ const createWebpackConfig = (): webpack.Configuration => ({
             useCache: true,
             useBabel: true,
             babelOptions: {
-              plugins: yargs.argv.ci
-                ? yargs.argv.coverage
-                  ? ['babel-plugin-istanbul']
-                  : []
-                : ['react-hot-loader/babel'],
+              plugins: argv.ci ? (argv.coverage ? ['babel-plugin-istanbul'] : []) : ['react-hot-loader/babel'],
             },
             configFileName: path.resolve(__dirname, '..', 'tsconfig', 'tsconfig.es2017.esm.json'),
           },
@@ -109,7 +103,6 @@ const createWebpackConfig = (): webpack.Configuration => ({
           'style-loader',
           {
             loader: 'css-loader',
-            options: { minimize: false },
           },
         ],
       },
@@ -121,30 +114,22 @@ const createWebpackConfig = (): webpack.Configuration => ({
   },
 });
 
-const createServer = async (): Promise<{ readonly app: { readonly stop: (cb: () => void) => void } }> => {
+const createServer = () => {
   const webpackConfig = createWebpackConfig();
-
-  return serve(
-    {},
-    {
-      config: webpackConfig,
-      open: !yargs.argv.ci,
-      hotClient: true,
-      // tslint:disable-next-line no-any
-      add: (app: any) => {
-        app.use(
-          convert(
-            history({
-              verbose: false,
-              htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-              index: '/index.html',
-            }),
-          ),
-        );
-      },
-      content: path.resolve(__dirname, '..', 'root'),
+  const port = 8080;
+  const devServer = new WebpackDevServer(webpack(webpackConfig), {
+    open: !argv.ci,
+    hot: true,
+    historyApiFallback: {
+      verbose: false,
+      htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+      index: '/index.html',
     },
-  );
+    contentBase: path.resolve(__dirname, '..', 'root'),
+    port,
+  });
+
+  return devServer.listen(port);
 };
 
 const logError = (error: Error) => {
@@ -158,10 +143,10 @@ const log = (message: string) => {
 };
 
 Promise.resolve()
-  .then(async () => {
-    const { app } = await createServer();
+  .then(() => {
+    const app = createServer();
     const exit = (code: number) => {
-      app.stop(() => process.exit(code));
+      app.close(() => process.exit(code));
     };
 
     process.on('uncaughtException', (error) => {
@@ -169,7 +154,8 @@ Promise.resolve()
       process.exit(1);
     });
 
-    process.on('unhandledRejection', (error) => {
+    // tslint:disable-next-line no-any
+    process.on('unhandledRejection', (error: Error | any) => {
       logError(error);
     });
 

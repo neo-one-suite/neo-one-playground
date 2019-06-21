@@ -76,11 +76,11 @@ export function EscrowApp({ toWallet, setToWallet, ...props }: Props) {
           createStream={() =>
             concat(
               of(undefined),
-              combineLatest(
+              combineLatest([
                 client.currentUserAccount$,
                 getWalletSelectorOptions$(client, client.userAccounts$, client.block$),
                 client.block$,
-              ).pipe(
+              ]).pipe(
                 switchMap(async ([account, options]) => {
                   const [balance, fromBalance, toBalance] = await Promise.all([
                     account === undefined || toWallet === undefined

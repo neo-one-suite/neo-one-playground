@@ -1,7 +1,7 @@
-import { Button } from '@neo-one/react-core';
 import * as React from 'react';
 import { Grid } from 'reakit';
 import { WithContracts } from '../../../one/generated';
+import { PatchedButton } from '../../components';
 import { Subheading, TryItOut } from '../../elements';
 import { SectionGrid } from '../../layout';
 
@@ -19,7 +19,7 @@ export function Debugging() {
         <WithContracts>
           {({ featureTest }) => (
             <Grid gap={16} gridAutoFlow="column" justifyItems="start" justifyContent="start">
-              <Button
+              <PatchedButton
                 data-test="debugging-error-trace-button"
                 onClick={() => {
                   featureTest
@@ -31,8 +31,8 @@ export function Debugging() {
                 }}
               >
                 Error Trace
-              </Button>
-              <Button
+              </PatchedButton>
+              <PatchedButton
                 data-test="debugging-console-log-button"
                 onClick={() => {
                   featureTest
@@ -44,8 +44,8 @@ export function Debugging() {
                 }}
               >
                 console.log
-              </Button>
-              <Button
+              </PatchedButton>
+              <PatchedButton
                 data-test="debugging-type-error-button"
                 onClick={() => {
                   featureTest
@@ -57,7 +57,7 @@ export function Debugging() {
                 }}
               >
                 Type Error
-              </Button>
+              </PatchedButton>
             </Grid>
           )}
         </WithContracts>

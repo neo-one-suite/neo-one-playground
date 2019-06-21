@@ -8,7 +8,8 @@ const Header = styled(Display2)`
 `;
 
 const FlexBackground = Flex.as(Background);
-const StyledBackground = styled(FlexBackground)`
+// tslint:disable-next-line no-any
+const StyledBackground = styled(FlexBackground as any)`
   justify-content: center;
   height: 200px;
   width: 100%;

@@ -1,6 +1,6 @@
 // tslint:disable no-any
 import { Account, Client, Hash256, UserAccount } from '@neo-one/client';
-import { utils } from '@neo-one/utils';
+import { PromiseReturnType, utils } from '@neo-one/utils';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 // tslint:disable-next-line no-submodule-imports
@@ -65,7 +65,7 @@ export const getWalletSelectorOptions$ = (
       take(1),
       map((userAccounts) => userAccounts.map((userAccount) => makeWalletSelectorValueOption({ userAccount }))),
     ),
-    combineLatest(userAccounts$.pipe(distinctUntilChanged()), block$).pipe(
+    combineLatest([userAccounts$.pipe(distinctUntilChanged()), block$]).pipe(
       switchMap(async ([userAccounts]) =>
         Promise.all(
           userAccounts.map(async (userAccount) => {
@@ -111,7 +111,6 @@ const createFormatOptionLabel = (isMulti?: boolean) => (
       )}
       {((option as any).balances === undefined ? [] : (option as any).balances).map(
         ([name, value]: [string, BigNumber]) => (
-          // @ts-ignore
           <React.Fragment key={name}>
             <Grid.Item>{name}:</Grid.Item>
             <Grid.Item>{value.toFormat()}</Grid.Item>
