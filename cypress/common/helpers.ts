@@ -1,4 +1,4 @@
-export const ONE_ADDRESS = 'AQWbfhkXSStBh2CAwWwx8neLm9MvNc7k27';
+export const ONE_ADDRESS = 'AUFDAPSgENP4p58Qqq1Fqt4wdDfDhyQs7v';
 
 export const initializeOne = () => {
   cy.visit('/ico');
@@ -27,6 +27,7 @@ export const initializeOne = () => {
 
     cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).click({ force: true });
     cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).should('have.attr', 'disabled');
+    cy.wait(5000);
     cy.wrap(iframe.find('[data-test="neo-one-reset-button"]')[0]).should('not.have.attr', 'disabled');
   });
 
@@ -67,10 +68,10 @@ export const fastForward = (offset: number, exists = false) => {
             .type(formatted as string);
 
           cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
+          cy.wait(3000);
 
           if (exists) {
             cy.wrap(iframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).then(($value) => {
-              cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
               cy.wrap(iframe.find('[data-test="neo-one-block-time-last-time-value"]')[0]).should(
                 'not.have.text',
                 $value.text(),
@@ -82,9 +83,6 @@ export const fastForward = (offset: number, exists = false) => {
               });
             });
           } else {
-            cy.wrap(iframe.find('[data-test="neo-one-block-time-dialog-button"]')[0]).click({ force: true });
-            cy.wait(1000);
-
             cy.get('iframe').then(($reIframe) => {
               const reIframe = $reIframe.contents();
 
@@ -126,7 +124,7 @@ export const contribute = () => {
 };
 
 export const checkErrorToast = (message?: string) => {
-  cy.wait(500);
+  cy.wait(1000);
   cy.get('iframe').then(($iframe) => {
     const iframe = $iframe.contents();
 
@@ -142,7 +140,7 @@ export const checkErrorToast = (message?: string) => {
 };
 
 export const checkTransactionToast = (message?: string) => {
-  cy.wait(1000);
+  cy.wait(2000);
   cy.get('iframe').then(($iframe) => {
     const iframe = $iframe.contents();
 

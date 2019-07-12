@@ -14,8 +14,8 @@ export class GASVac extends SmartContract {
   }
 
   private assertBalance(address: Address): void {
-    if ((Account.for(address).getBalance(Hash256.GAS) / 10**8) < 1) {
-      throw new Error('nothing to vacuum')
+    if (Account.for(address).getBalance(Hash256.GAS) / 10 ** 8 < 1) {
+      throw new Error('nothing to vacuum');
     }
   }
 

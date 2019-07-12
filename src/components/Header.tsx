@@ -62,15 +62,18 @@ const NavigationLink = styled(RouterLink as any)`
   }
 `;
 
-const StyledToolbarLink = styled(Toolbar.Focusable.as(Link))`
+// tslint:disable-next-line no-any
+const StyledToolbarLink = styled(Toolbar.Focusable.as(Link) as any)`
   outline: none;
 `;
 
-const StyledToolbarNavLink = styled(Toolbar.Focusable.as(NavigationLink))`
+// tslint:disable-next-line no-any
+const StyledToolbarNavLink = styled(Toolbar.Focusable.as(NavigationLink) as any)`
   outline: none;
 `;
 
-const StyledToolbarLogoLink = styled(Toolbar.Focusable.as(LogoLink))`
+// tslint:disable-next-line no-any
+const StyledToolbarLogoLink = styled(Toolbar.Focusable.as(LogoLink) as any)`
   outline: none;
 `;
 

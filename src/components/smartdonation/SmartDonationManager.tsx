@@ -80,7 +80,7 @@ export function SmartDonationManager({ ...props }: ComponentProps<typeof StyledG
           createStream={() =>
             concat(
               of(undefined),
-              combineLatest(client.currentUserAccount$, client.block$).pipe(
+              combineLatest([client.currentUserAccount$, client.block$]).pipe(
                 switchMap(async ([account, options]) => {
                   if (account === undefined) {
                     return {

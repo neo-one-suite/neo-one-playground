@@ -48,8 +48,8 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
             const value = countdown
               ? formatDistanceStrict(new Date(startTimeMS), currentNow)
               : complete
-                ? undefined
-                : formatDistanceStrict(currentNow, new Date(endTimeMS));
+              ? undefined
+              : formatDistanceStrict(currentNow, new Date(endTimeMS));
 
             return { countdown, value };
           }),
@@ -88,7 +88,7 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
           createStream={() =>
             concat(
               of(undefined),
-              combineLatest(client.block$, client.currentUserAccount$, client.currentNetwork$).pipe(
+              combineLatest([client.block$, client.currentUserAccount$, client.currentNetwork$]).pipe(
                 switchMap(async ([{ block }, account, network]) => {
                   const [
                     startTimeSeconds,

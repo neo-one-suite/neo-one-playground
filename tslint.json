@@ -8,7 +8,8 @@
     "./node_modules/tslint-immutable/rules",
     "./node_modules/tslint-consistent-codestyle/rules",
     "./node_modules/tslint-sonarts/lib/rules/",
-    "./node_modules/tslint-clean-code/dist/build"
+    "./node_modules/tslint-clean-code/dist/build",
+    "./node_modules/rxjs-tslint-rules/dist/rules"
   ],
   "linterOptions": {
     "exclude": [
@@ -36,7 +37,11 @@
     "no-expression-statement": false,
     "no-parameter-properties": false,
     "prefer-function-over-method": false,
-    "file-name-casing": false,
+    "file-name-casing": [false, "camel-case"],
+    "static-this": false,
+    "no-null-undefined-union": false,
+    "array-type": [true, "array-simple"],
+    "strict-comparisons": false,
 
     "trailing-comma": [
       true,
@@ -74,8 +79,9 @@
     "no-submodule-imports": [
       true,
       "rxjs",
-      "@reactivex/ix-esnext-esm",
+      "@reactivex/ix-es2015-cjs",
       "@reactivex",
+      "uuid",
       "react-icons"
     ],
     "strict-boolean-expressions": [
@@ -84,8 +90,7 @@
       "allow-undefined-union",
       "allow-string",
       "allow-number",
-      "allow-mix",
-      "allow-boolean-or-undefined"
+      "allow-mix"
     ],
     "no-implicit-dependencies": [
       true,
@@ -119,7 +124,7 @@
     "export-name": true,
     "no-control-regex": true,
     "no-empty-line-after-opening-brace": true,
-    "no-increment-decrement": true,
+    "increment-decrement": true,
     "no-invalid-regexp": true,
     "no-regex-spaces": true,
     "no-single-line-block-comment": false,
@@ -130,17 +135,17 @@
     "promise-must-complete": true,
     "use-named-parameter": true,
     "no-unused-expression": [true, "allow-fast-null-checks"],
-    "readonly-keyword": [true, "ignore-local", {"ignore-prefix": ["mutable", "this.mutable"] }],
-    "readonly-array": [true, "ignore-local", {"ignore-prefix": ["mutable", "this.mutable"] }],
+    "readonly-keyword": [true, "ignore-local", {"ignore-prefix": ["mutable", "this.mutable", "draft"] }],
+    "readonly-array": [true, "ignore-local", {"ignore-prefix": ["mutable", "this.mutable", "draft"] }],
     "no-let": [true, "ignore-local"],
-    "no-array-mutation": [true, {"ignore-prefix": ["mutable", "this.mutable", "ctx.mutable"] }],
-    "no-object-mutation": [true, {"ignore-prefix": ["mutable", "this.mutable", "app.proxy", "app.silent", "ctx."] }],
+    "no-array-mutation": [true, {"ignore-prefix": ["mutable", "this.mutable", "ctx.mutable", "draft"] }, "ignore-new-array"],
+    "no-object-mutation": [true, {"ignore-prefix": ["mutable", "this.mutable", "app.proxy", "app.silent", "ctx.", "draft", "$el"] }],
     "no-method-signature": true,
     "no-loop-statement": true,
     "no-accessor-recursion": true,
     "no-collapsible-if": true,
     "no-unnecessary-else": true,
-    "no-unnecessary-type-annotation": true,
+    "no-unnecessary-type-annotation": false,
     "no-unused": [true, "unused-function-expression-name", "unused-class-expression-name", "unused-catch-binding"],
     "no-var-before-return": true,
     "prefer-while": true,
@@ -153,7 +158,7 @@
     "no-useless-increment": true,
     "no-useless-intersection": true,
     "no-array-delete": true,
-    "no-dead-store": true,
+    "no-dead-store": false,
     "no-gratuitous-expressions": true,
     "no-inconsistent-return": true,
     "no-redundant-boolean": true,
@@ -162,6 +167,10 @@
     "prefer-immediate-return": true,
     "prefer-promise-shorthand": true,
     "use-primitive-type": true,
-    "no-map-without-usage": true
+    "no-map-without-usage": true,
+    "rxjs-finnish": true,
+    "rxjs-no-ignored-error": false,
+    "ban-ts-ignore": false,
+    "no-default-import": false
   }
 }

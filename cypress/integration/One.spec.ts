@@ -10,7 +10,7 @@ describe('One', () => {
     cy.get('[data-test=contribute-button]').click();
     cy.get('[data-test=contribute-input]').should('have.value', '10');
     cy.get('[data-test=contribute-amount]').should('have.text', '= 1,000,000 ONE');
-    checkErrorToast('Verification did not succeed.');
+    checkErrorToast();
     cy.get('[data-test=contribute-input]').clear();
 
     // Fast forward and contribute
@@ -27,10 +27,16 @@ describe('One', () => {
     cy.get('iframe').then(($iframe) => {
       const iframe = $iframe.contents();
 
-      cy.wrap(iframe.find('[data-test="neo-one-add-token-input"]')[0]).type(ONE_ADDRESS);
+      cy.wrap(iframe.find('[data-test="neo-one-add-token-input"]')[0]).type(ONE_ADDRESS, { force: true });
       cy.wrap(iframe.find('[data-test="neo-one-add-token-button"]')[0]).click({ force: true });
       cy.wrap(iframe.find('[data-test="neo-one-settings-dialog-close-button"]')[0]).click({ force: true });
-      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).should('have.text', 'ONE');
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"] .react-select__input > input')[0]).type(
+        'ONE{enter}',
+        {
+          force: true,
+        },
+      );
+      cy.wrap(iframe.find('[data-test="neo-one-balance-selector-selector"]')[0]).contains('ONE');
       cy.wrap(iframe.find('[data-test="neo-one-balance-selector-value"]')[0]).should('have.text', '1,000,000');
     });
 
@@ -69,12 +75,12 @@ describe('One', () => {
     selectWallet({ prevWallet: 'alfa', newWallet: 'master' });
 
     // Fast forward past end
-    fastForward(24 * 60 * 60, true);
+    fastForward(25 * 60 * 60, true);
     cy.get('[data-test=info-countdown]').should('have.text', 'Time Left:');
     cy.get('[data-test=info-countdown-value]').should('have.text', 'Ended');
     cy.get('[data-test=contribute-button]').click();
 
-    checkErrorToast('Verification did not succeed.');
+    checkErrorToast();
 
     // Close toolbar. We did it!
     cy.get('iframe').then(($iframe) => {
