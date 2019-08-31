@@ -2,7 +2,7 @@ import { Client, UserAccount } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { OneSmartContract, SmartDonationSmartContract, WithContracts } from '../../../one/generated';
+import { OneSmartContract, SmartDonationSmartContract, WithContracts } from '../../neo-one';
 
 interface Actions {
   readonly onChangeContributeAmount: (amountText: string) => void;

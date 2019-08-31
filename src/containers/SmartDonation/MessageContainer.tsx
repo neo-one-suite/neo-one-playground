@@ -1,7 +1,7 @@
 import { Client } from '@neo-one/client';
 import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { SmartDonationSmartContract, WithContracts } from '../../../one/generated';
+import { SmartDonationSmartContract, WithContracts } from '../../neo-one';
 
 interface Actions {
   readonly onChangeMessage: (text: string) => void;

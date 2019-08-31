@@ -61,6 +61,8 @@ export const SetupAddressBox = (props: Props) => (
   <SetupContainer>
     {({ setupLoading, setup }) => (
       <Wrapper>
+        {/*
+        // @ts-ignore */}
         <StyledButton data-test="setup-button" disabled={setupLoading || props.disabled} onClick={setup}>
           Setup
         </StyledButton>
@@ -73,6 +75,8 @@ export const CollectBox = (props: Props) => (
   <CollectContainer>
     {({ collectLoading, collect }) => (
       <Wrapper>
+        {/*
+        // @ts-ignore */}
         <StyledButton data-test="collect-button" disabled={collectLoading || props.disabled} onClick={collect}>
           Collect
         </StyledButton>
@@ -86,6 +90,8 @@ export const MessageBox = (props: Props) => (
     {({ loading, update, message, onChangeMessage }) => (
       <StyledGrid {...props} template={messageTemplate}>
         <Cell area="input">
+          {/*
+          // @ts-ignore */}
           <StyledInput
             as="textarea"
             data-test="message-box-input"
@@ -95,6 +101,8 @@ export const MessageBox = (props: Props) => (
           />
         </Cell>
         <Cell area="button">
+          {/*
+          // @ts-ignore */}
           <StyledButton
             data-test="message-button"
             disabled={props.disabled || loading || message === ''}
@@ -113,6 +121,8 @@ export const ContributeBox = (props: WalletProps) => (
     {({ contributeLoading, message, amountText, amount, onChangeContributeAmount, onChangeMessage, contribute }) => (
       <StyledGrid {...props} template={contributeTemplate}>
         <Cell area="minput">
+          {/*
+          // @ts-ignore */}
           <StyledInput
             as="textarea"
             data-test="contribute-message-input"
@@ -122,6 +132,8 @@ export const ContributeBox = (props: WalletProps) => (
           />
         </Cell>
         <Cell area="cinput">
+          {/*
+          // @ts-ignore */}
           <StyledInput
             data-test="contribute-one-input"
             value={amountText}
@@ -130,6 +142,8 @@ export const ContributeBox = (props: WalletProps) => (
           />
         </Cell>
         <Cell area="button">
+          {/*
+          // @ts-ignore */}
           <StyledButton
             data-test="contribute-button"
             disabled={

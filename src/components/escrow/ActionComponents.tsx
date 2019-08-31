@@ -31,12 +31,16 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
+          {/*
+          // @ts-ignore */}
           <PatchedTextInput
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeSendAmount(event.currentTarget.value)}
           />
+          {/*
+          // @ts-ignore */}
           <StyledButton
             data-test="send-one-button"
             disabled={
@@ -60,12 +64,16 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
+          {/*
+          // @ts-ignore */}
           <PatchedTextInput
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeReceiveAmount(event.currentTarget.value)}
           />
+          {/*
+          // @ts-ignore */}
           <StyledButton
             data-test="receive-one-button"
             disabled={
@@ -89,12 +97,16 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
+          {/*
+          // @ts-ignore */}
           <PatchedTextInput
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeRevokeAmount(event.currentTarget.value)}
           />
+          {/*
+          // @ts-ignore */}
           <StyledButton
             data-test="revoke-one-button"
             disabled={

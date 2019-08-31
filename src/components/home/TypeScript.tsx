@@ -14,7 +14,7 @@ export function TypeScript() {
       </div>
       <div>
         <TryItOut /> Make a change to the argument or return types of a public method on one of the smart contracts,
-        build, and then check the results under <Code>one/generated</Code>
+        build, and then check the results under <Code>src/neo-one</Code>
       </div>
     </AssetSectionGrid>
   );

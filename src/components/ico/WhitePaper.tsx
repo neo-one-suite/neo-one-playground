@@ -12,6 +12,8 @@ export const WhitePaper = (props: Partial<ComponentProps<typeof SectionGrid>>) =
         Our full arsenal of technologies will change the world. Support us and we'll do awesome things. Check out the
         whitepaper for more information.
       </Subheading>
+      {/*
+      // @ts-ignore */}
       <PatchedButton data-test="whitepaper-button">Whitepaper</PatchedButton>
     </Flex>
   </SectionGrid>

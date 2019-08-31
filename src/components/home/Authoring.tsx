@@ -12,7 +12,7 @@ export function Authoring() {
         using the NEO•ONE TypeScript plugin.
       </div>
       <div>
-        <TryItOut /> Modify one of the smart contracts under <Code>one/contracts</Code> and then run{' '}
+        <TryItOut /> Modify one of the smart contracts under <Code>neo-one/contracts</Code> and then run{' '}
         <Code>yarn neo-one build</Code> to view the changes.
       </div>
       <Body1>

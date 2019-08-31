@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Grid } from 'reakit';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import { PatchedButton } from '../../components';
 import { Subheading, TryItOut } from '../../elements';
 import { SectionGrid } from '../../layout';
@@ -19,6 +19,8 @@ export function Debugging() {
         <WithContracts>
           {({ featureTest }) => (
             <Grid gap={16} gridAutoFlow="column" justifyItems="start" justifyContent="start">
+              {/*
+              // @ts-ignore */}
               <PatchedButton
                 data-test="debugging-error-trace-button"
                 onClick={() => {
@@ -32,6 +34,8 @@ export function Debugging() {
               >
                 Error Trace
               </PatchedButton>
+              {/*
+              // @ts-ignore */}
               <PatchedButton
                 data-test="debugging-console-log-button"
                 onClick={() => {
@@ -45,6 +49,8 @@ export function Debugging() {
               >
                 console.log
               </PatchedButton>
+              {/*
+              // @ts-ignore */}
               <PatchedButton
                 data-test="debugging-type-error-button"
                 onClick={() => {

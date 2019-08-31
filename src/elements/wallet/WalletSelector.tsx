@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Grid, styled } from 'reakit';
 import { combineLatest, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map } from 'rxjs/operators';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import { PatchedButton } from '../../components';
 import { getWalletSelectorOptions$, makeWalletSelectorValueOption, WalletSelectorBase } from './WalletSelectorBase';
 
@@ -75,6 +75,7 @@ export function WalletSelector(props: any) {
             const newWalletButton =
               // tslint:disable-next-line no-null-keyword
               newWalletOnClick === undefined ? null : (
+                // @ts-ignore
                 <PatchedButton data-test="neo-one-wallet-selector-new-button" onClick={newWalletOnClick}>
                   New Wallet
                 </PatchedButton>

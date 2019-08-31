@@ -4,9 +4,9 @@ import { hot } from 'react-hot-loader';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider, ThemeProvider } from 'reakit';
-import { ContractsProvider } from '../one/generated';
 import { ScrollToTop } from './components';
 import { CoreLayout } from './layout';
+import { ContractsProvider } from './neo-one';
 import { Escrow, GASVac, Home, ICO, SmartDonation } from './pages';
 import { theme } from './theme';
 

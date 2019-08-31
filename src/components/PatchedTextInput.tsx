@@ -4,12 +4,12 @@ import { theme } from '../theme';
 
 export const PatchedDarkTextInput = styled(TextInput)`
   background-color: ${theme.primaryDark};
-  ${theme.fonts.axiformaRegular};
-  ${theme.fontStyles.subheading};
+  ${theme.fonts.axiformaRegular as any};
+  ${theme.fontStyles.subheading as any};
   height: 50px;
 `;
 
 export const PatchedTextInput = styled(TextInput)`
-  ${theme.fonts.axiformaRegular};
-  ${theme.fontStyles.subheading};
+  ${theme.fonts.axiformaRegular as any};
+  ${theme.fontStyles.subheading as any};
 `;

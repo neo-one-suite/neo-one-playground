@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { ActionMap, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
 import { Container } from 'reakit';
-import { OneSmartContract, WithContracts } from '../../one/generated';
+import { OneSmartContract, WithContracts } from '../neo-one';
 
 interface Actions {
   readonly onChangeAmount: (text: string) => void;

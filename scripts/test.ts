@@ -21,7 +21,7 @@ process.on('SIGTERM', () => proc.kill('SIGTERM'));
 process.on('SIGINT', () => proc.kill('SIGINT'));
 process.on('SIGBREAK', () => proc.kill('SIGBREAK'));
 process.on('SIGHUP', () => proc.kill('SIGHUP'));
-proc.on('exit', (code: number | null, signal) => {
+proc.on('exit', (code: number | null, signal: string) => {
   let exitCode = code;
   if (exitCode === null) {
     exitCode = signal === 'SIGINT' ? 0 : 1;

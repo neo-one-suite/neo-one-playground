@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Flex, Grid, styled } from 'reakit';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import vacuum from '../../../root/audio/vacuum.mp3';
 import { PatchedButton } from '../../components';
 import { ContentWrapper } from '../../elements';
@@ -23,6 +23,8 @@ export function Burn(props: ComponentProps<typeof StyledGrid>) {
             <Grid.Item>
               {
                 <ContentWrapper justifyContent="center">
+                  {/*
+                  // @ts-ignore */}
                   <PatchedButton
                     onClick={async () => {
                       const audio = new Audio(vacuum);

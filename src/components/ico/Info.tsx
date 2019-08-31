@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 
 const StyledGrid = styled(Grid)`

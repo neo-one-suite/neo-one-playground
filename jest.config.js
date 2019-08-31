@@ -4,7 +4,7 @@ module.exports = {
   rootDir: path.resolve(__dirname),
   globals: {
     'ts-jest': {
-      tsConfigFile: 'tsconfig.jest.json',
+      tsConfig: path.resolve(__dirname, 'tsconfig.jest.json'),
     },
   },
   moduleFileExtensions: ['js', 'jsx', 'json', 'node', 'ts', 'tsx'],
@@ -13,5 +13,5 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: '^.*/tests/.*\\.test\\.tsx?$',
+  testRegex: '^.*/__tests__/.*\\.test\\.tsx?$',
 };

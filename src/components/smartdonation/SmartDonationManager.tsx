@@ -5,7 +5,7 @@ import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 import { CollectBox, MessageBox, SetupAddressBox } from './ActionComponents';
 

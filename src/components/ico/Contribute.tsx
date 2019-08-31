@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Box, Flex, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
-import { WithContracts } from '../../../one/generated';
+import { WithContracts } from '../../neo-one';
 import { PatchedButton, PatchedTextInput } from '../../components';
 import { ICOContainer } from '../../containers';
 import { Body2 } from '../../elements';
@@ -43,6 +43,8 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
             {({ text, amount, loading, onChangeAmount, send }) => (
               <Wrapper>
                 <StyledFlex {...props}>
+                  {/*
+                  // @ts-ignore */}
                   <StyledInput
                     data-test="contribute-input"
                     value={text}
@@ -54,6 +56,8 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
                   </StyledBody2>
                 </StyledFlex>
                 <Flex justifyContent="flex-end">
+                  {/*
+                  // @ts-ignore */}
                   <PatchedButton
                     data-test="contribute-button"
                     disabled={amount === undefined || loading}
