@@ -1,12 +1,12 @@
+import styled from '@emotion/styled';
 import { UserAccount } from '@neo-one/client';
 import { FromStream } from '@neo-one/react';
+import { Box } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
-import { WithContracts } from '../../neo-one';
 import {
   getWalletSelectorOptions$,
   Logo,
@@ -14,10 +14,17 @@ import {
   WalletSelectorBase,
   WalletSelectorOptionType,
 } from '../../elements';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 import { ReceiveONEBox, RevokeONEBox, SendONEBox } from './ActionComponents';
 
-const StyledGrid = styled(Grid)`
+const Grid = styled(Box)`
+  display: grid;
+`;
+
+const GridItem = styled(Box)``;
+
+const StyledGrid = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 8px;
   padding: 8px 8px;
   margin-left: 200px;
@@ -25,17 +32,20 @@ const StyledGrid = styled(Grid)`
   align-items: center;
   background-color: ${prop('theme.gray1')};
   width: 768px;
+  grid-template: ${prop('template')};
 `;
 
-const Cell = styled(Grid.Item)`
+const Cell = styled(GridItem)<{ readonly area: string }, {}>`
   border: inherit;
   width: 100%;
+  grid-area: ${prop('area')};
 `;
 
-const DoubleCell = styled(Grid.Item)`
+const DoubleCell = styled(GridItem)<{ readonly area: string }, {}>`
   align-self: center;
   justify-self: center;
   border: inherit;
+  grid-area: ${prop('area')};
 `;
 
 const InputCell = styled(DoubleCell)`

@@ -1,7 +1,8 @@
+import styled from '@emotion/styled';
 import { FromStream } from '@neo-one/react';
+import { Box } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
@@ -9,16 +10,21 @@ import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 import { CollectBox, MessageBox, SetupAddressBox } from './ActionComponents';
 
-const StyledGrid = styled(Grid)`
+const Grid = styled(Box)`
+  display: grid;
+`;
+
+const StyledGrid = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 12px;
   padding: 8px 8px;
   justify-items: center;
   text-align: center;
   align-items: center;
   background-color: ${prop('theme.gray1')};
+  grid-template: ${prop('template')};
 `;
 
-const Wrapper = styled(Grid)`
+const Wrapper = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 4px;
   justify-items: center;
   align-items: center;
@@ -26,11 +32,13 @@ const Wrapper = styled(Grid)`
   background-color: ${prop('theme.gray2')};
   color: black;
   width: 700px;
+  grid-template: ${prop('template')};
 `;
 
-const Cell = styled(Grid.Item)`
+const Cell = styled(Box)<{ readonly area?: string }, {}>`
   border: inherit;
   width: 100%;
+  grid-area: ${prop('area')};
 `;
 
 const HeaderCell = styled(Cell)`

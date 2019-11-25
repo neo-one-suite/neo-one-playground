@@ -1,14 +1,21 @@
 // tslint:disable no-any
+import styled from '@emotion/styled';
 import { Account, Client, Hash256, UserAccount } from '@neo-one/client';
+import { Box } from '@neo-one/react-core';
 import { PromiseReturnType, utils } from '@neo-one/utils';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
 // tslint:disable-next-line no-submodule-imports
 import { FormatOptionLabelMeta } from 'react-select/lib/Select';
-import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of, ReplaySubject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, multicast, refCount, switchMap, take } from 'rxjs/operators';
 import { Select } from './Select';
+
+const Grid = styled(Box)`
+  display: grid;
+`;
+
+const GridItem = styled(Box)``;
 
 export const makeOption = async ({
   userAccount,
@@ -87,6 +94,9 @@ export const getWalletSelectorOptions$ = (
 
 const AddressGrid = styled(Grid)`
   padding: 8px 0;
+  grid-template-columns: 80px 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 0;
 `;
 
 const createFormatOptionLabel = (isMulti?: boolean) => (
@@ -98,22 +108,22 @@ const createFormatOptionLabel = (isMulti?: boolean) => (
   }
 
   return (
-    <AddressGrid columns="80px 1fr" autoRows="auto" gap="0">
-      <Grid.Item>Name:</Grid.Item>
-      <Grid.Item>{option.label}</Grid.Item>
+    <AddressGrid>
+      <GridItem>Name:</GridItem>
+      <GridItem>{option.label}</GridItem>
       {option.label === option.address ? (
         <></>
       ) : (
         <>
-          <Grid.Item>Address:</Grid.Item>
-          <Grid.Item>{option.address}</Grid.Item>
+          <GridItem>Address:</GridItem>
+          <GridItem>{option.address}</GridItem>
         </>
       )}
       {((option as any).balances === undefined ? [] : (option as any).balances).map(
         ([name, value]: [string, BigNumber]) => (
           <React.Fragment key={name}>
-            <Grid.Item>{name}:</Grid.Item>
-            <Grid.Item>{value.toFormat()}</Grid.Item>
+            <GridItem>{name}:</GridItem>
+            <GridItem>{value.toFormat()}</GridItem>
           </React.Fragment>
         ),
       )}

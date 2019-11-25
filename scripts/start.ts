@@ -8,12 +8,12 @@ import yargs from 'yargs';
 const argv = yargs
   .describe('ci', 'Running as part of continuous integration.')
   .default('ci', false)
-  .describe('coverage', 'Instrument code for coverage.')
-  .default('coverage', false).argv;
+  .describe('cypress', 'Running as part of Cypress tests.')
+  .default('cypress', false).argv;
 
 const createWebpackConfig = (): webpack.Configuration => ({
   mode: 'development',
-  entry: ['core-js/modules/es7.symbol.async-iterator', path.resolve(__dirname, '..', 'src', 'entry.tsx')],
+  entry: ['@babel/polyfill', path.resolve(__dirname, '..', 'src', 'entry.tsx')],
   resolve: {
     mainFields: ['browser', 'main'],
     aliasFields: ['browser'],
@@ -41,7 +41,7 @@ const createWebpackConfig = (): webpack.Configuration => ({
               <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
               <meta name="theme-color" content="#ffffff">
               <title>${title}</title>
-              ${MiniHtmlWebpackPlugin.generateCSSReferences(css, publicPath)}
+              ${MiniHtmlWebpackPlugin.generateCSSReferences({ files: css, publicPath })}
               <style>
               body {
                 margin: 0;
@@ -51,12 +51,13 @@ const createWebpackConfig = (): webpack.Configuration => ({
             </head>
             <body style="margin: 0px;">
               <div id="app"></div>
-              ${MiniHtmlWebpackPlugin.generateJSReferences(js, publicPath)}
+              ${MiniHtmlWebpackPlugin.generateJSReferences({ files: js, publicPath })}
             </body>
           </html>`,
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.CYPRESS': JSON.stringify(argv.cypress),
     }),
   ],
   module: {
@@ -71,9 +72,18 @@ const createWebpackConfig = (): webpack.Configuration => ({
             useCache: true,
             useBabel: true,
             babelOptions: {
-              plugins: argv.ci ? (argv.coverage ? ['babel-plugin-istanbul'] : []) : ['react-hot-loader/babel'],
+              plugins: ['babel-plugin-emotion'].concat(argv.ci ? [] : ['react-hot-loader/babel']),
             },
             configFileName: path.resolve(__dirname, '..', 'tsconfig', 'tsconfig.es2017.esm.json'),
+          },
+        },
+      },
+      {
+        test: /\.jsx?$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env'],
           },
         },
       },
@@ -117,6 +127,7 @@ const createWebpackConfig = (): webpack.Configuration => ({
 const createServer = () => {
   const webpackConfig = createWebpackConfig();
   const port = 8080;
+  // @ts-ignore
   const devServer = new WebpackDevServer(webpack(webpackConfig), {
     open: !argv.ci,
     hot: true,

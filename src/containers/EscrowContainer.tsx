@@ -1,8 +1,7 @@
 import { Client, UserAccount } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
-import { ActionMap, ContainerProps, EffectMap } from 'constate';
+import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { Container } from 'reakit';
 import { EscrowSmartContract, OneSmartContract, WithContracts } from '../neo-one';
 
 interface Actions {

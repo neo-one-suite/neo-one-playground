@@ -2,7 +2,7 @@ import { Hash256 } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
 import { withContracts } from '../neo-one/test';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe('SmartDonation Tests', () => {
   test('SmartDonation Contract Test', async () => {

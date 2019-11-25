@@ -1,12 +1,14 @@
-import { Heading, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { H3 } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
-const H3 = Heading.as('h3');
-// tslint:disable-next-line no-any
-export const Headline = styled(H3 as any)`
+export type GridJustifySelf = 'start' | 'end' | 'center' | 'stretch';
+export type GridAlignSelf = GridJustifySelf;
+
+export const Headline = styled(H3)<{ readonly alignSelf?: GridAlignSelf; readonly justifySelf?: GridJustifySelf }, {}>`
   ${prop('theme.fonts.axiformaRegular')};
-  font-size: 1.5rem;
-  line-height: 1.35416em;
-  text-align: left;
+  align-self: ${prop('alignSelf')};
+  justify-self: ${prop('justifySelf')};
+  ${prop('theme.fontStyles.headline')};
   margin: 0;
 `;

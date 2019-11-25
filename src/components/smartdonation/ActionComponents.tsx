@@ -1,18 +1,26 @@
 // tslint:disable no-null-keyword no-any
+import styled from '@emotion/styled';
 import { UserAccount } from '@neo-one/client';
+import { Box, Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Grid, styled } from 'reakit';
 import { prop } from 'styled-tools';
-import { PatchedButton, PatchedDarkTextInput } from '../../components';
 import { CollectContainer, ContributeContainer, MessageContainer, SetupContainer } from '../../containers';
 import { ComponentProps } from '../../types';
+
+const Flex = styled(Box)`
+  display: flex;
+`;
+
+const Grid = styled(Box)`
+  display: grid;
+`;
 
 const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const StyledButton = styled(PatchedButton)`
+const StyledButton = styled(Button)`
   width: 100px;
 
   &:disabled {
@@ -21,21 +29,27 @@ const StyledButton = styled(PatchedButton)`
   }
 `;
 
-const Cell = styled(Grid.Item)`
+const Cell = styled(Box)<{ readonly area: string }, {}>`
   border: inherit;
   width: 100%;
+  grid-area: ${prop('area')};
 `;
 
-const StyledInput = styled(PatchedDarkTextInput)`
+const StyledInput = styled(TextInput)`
+  background-color: ${prop('theme.primaryDark')};
   width: 90%;
+  height: 50px;
 `;
 
-const StyledGrid = styled(Grid)`
+const StyledTextArea = StyledInput.withComponent('textarea');
+
+const StyledGrid = styled(Grid)<{ readonly template: string }, {}>`
   gap: 12px;
   padding: 2px 2px;
   text-align: center;
   align-items: center;
   background-color: ${prop('theme.gray1')};
+  grid-template: ${prop('template')};
 `;
 
 interface Props extends ComponentProps<typeof Flex> {
@@ -61,8 +75,6 @@ export const SetupAddressBox = (props: Props) => (
   <SetupContainer>
     {({ setupLoading, setup }) => (
       <Wrapper>
-        {/*
-        // @ts-ignore */}
         <StyledButton data-test="setup-button" disabled={setupLoading || props.disabled} onClick={setup}>
           Setup
         </StyledButton>
@@ -75,8 +87,6 @@ export const CollectBox = (props: Props) => (
   <CollectContainer>
     {({ collectLoading, collect }) => (
       <Wrapper>
-        {/*
-        // @ts-ignore */}
         <StyledButton data-test="collect-button" disabled={collectLoading || props.disabled} onClick={collect}>
           Collect
         </StyledButton>
@@ -90,10 +100,7 @@ export const MessageBox = (props: Props) => (
     {({ loading, update, message, onChangeMessage }) => (
       <StyledGrid {...props} template={messageTemplate}>
         <Cell area="input">
-          {/*
-          // @ts-ignore */}
-          <StyledInput
-            as="textarea"
+          <StyledTextArea
             data-test="message-box-input"
             value={message}
             placeholder="Update your global message!"
@@ -101,8 +108,6 @@ export const MessageBox = (props: Props) => (
           />
         </Cell>
         <Cell area="button">
-          {/*
-          // @ts-ignore */}
           <StyledButton
             data-test="message-button"
             disabled={props.disabled || loading || message === ''}
@@ -121,10 +126,7 @@ export const ContributeBox = (props: WalletProps) => (
     {({ contributeLoading, message, amountText, amount, onChangeContributeAmount, onChangeMessage, contribute }) => (
       <StyledGrid {...props} template={contributeTemplate}>
         <Cell area="minput">
-          {/*
-          // @ts-ignore */}
-          <StyledInput
-            as="textarea"
+          <StyledTextArea
             data-test="contribute-message-input"
             value={message}
             placeholder="Send a message!"
@@ -132,8 +134,6 @@ export const ContributeBox = (props: WalletProps) => (
           />
         </Cell>
         <Cell area="cinput">
-          {/*
-          // @ts-ignore */}
           <StyledInput
             data-test="contribute-one-input"
             value={amountText}
@@ -142,8 +142,6 @@ export const ContributeBox = (props: WalletProps) => (
           />
         </Cell>
         <Cell area="button">
-          {/*
-          // @ts-ignore */}
           <StyledButton
             data-test="contribute-button"
             disabled={

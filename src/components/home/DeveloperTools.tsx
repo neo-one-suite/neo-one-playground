@@ -1,12 +1,18 @@
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import * as React from 'react';
-import { Grid } from 'reakit';
 import { Subheading, TryItOut } from '../../elements';
 import { SectionGrid } from '../../layout';
+
+const Grid = styled(Box)`
+  display: grid;
+  grid-gap: 16px;
+`;
 
 export function DeveloperTools() {
   return (
     <SectionGrid bg="light" title="Developer Tools">
-      <Grid gap={16}>
+      <Grid>
         <Subheading>
           NEO•ONE's Developer Tools component makes developing a decentralized application easier, faster and much more
           satisfying. Developers can switch between preloaded local development wallets, fast forward the current block

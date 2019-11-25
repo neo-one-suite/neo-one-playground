@@ -1,6 +1,6 @@
 import { withContracts } from '../neo-one/test';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe('FeatureTest', () => {
   test('features', async () => {

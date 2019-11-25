@@ -1,11 +1,13 @@
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import React from 'react';
-import { Flex, styled } from 'reakit';
 import { ifProp, prop } from 'styled-tools';
 import { Footer, Header } from '../components';
 import { ScrollContainer } from '../containers';
 import { ComponentProps } from '../types';
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Box)`
+  display: flex;
   flex-direction: column;
   background-color: ${prop('theme.black')};
   color: ${prop('theme.black')};
@@ -21,7 +23,8 @@ const StyledHeader = styled(Header)<{ readonly shadowed: boolean }>`
   ${ifProp('shadowed', 'box-shadow: 0 0 1px rgba(0, 0, 0, 0.25)')};
 `;
 
-const Content = styled(Flex)`
+const Content = styled(Box)`
+  display: flex;
   position: relative;
   flex-direction: column;
   align-items: center;

@@ -1,13 +1,21 @@
 // tslint:disable no-null-keyword no-any
+import styled from '@emotion/styled';
 import { createPrivateKey, LocalKeyStore } from '@neo-one/client';
 import { FromStream } from '@neo-one/react';
+import { Box, Button } from '@neo-one/react-core';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
 import { combineLatest, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map } from 'rxjs/operators';
 import { WithContracts } from '../../neo-one';
-import { PatchedButton } from '../../components';
 import { getWalletSelectorOptions$, makeWalletSelectorValueOption, WalletSelectorBase } from './WalletSelectorBase';
+
+const Grid = styled(Box)`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 8px;
+`;
+
+const GridItem = styled(Box)``;
 
 const WalletSelectorWrapper = styled(Grid)`
   grid:
@@ -75,10 +83,9 @@ export function WalletSelector(props: any) {
             const newWalletButton =
               // tslint:disable-next-line no-null-keyword
               newWalletOnClick === undefined ? null : (
-                // @ts-ignore
-                <PatchedButton data-test="neo-one-wallet-selector-new-button" onClick={newWalletOnClick}>
+                <Button data-test="neo-one-wallet-selector-new-button" onClick={newWalletOnClick} {...props}>
                   New Wallet
-                </PatchedButton>
+                </Button>
               );
 
             return (
@@ -98,9 +105,9 @@ export function WalletSelector(props: any) {
                   {newWalletButton}
                 </WalletSelectorWrapper>
                 {value === undefined ? null : (
-                  <Grid columns="auto 1fr" gap={8}>
-                    <Grid.Item>Address:</Grid.Item>
-                    <Grid.Item>{value.address}</Grid.Item>
+                  <Grid>
+                    <GridItem>Address:</GridItem>
+                    <GridItem>{value.address}</GridItem>
                   </Grid>
                 )}
               </>

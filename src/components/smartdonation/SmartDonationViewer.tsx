@@ -1,40 +1,49 @@
 // tslint:disable no-any
+import styled from '@emotion/styled';
 import { UserAccount } from '@neo-one/client';
 import { FromStream } from '@neo-one/react';
+import { Box, Popover, PopoverArrow } from '@neo-one/react-common';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Grid, Heading, Popover, styled } from 'reakit';
 import { combineLatest, concat, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { prop } from 'styled-tools';
-import { WithContracts } from '../../neo-one';
 import {
   getWalletSelectorOptions$,
   makeWalletSelectorValueOption,
   WalletSelectorBase,
   WalletSelectorOptionType,
 } from '../../elements';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 import { ContributeBox } from './ActionComponents';
 
-const StyledGrid = styled(Grid)`
+const Grid = styled(Box)`
+  display: grid;
+`;
+
+const Heading = styled(Box)``;
+
+const StyledGrid = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 12px;
   padding: 8px 8px;
   justify-items: center;
   text-align: center;
   align-items: center;
   background-color: ${prop('theme.gray1')};
+  grid-template: ${prop('template')};
 `;
 
-const AccountGrid = styled(Grid)`
+const AccountGrid = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 2px;
   padding: 2px 2px;
   text-align: left;
   align-items: left;
   background-color: ${prop('theme.gray1')};
+  grid-template: ${prop('template')};
 `;
 
-const Wrapper = styled(Grid)`
+const Wrapper = styled(Grid)<{ readonly template?: string }, {}>`
   gap: 4px;
   justify-items: center;
   align-items: center;
@@ -42,17 +51,20 @@ const Wrapper = styled(Grid)`
   background-color: ${prop('theme.gray2')};
   color: black;
   width: 700px;
+  grid-template: ${prop('template')};
 `;
 
-const Cell = styled(Grid.Item)`
+const Cell = styled(Box)<{ readonly area?: string }, {}>`
   border: inherit;
   width: 100%;
+  grid-area: ${prop('area')};
 `;
 
-const DoubleCell = styled(Grid.Item)`
+const DoubleCell = styled(Box)<{ readonly area?: string }, {}>`
   align-self: center;
   justify-self: center;
   border: inherit;
+  grid-area: ${prop('area')};
 `;
 
 const HeaderCell = styled(Cell)`
@@ -154,30 +166,14 @@ export function SmartDonationViewer({ source, setToWallet, ...props }: SelectorP
         >
           {(value) => (
             <Wrapper {...props} template={template}>
-              <Cell area="header">
+              <Cell>
                 <StyledGrid {...props} template={headerTemplate}>
                   <HeaderCell area="header">
-                    <Popover.Container>
-                      {(popover: any) => (
-                        <>
-                          <Heading as={Popover.Toggle} data-test="viewer-header" {...popover}>
-                            Smart Donation Viewer
-                          </Heading>
-                          <Popover
-                            placement="top"
-                            data-test="viewer-header-popover"
-                            fade
-                            slide
-                            expand
-                            hideOnClickOutside
-                            {...popover}
-                          >
-                            <Popover.Arrow />
-                            Select an account to view info and donate!
-                          </Popover>
-                        </>
-                      )}
-                    </Popover.Container>
+                    <Heading data-test="viewer-header">Smart Donation Viewer</Heading>
+                    <Popover placement="top" data-test="viewer-header-popover" fade slide expand hideOnClickOutside>
+                      <PopoverArrow />
+                      Select an account to view info and donate!
+                    </Popover>
                   </HeaderCell>
                   <DoubleCell area="selector">
                     <WalletSelector

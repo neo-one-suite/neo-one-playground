@@ -1,16 +1,23 @@
+import styled from '@emotion/styled';
+import { Box, Button } from '@neo-one/react-core';
 import * as React from 'react';
-import { Flex, Grid, styled } from 'reakit';
-import { WithContracts } from '../../neo-one';
 import vacuum from '../../../root/audio/vacuum.mp3';
-import { PatchedButton } from '../../components';
 import { ContentWrapper } from '../../elements';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 
-const StyledGrid = styled(Grid)`
+const StyledGrid = styled(Box)`
+  display: grid;
   padding: 8px 0;
+  grid-gap: 0;
+  grid-auto-rows: auto;
+  grid-template-columns: 200px 1fr;
 `;
 
-const StyledFlex = styled(Flex)`
+const GridItem = styled(Box)``;
+
+const StyledFlex = styled(Box)`
+  display: flex;
   justify-content: flex-end;
 `;
 
@@ -19,13 +26,11 @@ export function Burn(props: ComponentProps<typeof StyledGrid>) {
     <WithContracts>
       {({ client, gasVac }) => (
         <StyledFlex>
-          <StyledGrid columns="200px 1fr" autoRows="auto" gap="0" {...props}>
-            <Grid.Item>
+          <StyledGrid {...props}>
+            <GridItem>
               {
                 <ContentWrapper justifyContent="center">
-                  {/*
-                  // @ts-ignore */}
-                  <PatchedButton
+                  <Button
                     onClick={async () => {
                       const audio = new Audio(vacuum);
                       const from = client.getCurrentUserAccount();
@@ -37,10 +42,10 @@ export function Burn(props: ComponentProps<typeof StyledGrid>) {
                     }}
                   >
                     Burn Gas
-                  </PatchedButton>
+                  </Button>
                 </ContentWrapper>
               }
-            </Grid.Item>
+            </GridItem>
           </StyledGrid>
         </StyledFlex>
       )}

@@ -2,7 +2,7 @@ import { createPrivateKey, Hash256, privateKeyToAddress } from '@neo-one/client'
 import BigNumber from 'bignumber.js';
 import { withContracts } from '../neo-one/test';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe('GASVac', () => {
   test('eats one gas from our account', async () => {

@@ -1,8 +1,24 @@
-import { Flex, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
-export const ContentWrapper = styled(Flex)`
+export type FlexJustifyContent =
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly';
+export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
+export const ContentWrapper = styled(Box)<
+  { readonly justifyContent?: FlexJustifyContent; readonly flexDirection?: FlexDirection },
+  {}
+>`
+  display: flex;
   align-items: center;
+  justify-content: ${prop('justifyContent')};
+  flex-direction: ${prop('flexDirection')};
   ${prop('theme.maxWidth')};
   padding: 0 16px;
   width: 100%;
