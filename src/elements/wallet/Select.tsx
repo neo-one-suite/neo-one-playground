@@ -1,12 +1,11 @@
 // tslint:disable no-any match-default-export-name
+import styled from '@emotion/styled';
 import { axiforma, theme } from '@neo-one/react-core';
 import * as React from 'react';
 import SelectBase from 'react-select';
-import { styled } from 'reakit';
 import { prop } from 'styled-tools';
 
-// tslint:disable-next-line:no-any
-const StyledSelect: any = styled(SelectBase as any)`
+const StyledSelect = styled(SelectBase)`
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-color: ${prop('theme.gray0')};
   outline: none;

@@ -1,6 +1,5 @@
-import { ContainerProps } from 'constate';
+import { Container, ContainerProps } from 'constate';
 import * as React from 'react';
-import { Container } from 'reakit';
 
 const getScrollPosition = (element: typeof window) => ({
   y: element.scrollY,

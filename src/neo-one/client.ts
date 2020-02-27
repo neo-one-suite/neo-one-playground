@@ -1,8 +1,9 @@
-/* @hash 6001926cd2bf3bd451c2bbaba0dfa8a8 */
+/* @hash 4e11ff76e58cdd46f396b19e79696db8 */
 // tslint:disable
 /* eslint-disable */
 import {
   Client,
+  DapiUserAccountProvider,
   DeveloperClient,
   DeveloperClients,
   LocalKeyStore,
@@ -17,12 +18,30 @@ export interface DefaultUserAccountProviders {
   readonly memory: LocalUserAccountProvider<LocalKeyStore, NEOONEProvider>;
 }
 
-const getDefaultUserAccountProviders = (provider: NEOONEProvider) => ({
-  memory: new LocalUserAccountProvider({
-    keystore: new LocalKeyStore(new LocalMemoryStore()),
-    provider,
-  }),
-});
+const getDefaultUserAccountProviders = (provider: NEOONEProvider) => {
+  const localUserAccountProvider = {
+    memory: new LocalUserAccountProvider({
+      keystore: new LocalKeyStore(new LocalMemoryStore()),
+      provider,
+    }),
+  };
+
+  const dapi = typeof globalThis === 'undefined' ? undefined : (globalThis as any).neoDapi;
+  if (dapi !== undefined) {
+    return {
+      ...localUserAccountProvider,
+      dapi: new DapiUserAccountProvider({
+        dapi,
+        provider,
+        onError: (error) => {
+          throw error;
+        },
+      }),
+    };
+  }
+
+  return localUserAccountProvider;
+};
 
 const isLocalUserAccountProvider = (userAccountProvider: any): userAccountProvider is LocalUserAccountProvider =>
   userAccountProvider instanceof LocalUserAccountProvider;
@@ -39,7 +58,7 @@ export const createClient = <TUserAccountProviders extends UserAccountProviders<
   let host = 'localhost';
   if (typeof getUserAccountProvidersOrHost === 'string') {
     host = getUserAccountProvidersOrHost;
-  } else if (getUserAccountProvidersOrHost !== undefined) {
+  } else if (getUserAccountProvidersOrHost != undefined) {
     getUserAccountProviders = getUserAccountProvidersOrHost as any;
   }
 
@@ -49,7 +68,9 @@ export const createClient = <TUserAccountProviders extends UserAccountProviders<
   }
   const provider = new NEOONEProvider(providers);
   const userAccountProviders = getUserAccountProviders(provider);
-  const localUserAccountProviders = Object.values(userAccountProviders).filter(isLocalUserAccountProvider);
+  const localUserAccountProviders = Object.values(userAccountProviders).filter(
+    isLocalUserAccountProvider,
+  ) as LocalUserAccountProvider[];
   const localUserAccountProvider = localUserAccountProviders.find(
     (userAccountProvider) => userAccountProvider.keystore instanceof LocalKeyStore,
   );

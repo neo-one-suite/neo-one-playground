@@ -1,6 +1,5 @@
+import styled from '@emotion/styled';
 import * as React from 'react';
-import { css, styled } from 'reakit';
-import { prop } from 'styled-tools';
 
 interface Props {
   readonly block?: boolean;
@@ -22,7 +21,7 @@ const fontFamily: ReadonlyArray<string> = [
   'monospace',
 ];
 
-const StyledCode = styled.code<{ readonly block?: boolean }>`
+const StyledCode = styled.code<{ readonly block?: boolean }, { readonly accent?: string }>`
   margin: 0;
   font-family: ${fontFamily.map((value) => `"${value}"`).join(', ')};
   font-weight: 500;
@@ -33,12 +32,7 @@ const StyledCode = styled.code<{ readonly block?: boolean }>`
   padding: 0.5em;
   overflow-x: auto;
   background: #f0f0f0;
-  ${({ block }) =>
-    block
-      ? css`
-          border-left: 4px solid ${prop('theme.accent')};
-        `
-      : ''};
+  border-left: ${(props) => (props.block ? `4px solid ${props.theme.accent}` : '')};
 `;
 
 const StyledPre = styled.pre`

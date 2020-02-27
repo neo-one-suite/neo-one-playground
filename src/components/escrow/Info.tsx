@@ -1,5 +1,6 @@
+import styled from '@emotion/styled';
+import { Box, List } from '@neo-one/react-core';
 import * as React from 'react';
-import { Box, List, styled } from 'reakit';
 import { SectionGrid } from '../../layout';
 import { ComponentProps } from '../../types';
 import { Description } from './Description';
@@ -8,15 +9,13 @@ const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-// tslint:disable-next-line no-any
-const ListHeader = styled(Box.as('li') as any)`
+const ListHeader = styled(Box.withComponent('li'))`
   font-weight: bold;
   font-size: 18pt;
   margin-top: 25px;
 `;
 
-// tslint:disable-next-line no-any
-const ListItem = styled(Box.as('li') as any)`
+const ListItem = styled(Box.withComponent('li'))`
   list-style-type: disc;
   margin-left: 25px;
   font-size: 10pt;

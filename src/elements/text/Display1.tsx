@@ -1,9 +1,8 @@
-import { Heading, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { H2 } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
-const H2 = Heading.as('h2');
-// tslint:disable-next-line no-any
-export const Display1 = styled(H2 as any)`
+export const Display1 = styled(H2)`
   ${prop('theme.fonts.axiformaRegular')};
   font-size: 2.125rem;
   line-height: 1.20588em;

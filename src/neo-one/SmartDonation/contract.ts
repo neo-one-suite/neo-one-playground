@@ -1,4 +1,4 @@
-/* @hash 76ae46024eee49c732ccb4a180a8e176 */
+/* @hash 2fd483801ba56a4bef7c0b2e4f4433f3 */
 // tslint:disable
 /* eslint-disable */
 import { Client } from '@neo-one/client';
@@ -9,7 +9,7 @@ import { sourceMaps } from '../sourceMaps';
 const definition = {
   networks: {
     local: {
-      address: 'AMzRzAHxtZAMPjvauLhcG8RzPT7JxqiZVk',
+      address: 'AKGMWmM3rrjcaJ76H6HdTo9D6V8UU4pMW6',
     },
   },
   abi: smartDonationABI,

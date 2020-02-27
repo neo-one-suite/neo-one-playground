@@ -3,23 +3,26 @@
     "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
-
-    "lib": ["dom", "esnext"],
+    "types": [
+      "@emotion/core",
+      "@emotion/styled",
+      "jest"
+    ],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "typeRoots": [
       "./node_modules/@types/",
       "./@types/roots"
     ],
-
     "pretty": true,
-
     "noEmit": true,
     "declaration": false,
-
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": false,
     "experimentalDecorators": true,
     "jsx": "react",
-
     "alwaysStrict": true,
     "strict": true,
     "skipLibCheck": true,
@@ -30,7 +33,6 @@
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-
     "plugins": [
       {
         "name": "typescript-styled-plugin",

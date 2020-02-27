@@ -1,4 +1,4 @@
-export const ONE_ADDRESS = 'AUFDAPSgENP4p58Qqq1Fqt4wdDfDhyQs7v';
+export const ONE_ADDRESS = 'ANaocC5vSKQdTjkapVf2EqiGB3ikJtEfHK';
 
 export const initializeOne = () => {
   cy.visit('/ico');

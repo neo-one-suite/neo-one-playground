@@ -1,5 +1,6 @@
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
 import { prop, switchProp } from 'styled-tools';
 import { BackgroundColors, Headline, SectionContentWrapper, Subheading } from '../elements';
 import { ComponentProps } from '../types';
@@ -10,7 +11,12 @@ interface Props {
   readonly children: React.ReactNode;
 }
 
-const StyledHeading = styled(Headline)<{ readonly bg: BackgroundColors }>`
+const Grid = styled(Box)`
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(400px, 2fr);
+`;
+
+const StyledHeading = styled(Headline)<{ readonly bg: BackgroundColors }, {}>`
   ${prop('theme.fonts.axiformaMedium')};
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
@@ -22,9 +28,8 @@ const StyledHeading = styled(Headline)<{ readonly bg: BackgroundColors }>`
   margin: 0;
 `;
 
-const GridItem = Grid.Item.as(Subheading).as('div');
-// tslint:disable-next-line no-any
-const StyledItem = styled(GridItem as any)<{ readonly bg: BackgroundColors }>`
+const GridItem = Box.withComponent(Subheading.withComponent('div'));
+const StyledItem = styled(GridItem)<{ readonly bg: BackgroundColors }, {}>`
   /* stylelint-disable-next-line */
   color: ${switchProp('bg', {
     gray5: prop('theme.gray1'),
@@ -42,10 +47,10 @@ export const SectionGrid = ({
   ...props
 }: Props & ComponentProps<typeof SectionContentWrapper>) => (
   <SectionContentWrapper bg={bg} {...props}>
-    <Grid columns="minmax(200px, 1fr) minmax(400px, 2fr)">
-      <Grid.Item>
+    <Grid>
+      <GridItem>
         <StyledHeading bg={bg}>{title}</StyledHeading>
-      </Grid.Item>
+      </GridItem>
       <StyledItem bg={bg}>{children}</StyledItem>
     </Grid>
   </SectionContentWrapper>

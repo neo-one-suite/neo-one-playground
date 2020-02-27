@@ -1,7 +1,6 @@
 import { UserAccount } from '@neo-one/client';
-import { ContainerProps, EffectMap } from 'constate';
+import { Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { Container } from 'reakit';
 import { WalletSelectorOptionType } from '../elements';
 
 interface State {

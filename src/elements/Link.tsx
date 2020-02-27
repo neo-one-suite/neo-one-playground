@@ -1,4 +1,5 @@
-import { Link as LinkBase, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { LinkBase } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
 export const Link = styled(LinkBase)`

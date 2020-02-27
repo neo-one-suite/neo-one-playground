@@ -1,14 +1,25 @@
+import styled from '@emotion/styled';
+import { Box, Button } from '@neo-one/react-core';
 import * as React from 'react';
-import { Grid } from 'reakit';
-import { WithContracts } from '../../neo-one';
-import { PatchedButton } from '../../components';
 import { Subheading, TryItOut } from '../../elements';
 import { SectionGrid } from '../../layout';
+import { WithContracts } from '../../neo-one';
+
+const Grid = styled(Box)`
+  display: grid;
+  grid-gap: 16px;
+`;
+
+const SubGrid = styled(Grid)`
+  grid-auto-flow: column;
+  justify-items: start;
+  justify-content: start;
+`;
 
 export function Debugging() {
   return (
     <SectionGrid bg="dark" title="Debugging">
-      <Grid gap={16}>
+      <Grid>
         <Subheading>
           Debugging NEO•ONE contracts is a breeze with full support for console logging and error stack traces in tests
           and in the browser. Run into an issue with the compiler? The error will show the exact line that caused it.
@@ -18,10 +29,8 @@ export function Debugging() {
         </Subheading>
         <WithContracts>
           {({ featureTest }) => (
-            <Grid gap={16} gridAutoFlow="column" justifyItems="start" justifyContent="start">
-              {/*
-              // @ts-ignore */}
-              <PatchedButton
+            <SubGrid>
+              <Button
                 data-test="debugging-error-trace-button"
                 onClick={() => {
                   featureTest
@@ -33,10 +42,8 @@ export function Debugging() {
                 }}
               >
                 Error Trace
-              </PatchedButton>
-              {/*
-              // @ts-ignore */}
-              <PatchedButton
+              </Button>
+              <Button
                 data-test="debugging-console-log-button"
                 onClick={() => {
                   featureTest
@@ -48,10 +55,8 @@ export function Debugging() {
                 }}
               >
                 console.log
-              </PatchedButton>
-              {/*
-              // @ts-ignore */}
-              <PatchedButton
+              </Button>
+              <Button
                 data-test="debugging-type-error-button"
                 onClick={() => {
                   featureTest
@@ -63,8 +68,8 @@ export function Debugging() {
                 }}
               >
                 Type Error
-              </PatchedButton>
-            </Grid>
+              </Button>
+            </SubGrid>
           )}
         </WithContracts>
       </Grid>

@@ -1,8 +1,7 @@
 import { Client, Hash256, TransactionResult } from '@neo-one/client';
 import BigNumber from 'bignumber.js';
-import { ActionMap, ContainerProps, EffectMap } from 'constate';
+import { ActionMap, Container, ContainerProps, EffectMap } from 'constate';
 import * as React from 'react';
-import { Container } from 'reakit';
 import { OneSmartContract, WithContracts } from '../neo-one';
 
 interface Actions {
@@ -10,7 +9,6 @@ interface Actions {
 }
 
 const actions: ActionMap<State, Actions> = {
-  // tslint:disable-next-line no-any
   onChangeAmount: (text: string) => () => {
     let amount: BigNumber | undefined;
     try {

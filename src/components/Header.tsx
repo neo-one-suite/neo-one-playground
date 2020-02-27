@@ -1,11 +1,15 @@
-// tslint:disable no-any
+import styled from '@emotion/styled';
+import { Box, Toolbar, ToolbarContent, ToolbarFocusable } from '@neo-one/react-core';
 import React from 'react';
 import { MdOpenInNew } from 'react-icons/md';
 import { NavLink as RouterLink } from 'react-router-dom';
-import { Flex, styled, Toolbar } from 'reakit';
 import { prop } from 'styled-tools';
 import { Link, Logo } from '../elements';
 import { ComponentProps } from '../types';
+
+const Flex = styled(Box)`
+  display: flex;
+`;
 
 const Wrapper = styled(Flex)`
   width: 100%;
@@ -23,14 +27,14 @@ const StyledToolbar = styled(Toolbar)`
   height: 100%;
   grid-gap: 8px;
   padding: 0 16px;
-  ${prop('theme.maxWidth')};
+  max-width: 1132px;
 
   @media (max-width: 768px) {
     padding: 0 8px;
   }
 `;
 
-const LogoLink = styled(RouterLink as any)`
+const LogoLink = styled(RouterLink)`
   display: block;
   width: 100px;
   margin-right: 36px;
@@ -42,8 +46,9 @@ const LogoLink = styled(RouterLink as any)`
   }
 `;
 
-const NavigationLink = styled(RouterLink as any)`
+const NavigationLink = styled(RouterLink)`
   display: flex;
+  box-sizing: border-box;
   align-items: center;
   font-size: 20px;
   height: 100%;
@@ -62,25 +67,22 @@ const NavigationLink = styled(RouterLink as any)`
   }
 `;
 
-// tslint:disable-next-line no-any
-const StyledToolbarLink = styled(Toolbar.Focusable.as(Link) as any)`
+const StyledToolbarLink = styled(ToolbarFocusable.withComponent(Link))`
   outline: none;
 `;
 
-// tslint:disable-next-line no-any
-const StyledToolbarNavLink = styled(Toolbar.Focusable.as(NavigationLink) as any)`
+const StyledToolbarNavLink = styled(ToolbarFocusable.withComponent(NavigationLink))`
   outline: none;
 `;
 
-// tslint:disable-next-line no-any
-const StyledToolbarLogoLink = styled(Toolbar.Focusable.as(LogoLink) as any)`
+const StyledToolbarLogoLink = styled(ToolbarFocusable.withComponent(LogoLink))`
   outline: none;
 `;
 
 export const Header = (props: ComponentProps<typeof Wrapper>) => (
   <Wrapper {...props}>
     <StyledToolbar>
-      <Toolbar.Content>
+      <ToolbarContent>
         <StyledToolbarLogoLink data-test="header-logo" to="/">
           <Logo />
         </StyledToolbarLogoLink>
@@ -96,9 +98,10 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
         <StyledToolbarNavLink data-test="header-smart-donation" to="/smart-donation">
           Smart Donation
         </StyledToolbarNavLink>
-      </Toolbar.Content>
-      <Toolbar.Content align="end">
+      </ToolbarContent>
+      <ToolbarContent align="end">
         <StyledToolbarLink
+          ping
           data-test="header-github"
           href="https://github.com/neo-one-suite/neo-one-playground"
           target="_blank"
@@ -106,7 +109,7 @@ export const Header = (props: ComponentProps<typeof Wrapper>) => (
           GitHub
           <MdOpenInNew />
         </StyledToolbarLink>
-      </Toolbar.Content>
+      </ToolbarContent>
     </StyledToolbar>
   </Wrapper>
 );

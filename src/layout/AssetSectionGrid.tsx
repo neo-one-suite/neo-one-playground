@@ -1,6 +1,7 @@
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
-import { prop } from 'styled-tools';
+import { ifProp, prop } from 'styled-tools';
 import { Headline, SectionContentWrapper, Subheading } from '../elements';
 
 interface Props {
@@ -11,19 +12,9 @@ interface Props {
   readonly reverse?: boolean;
 }
 
-const StyledHeading = styled(Headline)`
-  ${prop('theme.fonts.axiformaMedium')};
-  /* stylelint-disable-next-line */
-  color: ${prop('theme.black')};
-  margin: 0;
-`;
-
-const GridSubheading = Grid.as(Subheading);
-// tslint:disable-next-line no-any
-const Content = styled(GridSubheading as any)`
-  color: ${prop('theme.black')};
+const Grid = styled(Box)`
   display: grid;
-  margin: 0;
+  grid-gap: 16px;
 `;
 
 const template = `
@@ -36,16 +27,40 @@ const reverseTemplate = `
   / 4fr 3fr
 `;
 
+const GridWrapper = styled(Grid)<{ readonly reverse?: boolean }>`
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: center;
+  grid-template: ${ifProp('reverse', reverseTemplate, template)};
+`;
+
+const GridItem = styled(Box)<{ readonly area: string }, {}>`
+  grid-area: ${prop('area')};
+`;
+
+const StyledHeading = styled(Headline)`
+  ${prop('theme.fonts.axiformaMedium')};
+  color: ${prop('theme.black')};
+  margin: 0;
+`;
+
+const Content = styled(Grid.withComponent(Subheading))`
+  color: ${prop('theme.black')};
+  display: grid;
+  margin: 0;
+  grid-gap: 16px;
+`;
+
 export const AssetSectionGrid = ({ title, children, bg, asset, reverse, ...props }: Props) => (
   <SectionContentWrapper bg={bg} {...props}>
-    <Grid template={reverse ? reverseTemplate : template} gap={16} alignItems="center" justifyItems="center">
-      <Grid.Item area="asset">{asset}</Grid.Item>
-      <Grid.Item area="content">
-        <Grid gap={16}>
+    <GridWrapper reverse={reverse}>
+      <GridItem area="asset">{asset}</GridItem>
+      <GridItem area="content">
+        <Grid>
           <StyledHeading>{title}</StyledHeading>
-          <Content gap={16}>{children}</Content>
+          <Content>{children}</Content>
         </Grid>
-      </Grid.Item>
-    </Grid>
+      </GridItem>
+    </GridWrapper>
   </SectionContentWrapper>
 );

@@ -1,20 +1,30 @@
 aliases:
-  - &restore-yarn-cache-8
+  - &restore-yarn-cache-10
     keys:
-      - v3-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - v5-yarn-10-{{ .Branch }}-{{ checksum "yarn.lock" }}
       # Fallback in case checksum fails
-      - v3-yarn-8-{{ .Branch }}-
+      - v5-yarn-10-{{ .Branch }}-
 
-  - &save-yarn-cache-8
+  - &save-yarn-cache-10
     paths:
       - node_modules
       - ~/.cache/yarn
-      - ~/.cache/Cypress
-    key: v3-yarn-8-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    key: v5-yarn-10-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
-  - &yarn
-    |
-      yarn install --non-interactive --cache-folder ~/.cache/yarn
+  - &restore-yarn-cache-12
+    keys:
+      - v5-yarn-12-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      # Fallback in case checksum fails
+      - v5-yarn-12-{{ .Branch }}-
+
+  - &save-yarn-cache-12
+    paths:
+      - node_modules
+      - ~/.cache/yarn
+    key: v5-yarn-12-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+  - &yarn |
+    yarn install --non-interactive --cache-folder ~/.cache/yarn
 
   - &lint
     working_directory: ~/neo-one-playground
@@ -36,47 +46,40 @@ aliases:
           command: yarn lint
           when: always
 
-  - &test8
+  - &test10
     working_directory: ~/neo-one-playground
     steps:
       - checkout
-      - restore-cache: *restore-yarn-cache-8
+      - restore-cache: *restore-yarn-cache-810
       - run: *yarn
-      - save-cache: *save-yarn-cache-8
+      - save-cache: *save-yarn-cache-10
       - run:
           name: Test
           command: yarn test --ci -w 1
 
-  - &cypress8
+  - &cypress10
     working_directory: ~/neo-one-playground
     steps:
       - checkout
-      - restore-cache: *restore-yarn-cache-8
+      - restore-cache: *restore-yarn-cache-10
       - run: *yarn
-      - save-cache: *save-yarn-cache-8
-      - run:
-          name: Add .nyc_output Directory
-          command: mkdir .nyc_output
+      - save-cache: *save-yarn-cache-10
       - run:
           name: Test
-          command: yarn test:cypress --coverage
-      - run:
-          name: Coverage Report
-          command: yarn nyc report --reporter=json
-          when: always
-      - run:
-          name: Upload Unit Test Coverage
-          command: yarn run codecov -f coverage/coverage-final.json -F cypress
-          when: always
+          command: yarn test:cypress
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
 
 
-node8: &node8
+node10: &node10
   docker:
-    - image: neotracker/neo-one-circleci-node:8.16.0-4
+    - image: neotracker/neo-one-circleci-node@sha256:0f047d3662ad72b75e9550e41b22a2be0bf7fa8ee6563b65272b5af966b07f20
+
+node12: &node12
+  docker:
+    - image: neotracker/neo-one-circleci-node@sha256:6f76ab22882896c057d9d805955892f1dee26bb1a4257a6d095d07d617aa4d5c
 
 chrome: &chrome69
   docker:
@@ -84,21 +87,21 @@ chrome: &chrome69
 
 version: 2
 jobs:
-  test8:
-    <<: *node8
-    <<: *test8
-  cypress8:
+  test10:
+    <<: *node10
+    <<: *test10
+  cypress10:
     <<: *chrome69
-    <<: *cypress8
+    <<: *cypress10
 
   lint:
-    <<: *node8
+    <<: *node10
     <<: *lint
 
 workflows:
   version: 2
-  test8:
+  test10:
     jobs:
       - lint
-      - test8
-      - cypress8
+      - test10
+      - cypress10

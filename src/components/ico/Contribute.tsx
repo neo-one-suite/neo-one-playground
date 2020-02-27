@@ -1,22 +1,27 @@
 // tslint:disable no-null-keyword no-any
+import styled from '@emotion/styled';
 import { FromStream } from '@neo-one/react';
+import { Box, Button, TextInput } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, styled } from 'reakit';
 import { concat, defer, of } from 'rxjs';
 import { prop } from 'styled-tools';
-import { WithContracts } from '../../neo-one';
-import { PatchedButton, PatchedTextInput } from '../../components';
 import { ICOContainer } from '../../containers';
 import { Body2 } from '../../elements';
+import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
+
+const Flex = styled(Box)`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const StyledFlex = styled(Flex)`
   max-width: 519px;
   padding: 8px 0;
 `;
 
-const StyledInput = styled(PatchedTextInput)`
+const StyledInput = styled(TextInput)`
   width: 400px;
 `;
 
@@ -43,8 +48,6 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
             {({ text, amount, loading, onChangeAmount, send }) => (
               <Wrapper>
                 <StyledFlex {...props}>
-                  {/*
-                  // @ts-ignore */}
                   <StyledInput
                     data-test="contribute-input"
                     value={text}
@@ -55,16 +58,10 @@ export const Contribute = (props: ComponentProps<typeof Flex>) => (
                     = {amount === undefined ? '0' : `${amountPerNEO.times(amount).toFormat()}`} ONE
                   </StyledBody2>
                 </StyledFlex>
-                <Flex justifyContent="flex-end">
-                  {/*
-                  // @ts-ignore */}
-                  <PatchedButton
-                    data-test="contribute-button"
-                    disabled={amount === undefined || loading}
-                    onClick={send}
-                  >
+                <Flex>
+                  <Button data-test="contribute-button" disabled={amount === undefined || loading} onClick={send}>
                     Send
-                  </PatchedButton>
+                  </Button>
                 </Flex>
               </Wrapper>
             )}

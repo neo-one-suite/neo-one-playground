@@ -1,19 +1,26 @@
+import styled from '@emotion/styled';
 import { FromStream } from '@neo-one/react';
+import { Box } from '@neo-one/react-core';
 import BigNumber from 'bignumber.js';
 import { formatDistanceStrict } from 'date-fns';
 import _ from 'lodash';
 import * as React from 'react';
-import { Grid, styled } from 'reakit';
 import { combineLatest, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { WithContracts } from '../../neo-one';
 import { ComponentProps } from '../../types';
 
-const StyledGrid = styled(Grid)`
+const StyledGrid = styled(Box)`
+  display: grid;
   padding: 8px 0;
+  grid-template-columns: 160px 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 0;
 `;
 
-const StyledTime = styled('time')`
+const GridItem = styled(Box)``;
+
+const StyledTime = styled('time')<{ readonly value: string }>`
   min-width: ${({ value }: { readonly value: string }) => Math.max(30, value.length * 8)}px;
 `;
 
@@ -28,8 +35,8 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
   if (startTimeMS === undefined || durationMS === undefined || nowMS === undefined) {
     return (
       <>
-        <Grid.Item data-test="info-countdown">Countdown:</Grid.Item>
-        <Grid.Item data-test="info-countdown-value" />
+        <GridItem data-test="info-countdown">Countdown:</GridItem>
+        <GridItem data-test="info-countdown-value" />
       </>
     );
   }
@@ -60,11 +67,11 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
       {({ countdown, value }) => (
         <>
           {countdown ? (
-            <Grid.Item data-test="info-countdown">Countdown:</Grid.Item>
+            <GridItem data-test="info-countdown">Countdown:</GridItem>
           ) : (
-            <Grid.Item data-test="info-countdown">Time Left:</Grid.Item>
+            <GridItem data-test="info-countdown">Time Left:</GridItem>
           )}
-          <Grid.Item data-test="info-countdown-value">
+          <GridItem data-test="info-countdown-value">
             {value === undefined ? (
               'Ended'
             ) : (
@@ -72,7 +79,7 @@ function TimeAgo({ startTimeMS, durationMS, nowMS, ...props }: TimeAgoProps): JS
                 {value}
               </StyledTime>
             )}
-          </Grid.Item>
+          </GridItem>
         </>
       )}
     </FromStream>
@@ -122,26 +129,24 @@ export function Info(props: ComponentProps<typeof StyledGrid>) {
           }
         >
           {(value) => (
-            <StyledGrid columns="160px 1fr" autoRows="auto" gap="0" {...props}>
+            <StyledGrid {...props}>
               <TimeAgo
                 startTimeMS={value === undefined ? undefined : value.startTimeMS}
                 durationMS={value === undefined ? undefined : value.durationMS}
                 nowMS={value === undefined ? undefined : value.nowMS}
               />
-              <Grid.Item data-test="info-neo-contributed">NEO Contributed:</Grid.Item>
-              <Grid.Item data-test="info-neo-contributed-value">
+              <GridItem data-test="info-neo-contributed">NEO Contributed:</GridItem>
+              <GridItem data-test="info-neo-contributed-value">
                 {value === undefined ? '' : value.totalSupply.div(value.amountPerNEO).toFormat()}
-              </Grid.Item>
-              <Grid.Item data-test="info-remaining">Remaining:</Grid.Item>
-              <Grid.Item data-test="info-remaining-value">
+              </GridItem>
+              <GridItem data-test="info-remaining">Remaining:</GridItem>
+              <GridItem data-test="info-remaining-value">
                 {value === undefined ? '' : value.remaining.toFormat()}
-              </Grid.Item>
-              <Grid.Item data-test="info-balance">Your Balance:</Grid.Item>
-              <Grid.Item data-test="info-balance-value">
-                {value === undefined ? '' : value.balance.toFormat()}
-              </Grid.Item>
-              <Grid.Item data-test="info-address">ONE Address:</Grid.Item>
-              <Grid.Item data-test="info-address-value">{value === undefined ? '' : value.address}</Grid.Item>
+              </GridItem>
+              <GridItem data-test="info-balance">Your Balance:</GridItem>
+              <GridItem data-test="info-balance-value">{value === undefined ? '' : value.balance.toFormat()}</GridItem>
+              <GridItem data-test="info-address">ONE Address:</GridItem>
+              <GridItem data-test="info-address-value">{value === undefined ? '' : value.address}</GridItem>
             </StyledGrid>
           )}
         </FromStream>

@@ -1,4 +1,5 @@
-import { Box, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
 export const Subheading = styled(Box)`

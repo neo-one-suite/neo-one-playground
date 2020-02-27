@@ -1,10 +1,9 @@
-import { Box, styled } from 'reakit';
+import styled from '@emotion/styled';
+import { Box } from '@neo-one/react-core';
 import { prop } from 'styled-tools';
 
 export const Body2 = styled(Box)`
   ${prop('theme.fonts.axiformaMedium')};
-  font-size: 0.875rem;
-  line-height: 1.71428em;
-  text-align: left;
+  ${prop('theme.fontStyles.body2')};
   margin: 0;
 `;

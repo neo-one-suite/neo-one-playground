@@ -1,20 +1,34 @@
 // tslint:disable no-null-keyword no-any
+import styled from '@emotion/styled';
 import { UserAccount } from '@neo-one/client';
+import { Box, Button, TextInput as TextInputBase } from '@neo-one/react-core';
 import { BigNumber } from 'bignumber.js';
 import * as React from 'react';
-import { Box, Flex, Group, styled } from 'reakit';
 import { prop } from 'styled-tools';
-import { PatchedButton, PatchedTextInput } from '../../components';
 import { EscrowContainer } from '../../containers';
 import { ComponentProps } from '../../types';
+
+const Flex = styled(Box)`
+  display: flex;
+`;
+
+const Group = styled(Box)`
+  display: flex;
+  flex-direction: row;
+`;
 
 const Wrapper = styled(Box)`
   display: inline-block;
 `;
 
-const StyledButton = styled(PatchedButton)`
-  width: 72px;
+const TextInput = styled(TextInputBase)`
+  ${prop('theme.fontStyles.subheading')};
+`;
 
+const StyledButton = styled(Button)`
+  width: 72px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   &:disabled {
     background-color: ${prop('theme.gray3')};
     color: ${prop('theme.gray2')};
@@ -31,16 +45,12 @@ export const SendONEBox = (props: Props) => (
     {({ sendText, sendAmount, sendLoading, onChangeSendAmount, send }) => (
       <Wrapper>
         <Group>
-          {/*
-          // @ts-ignore */}
-          <PatchedTextInput
+          <TextInput
             data-test="send-one-input"
             value={sendText}
             placeholder="Send ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeSendAmount(event.currentTarget.value)}
           />
-          {/*
-          // @ts-ignore */}
           <StyledButton
             data-test="send-one-button"
             disabled={
@@ -64,16 +74,12 @@ export const ReceiveONEBox = (props: Props) => (
     {({ receiveText, receiveAmount, receiveLoading, onChangeReceiveAmount, receive }) => (
       <Wrapper>
         <Group>
-          {/*
-          // @ts-ignore */}
-          <PatchedTextInput
+          <TextInput
             data-test="receive-one-input"
             value={receiveText}
             placeholder="Receive ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeReceiveAmount(event.currentTarget.value)}
           />
-          {/*
-          // @ts-ignore */}
           <StyledButton
             data-test="receive-one-button"
             disabled={
@@ -97,16 +103,12 @@ export const RevokeONEBox = (props: Props) => (
     {({ revokeText, revokeAmount, revokeLoading, onChangeRevokeAmount, revoke }) => (
       <Wrapper>
         <Group>
-          {/*
-          // @ts-ignore */}
-          <PatchedTextInput
+          <TextInput
             data-test="revoke-one-input"
             value={revokeText}
             placeholder="Revoke ONE"
             onChange={(event: React.SyntheticEvent<any>) => onChangeRevokeAmount(event.currentTarget.value)}
           />
-          {/*
-          // @ts-ignore */}
           <StyledButton
             data-test="revoke-one-button"
             disabled={
