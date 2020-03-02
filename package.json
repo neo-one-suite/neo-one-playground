@@ -147,7 +147,7 @@
     "emotion": "10.0.17",
     "emotion-theming": "10.0.17",
     "localforage": "1.7.3",
-    "lodash": "4.17.11",
+    "lodash": "4.17.12",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-hot-loader": "4.12.12",
